@@ -94,7 +94,7 @@ Outlets = $\left\lceil \frac{\text{Área (m²)}}{10} \times 2 \right\rceil$
 
 ### Level 4 - Departures
 
-![Medidas do level 2 - Departures](level4_departures/medidas_level4.png)
+![Medidas do level 4 - Departures](level4_departures/medidas_level4.png)
 
 - A sala tem 201,72 m x 201,72 m.
 
@@ -125,27 +125,68 @@ Outlets = $\left\lceil \frac{\text{Área (m²)}}{10} \times 2 \right\rceil$
 ---
 
 ## 4. Tomadas nas Paredes Exteriores para ambos os pisos
+As dimensões reais do piso, após subtrair os comprimentos das salas que já possuem tomadas internas, são:
+- **Level 1 – Arrivals:** 177,6 m × 177,6 m
+- **Level 4 – Departures:** 175,9 m × 177,6 m
 
-O comprimento total de cada parede exterior é de **201,72 metros**.
+Aplicando a regra de uma tomada a cada 5 metros:
 
-Aplicando a regra de uma tomada a cada **5 metros**:
+Outlets = $\left\lceil \frac{\text{Comprimento útil da parede}}{5} \right\rceil$
 
-Outlets = $\left\lceil \frac{201.72}{5} \right\rceil$
+### Level 1 - Arrivals
+![Medidas parede externa do level 1 - Arrivals](level1_arrivals/paredeExterna_level1.png)
+- Parede direita: 36 tomadas
+- Parede inferior: 36 tomadas
+- Total paredes externas: 72 tomadas
 
-Outlets = $\left\lceil 40.34 \right\rceil = 41$
-
-Assim:
-
-- Parede direita: **41 tomadas**
-- Parede inferior: **41 tomadas**
-
-Total por piso:
-
-**82 tomadas adicionais**
+### Level 2 - Departures
+![Medidas parede externa do level 4 - Departures](level4_departures/paredeExterna_level4.png)
+- Parede direita: 36 tomadas
+- Parede inferior: 36 tomadas
+- Total paredes externas: 72 tomadas
 
 ---
-## 5. Totais finais
-| Piso    | Salas | Paredes | Total   |
-| ------- | ----- | ------- | ------- |
-| Level 1 | 631   | 82      | **713** |
-| Level 4 | 864   | 82      | **946** |
+
+## 5. Pontos de Acesso Wireless (Wi-Fi)
+
+Ambos os pisos do Terminal 2 requerem cobertura de rede sem fios.
+
+Cada Wireless Access Point (WAP) garante uma cobertura circular aproximada com **50 metros de diâmetro (25 metros de raio)**.
+
+### Cálculo da Área de Cobertura
+
+A área de cobertura de cada WAP pode ser estimada através da expressão:
+
+A = πr²
+
+Onde:
+
+r = 25 m
+
+Logo:
+
+A ≈ 3.14 × 25² ≈ 1963 m²
+
+### Número de WAPs Necessários
+
+A área total aproximada de cada piso é:
+
+200 × 200 = 40000 m²
+
+Número mínimo de WAPs:
+
+40000 / 1963 ≈ 21
+
+Considerando sobreposição de sinal e obstáculos físicos (paredes, colunas e estruturas), foi aplicada uma margem adicional de aproximadamente 20%.
+
+Assim, foram previstos **25 WAPs por piso**.
+
+### Posicionamento
+
+Os WAPs foram distribuídos de forma uniforme num padrão em grelha **5 × 5**, garantindo cobertura homogénea e evitando zonas mortas.
+
+Cada WAP requer uma **tomada de rede RJ45 (ISO 8877)** instalada no **teto falso**, localizado a 4 metros de altura.
+
+
+---
+
