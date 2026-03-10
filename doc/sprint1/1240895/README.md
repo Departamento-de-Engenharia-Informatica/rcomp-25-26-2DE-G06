@@ -101,17 +101,56 @@ Fórmula utilizada: Outlets = $\lceil \frac{\text{Área (m²)}}{10} \times 2 \rc
 
 ---
 
-## 4. Tomadas nas Paredes Exteriores (Apenas Piso 2)
-Considerando as dimensões reais do edifício (201,6 m x 100,8 m):
-- **Parede Inferior (201,6 m):** $\lceil 201,6 / 5 \rceil = 41$ tomadas.
-- **Parede Direita (100,8 m):** $\lceil 100,8 / 5 \rceil = 21$ tomadas.
-
-**Total adicional Piso 2: 62 tomadas**
-
 ---
 
-## 5. Totais Finais de Outlets
-| Piso    | Salas | Paredes | Total   |
-| ------- | ----- | ------- | ------- |
-| Level 0 | 713   | 0       | **713** |
-| Level 2 | 807   | 62      | **869** |
+## 4. Tomadas nas Paredes Exteriores (Level 2)
+
+As dimensões reais do piso são:
+
+- **Level 2 – Departures:** 198,39 m × 99,19 m
+
+Aplicando a regra de uma tomada a cada 5 metros:
+
+Outlets = $\left\lceil \frac{\text{Comprimento útil da parede}}{5} \right\rceil$
+
+### Level 2 - Departures
+![Medidas parede externa do Level 2 - Departures](level2_departures/paredeExterna_level2.png)
+- Parede inferior: 40 tomadas
+- Parede direita: 20 tomadas
+- Total paredes externas: 60 tomadas
+
+
+## Posicionamento das tomadas de rede
+### Level 0 - Arrivals
+![Outlets do level 0 - Arrivals](level0_arrivals/level0_outlets.png)
+
+### Level 2 - Departures
+![Outlets do level 2 - Departures](level2_departures/level2_outlets.png)
+
+
+## 5. Pontos de Acesso Wireless (Wi-Fi)
+
+Ambos os pisos do Terminal 4 requerem cobertura total de rede sem fios. Seguindo as boas práticas, cada Wireless Access Point (WAP) garante uma cobertura circular com **25 metros de raio** (alcance máximo de 30m para garantir qualidade).
+
+### Cálculo da Área de Cobertura
+A área de cobertura de cada WAP é:
+$A = \pi \times r^2 \approx 3,14 \times 25^2 \approx 1963 \text{ m}^2$
+
+### Número de WAPs Necessários
+A área total real do Terminal 4 é:
+$198,39 \text{ m} \times 99,19 \text{ m} \approx 19.678 \text{ m}^2$
+
+Número mínimo teórico:
+$N = 19.678 / 1963 \approx 10,02 \rightarrow 11 \text{ WAPs}$
+
+### Ajuste para Condições Reais (Fator de Segurança de 40%)
+Para compensar a atenuação por obstáculos (paredes, colunas), a elevada densidade de utilizadores e a necessidade de sobreposição (roaming), aplicou-se um fator de segurança de 40%:
+
+$N_{\text{real}} = 11 \times 1,4 = 15,4$
+
+Arredondando por excesso:
+**16 WAPs por piso**
+
+**Nota**: Cada WAP requer uma tomada de rede RJ45 (CAT7) instalada no teto falso a 4 metros de altura. No Level 2, os APs devem ser posicionados de forma desencontrada em relação ao Level 0 para evitar interferência vertical entre pisos.
+
+---
