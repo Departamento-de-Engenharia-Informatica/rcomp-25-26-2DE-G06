@@ -130,27 +130,61 @@ Outlets = $\left\lceil \frac{\text{Comprimento útil da parede}}{5} \right\rceil
 
 ## 5. Pontos de Acesso Wireless (Wi-Fi)
 
-Ambos os pisos do Terminal 4 requerem cobertura total de rede sem fios. Seguindo as boas práticas, cada Wireless Access Point (WAP) garante uma cobertura circular com **25 metros de raio** (alcance máximo de 30m para garantir qualidade).
+Ambos os pisos do Terminal 2 requerem cobertura de rede sem fios.
+
+Cada Wireless Access Point (WAP) garante uma cobertura circular aproximada com **50 metros de diâmetro (25 metros de raio)**.
 
 ### Cálculo da Área de Cobertura
-A área de cobertura de cada WAP é:
-$A = \pi \times r^2 \approx 3,14 \times 25^2 \approx 1963 \text{ m}^2$
+
+A área de cobertura de cada WAP pode ser estimada através da expressão:
+A = πr² (Onde: r = 25 m)
+
+Logo:
+A ≈ 3.14 × 25² ≈ 1963 m²
 
 ### Número de WAPs Necessários
-A área total real do Terminal 4 é:
-$198,39 \text{ m} \times 99,19 \text{ m} \approx 19.678 \text{ m}^2$
 
-Número mínimo teórico:
-$N = 19.678 / 1963 \approx 10,02 \rightarrow 11 \text{ WAPs}$
+A área total aproximada de cada piso é:
+200 × 100 = 20000 m²
 
-### Ajuste para Condições Reais (Fator de Segurança de 40%)
-Para compensar a atenuação por obstáculos (paredes, colunas), a elevada densidade de utilizadores e a necessidade de sobreposição (roaming), aplicou-se um fator de segurança de 40%:
-
-$N_{\text{real}} = 11 \times 1,4 = 15,4$
+Número mínimo de WAPs:
+N = Área do piso / Área de cobertura do WAP
+N = 20000 / 1963  
+N ≈ **10.19**
 
 Arredondando por excesso:
-**16 WAPs por piso**
+N ≈ **11 WAPs**
 
-**Nota**: Cada WAP requer uma tomada de rede RJ45 (CAT7) instalada no teto falso a 4 metros de altura. No Level 2, os APs devem ser posicionados de forma desencontrada em relação ao Level 0 para evitar interferência vertical entre pisos.
+### Ajuste para Condições Reais
+
+O valor anterior corresponde apenas a um cenário **teórico ideal**, assumindo cobertura circular perfeita e ausência de obstáculos.
+Na prática, diversos fatores reduzem a eficácia da cobertura:
+
+- Atenuação do sinal provocada por **paredes, pilares e estruturas metálicas**
+- **Elevada densidade de utilizadores** típica de um terminal aeroportuário
+- Necessidade de **sobreposição entre células Wi-Fi** para permitir roaming contínuo
+- Planeamento de canais para evitar interferências entre pontos de acesso
+
+Para compensar estes fatores, foi aplicado um **fator de segurança de aproximadamente 40%**.
+
+Cálculo:
+N_real = 11 × 1.4  
+N_real ≈ **15.4**
+
+Arredondando por excesso:
+N_real ≈ **16 WAPs por piso**
+
+### Posicionamento no teto falso
+
+#### Level 1 - Arrivals
+![Access Points do level 0 - Arrivals](level0_arrivals/level0_aps.png)
+
+**Nota**: Cada WAP requer uma **tomada de rede RJ45 (ISO 8877)** instalada no **teto falso**, localizado a 4 metros de altura.
+
+#### Level 4 - Departures
+![Access Points do level 2 - Departures](level2_departures/level2_aps.png)
+
+**Nota**: Cada WAP requer uma **tomada de rede RJ45 (ISO 8877)** instalada no **teto falso**, localizado a 4 metros de altura.
+
 
 ---
