@@ -71,8 +71,6 @@ Outlets = $\left\lceil \frac{\text{Área (m²)}}{10} \times 2 \right\rceil$
 
 ![Medidas do Level 1 - Arrivals](level1_arrivals/medidas_level1.png)
 
-- A sala tem 201,72 m x 201,72 m.
-
 | Sala | Área (m²) | Número de Outlets |
 |------|-----------|-------------------|
 | 1    | 380,88    | 77                |
@@ -89,21 +87,20 @@ Outlets = $\left\lceil \frac{\text{Área (m²)}}{10} \times 2 \right\rceil$
 | 12   | 146,41    | 0                 |
 
 #### Total de Outlets – Level 1 (Salas)
-**631 tomadas**
+**631 outlets**
 
 
 ### Level 4 - Departures
 
 ![Medidas do level 4 - Departures](level4_departures/medidas_level4.png)
 
-- A sala tem 201,72 m x 201,72 m.
 
 | Sala | Área (m²) | Número de Outlets |
 |------|-----------|-------------------|
-| 1    | 309,12    | 62                |
-| 2    | 309,12    | 62                |
-| 3    | 262,20    | 53                |
-| 4    | 262,20    | 53                |
+| 1    | 224,00    | 45                |
+| 2    | 224,00    | 45                |
+| 3    | 190,00    | 38                |
+| 4    | 190,00    | 38                |
 | 5    | 547,86    | 110               |
 | 6    | 476,10    | 96                |
 | 7    | 499,56    | 100               |
@@ -120,7 +117,7 @@ Outlets = $\left\lceil \frac{\text{Área (m²)}}{10} \times 2 \right\rceil$
 | 18   | 146,41    | 0                 |
 
 #### Total de Outlets – Level 4 (Salas)
-**864 tomadas**
+**800 outlets**
 
 ---
 
@@ -132,6 +129,7 @@ As dimensões reais do piso, após subtrair os comprimentos das salas que já po
 Aplicando a regra de uma tomada a cada 5 metros:
 
 Outlets = $\left\lceil \frac{\text{Comprimento útil da parede}}{5} \right\rceil$
+(**Nota**: Tudo arredondado por excesso.)
 
 ### Level 1 - Arrivals
 ![Medidas parede externa do level 1 - Arrivals](level1_arrivals/paredeExterna_level1.png)
@@ -155,10 +153,9 @@ Outlets = $\left\lceil \frac{\text{Comprimento útil da parede}}{5} \right\rceil
 
 ---
 
-## 5. Pontos de Acesso Wireless (Wi-Fi)
+## 5. Pontos de Acesso Wireless 
 
 Ambos os pisos do Terminal 2 requerem cobertura de rede sem fios.
-
 Cada Wireless Access Point (WAP) garante uma cobertura circular aproximada com **50 metros de diâmetro (25 metros de raio)**.
 
 ### Cálculo da Área de Cobertura
@@ -184,24 +181,24 @@ N ≈ **21 WAPs**
 
 ### Ajuste para Condições Reais
 
-O valor anterior corresponde apenas a um cenário **teórico ideal**, assumindo cobertura circular perfeita e ausência de obstáculos.
+O valor anterior corresponde apenas a um cenário **teórico ideal**.
 Na prática, diversos fatores reduzem a eficácia da cobertura:
 
 - Atenuação do sinal provocada por **paredes, pilares e estruturas metálicas**
 - **Elevada densidade de utilizadores** típica de um terminal aeroportuário
 - Necessidade de **sobreposição entre células Wi-Fi** para permitir roaming contínuo
-- Planeamento de canais para evitar interferências entre pontos de acesso
 
 Para compensar estes fatores, foi aplicado um **fator de segurança de aproximadamente 40%**.
 
 Cálculo:
-N_real = 21 × 1.4  
+N_real = 21 + (21 × 0.4) <=>
 N_real ≈ **29.4**
 
 Arredondando por excesso:
 N_real ≈ **30 WAPs por piso**
 
 ### Posicionamento no teto falso
+A seleção dos canais 1, 6 e 11 para os Access Points foi efetuada de forma intercalada para garantir que células de cobertura vizinhas não utilizem frequências comuns, uma vez que estes são os únicos três canais que não se sobrepõem (non-overlapping) na banda de 2.4 GHz, mitigando assim a interferência e colisões de sinal entre APs adjacentes
 
 #### Level 1 - Arrivals
 ![Access Points do level 1 - Arrivals](level1_arrivals/level1_aps.png)
@@ -213,40 +210,627 @@ N_real ≈ **30 WAPs por piso**
 
 **Nota**: Cada WAP requer uma **tomada de rede RJ45 (ISO 8877)** instalada no **teto falso**, localizado a 4 metros de altura.
 
+---
+
+## 6. Hierarquia e Localização dos Distribuidores 
+
+O projeto de cablagem estruturada segue uma arquitetura hierárquica de três níveis:
+MC → IC → HC → CP → Outlets
+Esta estrutura permite uma distribuição eficiente da rede, respeitando as limitações técnicas da cablagem horizontal e facilitando a gestão da infraestrutura.
+
+### Level 1 - Arrivals
+![Distribuidores do level 1 - Arrivals](level1_arrivals/distribuidores_level1.png)
+
+### Sala 6 – Núcleo de Distribuição do Terminal 2
+
+A **Sala 6** foi selecionada como o principal ponto de distribuição do Terminal 2 por possuir **passagens verticais de cabos** (identificadas na planta por pontos amarelos) com ligação direta à **galeria técnica subterrânea do campus**.
+Nesta sala encontram-se instalados:
+
+- **Main Cross-Connect (MC)**  
+  Ponto principal de interligação com o **backbone do campus**, responsável por ligar o Terminal 2 aos restantes edifícios através da galeria técnica subterrânea.
+
+- **Intermediate Cross-Connect (IC)**  
+  Distribuidor central do edifício que recebe a ligação proveniente do MC e distribui a conectividade para todos os restantes distribuidores do Terminal 2.
+
+- **Horizontal Cross-Connect (HC – Sala 6)**  
+  Responsável pela ligação direta a **112 tomadas de rede locais**.
+
+### HC – Sala 6
+
+Este HC alimenta **112 tomadas de rede** localizadas nas zonas próximas da Sala 6.
+Patch panels utilizados:
+
+| Patch Panel | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 48 portas | 2U |
+| Patch Panel | 48 portas | 2U |
+| Patch Panel | 24 portas | 1U |
+
+Total ocupado:
+2U + 2U + 1U = 5U
+
+Para alojar o MC, IC, HC, equipamentos ativos e espaço de expansão futura foi selecionado um **rack de 42U**.
 
 ---
 
-## 6. Localização dos Distribuidores de Rede
+### Outros Horizontal Cross-Connects (HC)
 
-De acordo com as normas de cablagem estruturada, a distância máxima entre um Horizontal Cross-Connect (HC) e qualquer tomada não deve exceder **90 metros de cabo**, sendo recomendada uma distância máxima de **80 metros em linha reta**.
-Considerando que cada piso do Terminal 2 possui aproximadamente **200 × 200 metros**, um único HC não seria suficiente para cobrir toda a área.
-Assim, foram definidos **dois Horizontal Cross-Connects por piso**, dividindo cada nível em duas zonas de cobertura.
+Além da Sala 6, foram instalados HCs adicionais em locais indicados no enunciado como adequados para alojamento de hardware.
 
-### Level 1 – Arrivals
-Os HCs foram instalados nas seguintes salas:
-- **HC-L1-A:** Sala 6
-- **HC-L1-B:** Sala 11
+#### HC – Sala 11
 
-Estas salas foram selecionadas por estarem identificadas no enunciado como adequadas para alojar equipamentos de infraestrutura.
+- Número de ligações: **18**
+- Patch panel utilizado:
 
-### Level 4 – Departures
-Os HCs foram instalados em:
-- **HC-L4-A:** Sala 8
-- **HC-L4-B:** Sala 17
+| Tipo | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 24 portas | 1U |
 
-Estas salas foram selecionadas por estarem identificadas no enunciado como adequadas para alojar equipamentos de infraestrutura.
+Espaço total ocupado: **1U**
 
-### Intermediate Cross-Connect (IC)
+Aplicando a regra de dimensionamento dos racks (4 × S):
+S = 1U
+Rack ≈ 4U
+Foi selecionado um **rack de 6U**, permitindo espaço adicional para equipamentos ativos e expansões futuras.
 
-O edifício Terminal 2 possui um **Intermediate Cross-Connect (IC)** responsável por interligar os distribuidores horizontais ao backbone da rede do aeroporto.
-O IC foi instalado na **Sala 12 do Level 1**, devido à sua adequação para infraestrutura de rede e proximidade às passagens verticais de cabos.
+---
 
-### Backbone
+#### HC – Sala 12
 
-A ligação entre os HCs e o IC é realizada através de **fibra ótica**, utilizando cabos com pelo menos **8 fibras**, garantindo capacidade suficiente e redundância.
+- Número de ligações: **29**
 
-### Cablagem Horizontal
+| Tipo | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 48 portas | 2U |
 
-A cablagem horizontal utiliza **cabos CAT7**, que percorrem as **calhas sob o piso (underfloor raceways)** e o **teto falso localizado a 4 metros de altura**, ligando os HCs às tomadas de rede e aos pontos de acesso wireless.
+Espaço total ocupado: **2U**
+
+Aplicando a regra de dimensionamento:
+S = 2U
+Rack ≈ 8U
+Foi selecionado um **rack de 12U**, garantindo espaço para equipamentos ativos e futuras expansões.
+
+---
+
+## Estratégia de Consolidation Points (CPs)
+
+Devido às dimensões do piso (**aproximadamente 200 m × 200 m**) e à limitação de **90 metros de cabo horizontal em cobre**, foram implementados **Consolidation Points (CPs)** distribuídos pelo piso.
+
+Os CPs permitem:
+- reduzir o número de cabos diretos ligados aos HCs
+- manter todas as distâncias dentro dos limites da cablagem estruturada
+- distribuir melhor a densidade de tomadas
+- simplificar futuras reconfigurações da rede
+
+---
+
+### Zona Superior (Salas 1, 2 e 3)
+
+Esta zona apresenta elevada densidade de tomadas.
+
+Foram instalados **três CPs**:
+
+| Sala | Número de Outlets |
+|---|---|
+| Sala 1 | 79 |
+| Sala 2 | 63 |
+| Sala 3 | 98 |
+
+Os CPs garantem que todas as tomadas localizadas nas extremidades das salas permanecem dentro do limite máximo de distância.
+
+### CP – Sala 1
+
+Este CP serve **79 ligações** provenientes das tomadas localizadas na Sala 1 e áreas próximas.
+
+Patch panels utilizados:
+
+| Patch Panel | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 48 portas | 2U |
+| Patch Panel | 48 portas | 2U |
+
+Espaço total ocupado: 4U
+Foi selecionado um **rack de 22U / 24U**, permitindo espaço para equipamentos ativos e futuras expansões.
+
+### CP – Sala 2
+
+Este CP serve **63 ligações**.
+
+Patch panels utilizados:
+
+| Patch Panel | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 48 portas | 2U |
+| Patch Panel | 48 portas | 2U |
+
+Espaço ocupado: 4U
+Foi selecionado um **rack de 22U / 24U**, garantindo espaço para equipamentos ativos e futuras expansões.
+
+### CP – Sala 3
+
+Este CP serve **98 ligações**.
+
+Patch panels utilizados:
+
+| Patch Panel | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 48 portas | 2U |
+| Patch Panel | 48 portas | 2U |
+| Patch Panel | 24 portas | 1U |
+
+Espaço total ocupado: 5U
+Foi selecionado um **rack de 24U**, garantindo espaço para equipamentos ativos e futuras expansões.
+
+---
+
+### Zona Inferior (Salas 7 e 8)
+
+Foram instalados **dois CPs externos** responsáveis pela distribuição da rede nesta área.
+
+| Zona | Ligações |
+|---|---|
+| CP – Sala 7 | 101 |
+| CP – Sala 8 | 98 |
+
+
+### CP – Zona Inferior (Exterior da Sala 7)
+
+Este CP distribui ligações para a **Sala 7 e tomadas exteriores próximas**.
+
+Número de ligações: **101**
+
+Patch panels utilizados:
+
+| Patch Panel | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 48 portas | 2U |
+| Patch Panel | 48 portas | 2U |
+| Patch Panel | 24 portas | 1U |
+
+Espaço ocupado: 5U
+Foi selecionado um **rack de 24U**, garantindo espaço para equipamentos ativos e futuras expansões.
+
+### CP – Zona Inferior (Exterior da Sala 8)
+
+Este CP distribui ligações para a **Sala 8 e tomadas próximas**.
+
+Número de ligações: **98**
+
+Patch panels utilizados:
+
+| Patch Panel | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 48 portas | 2U |
+| Patch Panel | 48 portas | 2U |
+| Patch Panel | 24 portas | 1U |
+
+Espaço ocupado: 5U
+Foi selecionado um **rack de 24U**, garantindo espaço para equipamentos ativos e futuras expansões.
+
+---
+
+### Paredes Externas
+
+Ao longo das paredes externas foram instaladas tomadas a cada **5 metros**, conforme definido nos requisitos do projeto. 
+(Embora no esquema não estejam representadas as tomadas precisamente de 5 em 5 metros, todos os calculos de distância foram realizados considerando esta regra.)
+
+Para gerir estas ligações foram criados **dois CPs de baixa densidade**:
+
+| Localização | Ligações |
+|---|---|
+| Parede direita | 18 |
+| Parede inferior | 17 |
+
+### CP – Parede Direita
+
+Foi instalado um CP aproximadamente a meio da parede direita do piso para servir as tomadas instaladas ao longo dessa parede.
+
+Número de ligações: **18**
+
+Patch panel utilizado:
+
+| Patch Panel | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 24 portas | 1U |
+
+Rack selecionado: **6U**
+
+### CP – Parede Inferior
+
+Outro CP foi instalado aproximadamente a meio da parede inferior do piso.
+
+Número de ligações: **17**
+
+Patch panel utilizado:
+
+| Patch Panel | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 24 portas | 1U |
+
+Rack selecionado: **6U**
+
+
+### Level 4 - Departures
+![Distribuidores do level 4 - Departures](level4_departures/distribuidores_level4.png)
+
+### Sala 8 – Distribuição Principal do Piso
+
+A **Sala 8** foi selecionada como o principal ponto de distribuição deste piso por possuir **passagens verticais de cabos** (identificadas na planta por pontos amarelos), permitindo a ligação direta ao **Intermediate Cross-Connect (IC)** localizado no piso técnico.
+
+Nesta sala encontra-se instalado um **Horizontal Cross-Connect (HC)** responsável por alimentar grande parte dos Consolidation Points (CPs) do piso.
+
+### HC – Sala 8
+
+Este HC alimenta **23 tomadas de rede locais** e serve também como ponto de distribuição para vários **CPs distribuídos pelo piso**.
+
+Patch panel utilizado:
+
+| Patch Panel | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 24 portas | 1U |
+
+Espaço total ocupado: **1U**
+
+Aplicando a regra de dimensionamento (4 × S):
+
+S = 1U  
+Rack ≈ 4U
+
+Foi selecionado um **rack de 6U**, permitindo espaço adicional para equipamentos ativos e futuras expansões.
+
+---
+
+### Outros Horizontal Cross-Connects (HC)
+
+Além da Sala 8, foram instalados dois HCs adicionais para alimentar zonas mais afastadas do piso.
+
+#### HC – Sala 18
+
+- Número de ligações: **26**
+
+Patch panel utilizado:
+
+| Patch Panel | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 48 portas | 2U |
+
+Espaço total ocupado: **2U**
+
+Aplicando a regra de dimensionamento:
+
+S = 2U  
+Rack ≈ 8U
+
+Foi selecionado um **rack de 12U**, garantindo espaço para equipamentos ativos e futuras expansões.
+
+---
+
+#### HC – Sala 17
+
+- Número de ligações: **16**
+
+Patch panel utilizado:
+
+| Patch Panel | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 24 portas | 1U |
+
+Espaço total ocupado: **1U**
+
+Aplicando a regra de dimensionamento:
+
+S = 1U  
+Rack ≈ 4U
+
+Foi selecionado um **rack de 6U**, permitindo espaço adicional para equipamentos ativos e expansões futuras.
+
+---
+
+## Estratégia de Consolidation Points (CPs)
+
+Devido à dimensão do piso e à necessidade de respeitar o limite máximo de **90 metros para cabos horizontais em cobre**, foram implementados vários **Consolidation Points (CPs)** distribuídos estrategicamente pelo piso.
+
+Os CPs permitem:
+
+- reduzir o número de cabos diretamente ligados aos HCs
+- manter todas as distâncias dentro dos limites da cablagem estruturada
+- distribuir melhor a densidade de tomadas
+- simplificar futuras reconfigurações da rede
+
+---
+
+### Zona Central (Salas 5, 6 e 7)
+
+Foram instalados três CPs responsáveis pela distribuição das ligações nestas salas.
+
+| Localização | Ligações |
+|---|---|
+| CP – Sala 7 | 101 |
+| CP – Sala 6 | 98 |
+| CP – Sala 5 | 112 |
+
+### CP – Sala 7
+
+Este CP serve **101 ligações**.
+
+Patch panels utilizados:
+
+| Patch Panel | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 48 portas | 2U |
+| Patch Panel | 48 portas | 2U |
+| Patch Panel | 24 portas | 1U |
+
+Espaço total ocupado: **5U**
+
+Foi selecionado um **rack de 24U**, garantindo espaço para equipamentos ativos e futuras expansões.
+
+---
+
+### CP – Sala 6
+
+Este CP serve **98 ligações**.
+
+Patch panels utilizados:
+
+| Patch Panel | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 48 portas | 2U |
+| Patch Panel | 48 portas | 2U |
+| Patch Panel | 24 portas | 1U |
+
+Espaço total ocupado: **5U**
+
+Foi selecionado um **rack de 24U**.
+
+---
+
+### CP – Sala 5
+
+Este CP serve **112 ligações**.
+
+Patch panels utilizados:
+
+| Patch Panel | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 48 portas | 2U |
+| Patch Panel | 48 portas | 2U |
+| Patch Panel | 24 portas | 1U |
+
+Espaço total ocupado: **5U**
+
+Foi selecionado um **rack de 24U**.
+
+---
+
+### Zona Superior (Salas 1, 2, 3 e 4)
+
+Nesta área foram instalados dois CPs responsáveis pela distribuição das tomadas.
+
+| Localização | Ligações |
+|---|---|
+| CP – Sala 3 (salas 3 e 4) | 78 |
+| CP – Sala 2 (salas 1 e 2) | 92 |
+
+### CP – Sala 3
+
+Este CP serve **78 ligações** distribuídas pelas salas **3 e 4**.
+
+Patch panels utilizados:
+
+| Patch Panel | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 48 portas | 2U |
+| Patch Panel | 48 portas | 2U |
+
+Espaço ocupado: **4U**
+
+Foi selecionado um **rack de 22U / 24U**.
+
+---
+
+### CP – Sala 2
+
+Este CP serve **92 ligações** distribuídas pelas salas **1 e 2**.
+
+Patch panels utilizados:
+
+| Patch Panel | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 48 portas | 2U |
+| Patch Panel | 48 portas | 2U |
+| Patch Panel | 24 portas | 1U |
+
+Espaço ocupado: **5U**
+
+Foi selecionado um **rack de 24U**.
+
+---
+
+### Zona Exterior do Piso
+
+Foram instalados vários CPs ao longo das áreas exteriores do piso para alimentar tomadas instaladas nas paredes e zonas abertas.
+
+| Localização | Ligações |
+|---|---|
+| Exterior Sala 10 | 80 |
+| Exterior entre Salas 9 e 11 | 107 |
+| Exterior Sala 12 | 56 |
+| Exterior entre Salas 13 e 14 | 56 |
+
+### CP – Exterior Sala 10
+
+Número de ligações: **80**
+
+Patch panels utilizados:
+
+| Patch Panel | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 48 portas | 2U |
+| Patch Panel | 48 portas | 2U |
+
+Espaço ocupado: **4U**
+
+Rack selecionado: **22U / 24U**
+
+---
+
+### CP – Exterior entre Salas 9 e 11
+
+Número de ligações: **107**
+
+Patch panels utilizados:
+
+| Patch Panel | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 48 portas | 2U |
+| Patch Panel | 48 portas | 2U |
+| Patch Panel | 24 portas | 1U |
+
+Espaço ocupado: **5U**
+
+Rack selecionado: **24U**
+
+---
+
+### CP – Exterior Sala 12
+
+Número de ligações: **56**
+
+Patch panels utilizados:
+
+| Patch Panel | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 48 portas | 2U |
+| Patch Panel | 48 portas | 2U |
+
+Espaço ocupado: **4U**
+
+Rack selecionado: **22U / 24U**
+
+---
+
+### CP – Exterior entre Salas 13 e 14
+
+Número de ligações: **56**
+
+Patch panels utilizados:
+
+| Patch Panel | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 48 portas | 2U |
+| Patch Panel | 48 portas | 2U |
+
+Espaço ocupado: **4U**
+
+Rack selecionado: **22U / 24U**
+
+---
+
+### CPs Adicionais de Distribuição
+
+Alguns CPs adicionais foram instalados para garantir cobertura em zonas periféricas e alimentar pontos de acesso sem fios.
+
+| Localização | Ligações |
+|---|---|
+| Parede direita do piso | 16 |
+| Parede inferior do piso | 17 |
+| Exterior Sala 15 | 7 |
+
+### CP – Parede Direita
+
+Número de ligações: **16**
+
+Patch panel utilizado:
+
+| Patch Panel | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 24 portas | 1U |
+
+Rack selecionado: **6U**
+
+---
+
+### CP – Parede Inferior
+
+Número de ligações: **17**
+
+Patch panel utilizado:
+
+| Patch Panel | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 24 portas | 1U |
+
+Rack selecionado: **6U**
+
+---
+
+### CP – Exterior Sala 15
+
+Este CP foi instalado para alimentar **Wireless Access Points (APs)** numa zona onde não existia um ponto de distribuição próximo.
+
+Número de ligações: **7**
+
+Patch panel utilizado:
+
+| Patch Panel | Portas | Espaço |
+|---|---|---|
+| Patch Panel | 24 portas | 1U |
+
+Rack selecionado: **6U**
+
+---
+
+## 7. Dimensionamento dos Telecommunications Enclosures (Racks)
+
+Para dimensionar os armários de telecomunicações foi aplicada a regra:
+Tamanho do Rack = 4 × S
+
+Onde **S** representa o espaço ocupado pelos patch panels.
+
+Esta abordagem garante:
+- espaço suficiente para **equipamentos ativos**
+- espaço para **gestão de cabos**
+- **reserva de capacidade futura (~100%)**
+
+---
+
+**Nota:**  
+Alguns racks apresentam **unidades livres (U) não ocupadas**, destinadas a:
+- futuras expansões da rede
+- instalação de novos patch panels
+- adição de switches ou outros equipamentos ativos
+
+---
+
+## 8. Legenda e Caminhos de Cabos
+
+Para facilitar a leitura dos diagramas de rede foram utilizadas duas representações distintas.
+
+### Linha Contínua
+
+Representa cablagem instalada:
+- nas **calhas técnicas sob o piso**
+- embutida nas **paredes**
+
+Utilizada para ligar:
+HC / CP → Network Outlets
+
+
+---
+
+### Linha Tracejada
+
+Representa cablagem que percorre o **teto falso**, localizado a **4 metros de altura**.
+
+Utilizada principalmente para alimentar:
+- **As outlets dos Wireless Access Points (APs)**
+
+---
+
+## Nota Técnica
+
+Todas as ligações entre o **Intermediate Cross-Connect (IC)** localizado na **Sala 6** e os restantes **HCs e CPs remotos** são realizadas através de **fibra ótica monomodo**, constituindo o **backbone interno do edifício**.
+A distribuição final até às tomadas de utilizador é efetuada utilizando **cabos de cobre CAT7**, respeitando os limites de distância definidos pelas normas de cablagem estruturada.
 
 ---
