@@ -72,24 +72,25 @@ Outlets = $\left\lceil \frac{\text{Área (m²)}}{10} \times 2 \right\rceil$
 ![Medidas do Level 1 - Departures](level1_departures/medidas_level1.png)
 
 - O edifício tem aproximadamente 200 m x 200 m.
+- Escala: **231 px = 50 m** → 1 px ≈ 0,216 m
 
-| Sala | Área (m²) | Número de Outlets  |
-|------|-----------|--------------------|
-| 1    | 112,64    | 0                  |
-| 2    | 242,88    | 49                 |
-| 3    | 374,40    | 0                  |
-| 4    | 245,52    | 49                 |
-| 5    | 252,20    | 51                 |
-| 6    | 377,52    | 0                  |
-| 7    | 245,52    | 49                 |
-| 8    | 171,60    | 35                 |
-| 9    | 208,56    | 42                 |
-| 10   | 316,80    | 64                 |
-| 11   | 94,09     | 0                  |
-| 12   | 385,44    | 77                 |
-| 13   | 416,00    | 84                 |
-| 14   | 273,92    | 55                 |
-| 15   | 128,00    | 0                  |
+| Sala | Dimensões (m)  | Área (m²) | Número de Outlets  |
+|------|----------------|-----------|--------------------|
+| 1    | 7,56 × 14,9    | 112,64    | 0                  |
+| 2    | 13,2 × 18,4    | 242,88    | 49                 |
+| 3    | 15,6 × 24,0    | 374,40    | 0                  |
+| 4    | 13,2 × 18,6    | 245,52    | 49                 |
+| 5    | 19,4 × 13,0    | 252,20    | 51                 |
+| 6    | 15,6 × 24,2    | 377,52    | 0                  |
+| 7    | 13,2 × 18,6    | 245,52    | 49                 |
+| 8    | 13,2 × 13,0    | 171,60    | 35                 |
+| 9    | 13,2 × 15,8    | 208,56    | 42                 |
+| 10   | 13,2 × 24,0    | 316,80    | 64                 |
+| 11   | 9,7 × 9,7      | 94,09     | 0                  |
+| 12   | 13,2 × 29,2    | 385,44    | 77                 |
+| 13   | 32,5 × 12,8    | 416,00    | 84                 |
+| 14   | 21,4 × 12,8    | 273,92    | 55                 |
+| 15   | 10,0 × 12,8    | 128,00    | 0                  |
 
 #### Total de Outlets – Level 1 (Salas)
 **555 tomadas**
@@ -100,61 +101,81 @@ Outlets = $\left\lceil \frac{\text{Área (m²)}}{10} \times 2 \right\rceil$
 ![Medidas do Level 2 - Arrivals](level2_arrivals/medidas_level2.png)
 
 - O edifício tem aproximadamente 200 m x 200 m.
+- Escala: **289 px = 50 m** → 1 px ≈ 0,173 m
 
-| Sala | Área (m²) | Número de Outlets  |
-|------|-----------|--------------------|
-| 1    | —         | 0                  |
-| 2    | —         | —                  |
-| 3    | —         | —                  |
-| 4    | —         | —                  |
-| 5    | —         | 0                  |
-| 6    | —         | 0                  |
-| 7    | —         | —                  |
-| 8    | —         | 0                  |
-| 9    | —         | 0                  |
-| 10   | —         | —                  |
-| 11   | —         | —                  |
-| 12   | —         | —                  |
-| 13   | —         | 0                  |
-| 14   | —         | —                  |
-| 15   | —         | —                  |
-| 16   | —         | —                  |
-| 17   | —         | —                  |
-| 18   | —         | —                  |
-| 19   | —         | —                  |
-| 20   | —         | 0                  |
+| Sala | Dimensões (m)  | Área (m²) | Número de Outlets  |
+|------|----------------|-----------|--------------------|
+| 1    | 7,1 × 13,0     | 92,30     | 0                  |
+| 2    | 12,3 × 23,2    | 285,36    | 57                 |
+| 3    | 41,2 × 12,8    | 527,36    | 106                |
+| 4    | 12,3 × 23,7    | 291,51    | 59                 |
+| 5    | 15,1 × 20,9    | 315,59    | 0                  |
+| 6    | 15,1 × 23,7    | 357,87    | 0                  |
+| 7    | 27,0 × 12,5    | 337,50    | 68                 |
+| 8    | 15,1 × 20,8    | 314,08    | 0                  |
+| 9    | 15,1 × 23,7    | 357,87    | 0                  |
+| 10   | 42,7 × 12,8    | 546,56    | 110                |
+| 11   | 14,5 × 20,9    | 303,05    | 61                 |
+| 12   | 14,5 × 18,2    | 263,90    | 53                 |
+| 13   | 9,7 × 9,7      | 94,09     | 0                  |
+| 14   | 32,4 × 12,6    | 408,24    | 82                 |
+| 15   | 37,9 × 12,6    | 477,54    | 96                 |
+| 16   | 26,1 × 12,6    | 328,86    | 66                 |
+| 17   | 21,8 × 12,6    | 274,68    | 55                 |
+| 18   | 32,2 × 12,6    | 405,72    | 82                 |
+| 19   | 21,3 × 12,6    | 268,38    | 54                 |
+| 20   | 10,0 × 12,6    | 126,00    | 0                  |
 
 #### Total de Outlets – Level 2 (Salas)
-**— tomadas**
+**949 tomadas**
 
 ---
 
 ## 4. Tomadas nas Paredes Exteriores para ambos os pisos
 
-As medidas das paredes exteriores foram obtidas através da escala da planta (**231 px = 50 m**):
+As paredes exteriores consideradas não incluem os troços ocupados por salas sem tomadas de rede, uma vez que essas secções já não requerem tomadas adicionais.
 
-Metros = $\left\lfloor \frac{\text{pixels} \times 50}{231} \right\rfloor$
+### Level 1 - Departures
 
-**Parede superior:** 927 px → $\frac{927 \times 50}{231}$ = **200,65 m**
+**Parede esquerda:** comprimento total 200 m, subtraindo a sala 11 (9,7 m):
 
-Outlets = $\left\lceil \frac{200,65}{5} \right\rceil = \left\lceil 40,13 \right\rceil = 41$
+200 - 9,7 = **190,3 m**
 
-**Parede esquerda:** 923 px → $\frac{923 \times 50}{231}$ = **199,78 m**
+Outlets = $\left\lceil \frac{190,3}{5} \right\rceil = \left\lceil 38,06 \right\rceil = 39$
 
-Outlets = $\left\lceil \frac{199,78}{5} \right\rceil = \left\lceil 39,96 \right\rceil = 40$
+**Parede superior:** comprimento total 200 m, subtraindo a sala 1 (7,56 m):
+
+200 - 7,56 = **192,44 m**
+
+Outlets = $\left\lceil \frac{192,44}{5} \right\rceil = \left\lceil 38,49 \right\rceil = 39$
 
 Assim:
 
-- Parede superior: **41 tomadas**
+- Parede esquerda: **39 tomadas**
+- Parede superior: **39 tomadas**
+
+Total Level 1: **78 tomadas adicionais**
+
+### Level 2 - Arrivals
+
+**Parede esquerda:** comprimento total ≈ 200 m
+
+Outlets = $\left\lceil \frac{200}{5} \right\rceil = 40$
+
+**Parede superior:** comprimento total ≈ 200 m
+
+Outlets = $\left\lceil \frac{200}{5} \right\rceil = 40$
+
+Assim:
+
 - Parede esquerda: **40 tomadas**
+- Parede superior: **40 tomadas**
 
-Total por piso:
-
-**81 tomadas adicionais**
+Total Level 2: **80 tomadas adicionais**
 
 ---
 ## 5. Totais finais
-| Piso    | Salas | Paredes | Total   |
-| ------- | ----- | ------- | ------- |
-| Level 1 | 555   | 81      | **636** |
-| Level 2 | —     | —       | **—**   |
+| Piso    | Salas | Paredes | Total    |
+| ------- | ----- | ------- | -------- |
+| Level 1 | 555   | 78      | **633**  |
+| Level 2 | 949   | 80      | **1029** |
