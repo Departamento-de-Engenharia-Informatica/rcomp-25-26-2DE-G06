@@ -18,6 +18,7 @@ RCOMP 2025-2026 Project 1 - Sprint 1 planning
 * Backbone cable types used are Campus Backbone and Vertical Backbones
 * Copper cable type to be adopted is CAT7
 * Copper cable wiring standard adopted is 568A
+* Fibre optic cable type to be adopted is monomode 
 * Redundant links between ICs and between HCs
 
 # 3. Subtasks assignment #

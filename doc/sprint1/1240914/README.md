@@ -834,3 +834,60 @@ Todas as ligações entre o **Intermediate Cross-Connect (IC)** localizado na **
 A distribuição final até às tomadas de utilizador é efetuada utilizando **cabos de cobre CAT7**, respeitando os limites de distância definidos pelas normas de cablagem estruturada.
 
 ---
+### 10. Inventário Técnico
+O total de cabos necessários para a infraestrutura **horizontal e backbone**, inclui as margens adicionais consideradas para:
+- **passagens verticais:** 10 m
+- **passagem pelo teto falso:** 4 m
+- 
+### Level 1 - Arrivals
+
+### Cablagem (Meios de Transmissão)
+
+| Item | Especificação | Quantidade Total | Observações |
+|---|---|---|---|
+| Cabo de Cobre | CAT7 S/STP | **18 127,36 metros** | Soma de todos os troços horizontais calculados |
+| Cabo de Fibra Ótica | Monomode (8 fibras) | **1 862,20 metros** | Soma das ligações MC → IC → HC e HC → CP |
+
+---
+
+## Conetividade e Terminação (Outlets e Conetores)
+
+Cálculo baseado no número total de tomadas de rede e nas terminações necessárias para as ligações de fibra ótica.
+
+| Item | Especificação | Quantidade         | Justificação                                                                       |
+|---|---|--------------------|------------------------------------------------------------------------------------|
+| Tomadas de Rede | ISO 8877 (RJ45) CAT7 | **733 unidades**   | 631 (salas) + 30 (WAPs) + 72 (paredes externas)                                    |
+| Conetores de Fibra | LC ou SC (Polimento UPC) | **192 unidades**   | Mínimo de 8 fibras por link de backbone e 2 extremidades (12 links × 16 conetores) |
+| Patch Cords (Cobre) | CAT7 (0.5 m e 3 m) | **1 482 unidades** | 2 por cada outlet (uma no rack e outra no utilizador)                              |
+| Patch Cords (Fibra) | Monomode Duplex | **20 unidades**    | 2 por cada link de backbone ativo                                                  |
+
+---
+
+## Painéis de Distribuição (Patch Panels)
+
+| Equipamento | Capacidade | Quantidade | Total de Portas |
+|---|---|---|---|
+| Patch Panel Cobre | 48 portas (2U) | 11 | 528 |
+| Patch Panel Cobre | 24 portas (1U) | 6 | 144 |
+
+---
+
+## Dimensionamento dos Armários (Racks de 19")
+
+Para dimensionar os armários de telecomunicações foi aplicada a regra:
+**Tamanho do Rack = 4 × S**
+Onde **S** corresponde ao espaço ocupado pelos **patch panels**.
+
+Esta abordagem garante:
+- espaço para **equipamentos ativos (switches)**
+- espaço para **gestão de cabos**
+- **capacidade de expansão futura (~100%)**
+
+| Localização | Espaço Painéis (S) | Cálculo (4 × S) | Rack Selecionado |
+|---|---|---|---|
+| Sala 6 (MC / IC / HC) | 5U (HC) + backbone | - | **42U** |
+| Sala 11 (HC) | 1U (1×24 portas) | 4U | **6U** |
+| Sala 12 (HC) | 2U (1×48 portas) | 8U | **12U** |
+| CPs Alta Densidade | 4U a 6U | 16U a 24U | **24U** (Salas 1, 3, 4, 7, 8) |
+| CPs Parede / Baixa Densidade | 1U | 4U | **6U** |
+

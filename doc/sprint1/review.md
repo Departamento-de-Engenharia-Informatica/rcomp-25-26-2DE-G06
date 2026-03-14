@@ -5,7 +5,7 @@ RCOMP 2025-2026 Project 1 - Sprint 1 review
 # 1. Sprint's backlog #
 (Copy here a summary of the provided sprint's backlog, the same text as for the Planning Meeting)
 # 2. Subtasks assessment #
-One by one, each team member presents his/her outcomes to the team, the team assesses 		the accomplishment of the subtask backlog.
+One by one, each team member presents his/her outcomes to the team, the team assesses the accomplishment of the subtask backlog.
 The subtask backlog accomplishment can be assessed as one of:
 
   * Totally implemented with no issues
