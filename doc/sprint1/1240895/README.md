@@ -200,12 +200,6 @@ N_real ≈ **16 WAPs por piso**
 
 **Nota**: Cada WAP requer uma **tomada de rede RJ45 (ISO 8877)** instalada no **teto falso**, localizado a 4 metros de altura.
 
-### Atribuição de Canais Wi-Fi
-
-Na banda de 2,4 GHz do protocolo IEEE 802.11, existem apenas **três canais
-não sobrepostos: 1, 6 e 11**. Conforme abordado nas aulas laboratoriais (PL02),
-a utilização exclusiva destes três canais garante que células vizinhas não
-partilham frequências, eliminando interferências entre Access Points adjacentes.
 
 ---
 
@@ -762,7 +756,7 @@ O inventário apresentado inclui todos os materiais necessários para a infraest
 | HC – Sala 3 (L2) → IC – Sala 4 (L0) | 15 m |
 | **Subtotal backbone** | **15 m** |
 
-> **Nota:** A ligação entre o IC do Terminal 4 (Sala 4, Level 0) e o MC do campus é da responsabilidade da tarefa T.1.1 (Sprint Master). O IC do Terminal 4 está localizado na **Sala 4, Level 0**.
+> **Nota:** O IC do Terminal 4 está localizado na **Sala 4, Level 0**.
 
 #### HC → CPs – Level 0
 
