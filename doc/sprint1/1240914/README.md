@@ -833,6 +833,15 @@ Utilizada principalmente para alimentar:
 Todas as ligações entre o **Intermediate Cross-Connect (IC)** localizado na **Sala 6** e os restantes **HCs e CPs remotos** são realizadas através de **fibra ótica monomodo**, constituindo o **backbone interno do edifício**.
 A distribuição final até às tomadas de utilizador é efetuada utilizando **cabos de cobre CAT7**, respeitando os limites de distância definidos pelas normas de cablagem estruturada.
 
+
+---
+### 9. Backbone do campus
+A ligação entre o **Main Cross-Connect (MC)** do Terminal 2 e o **backbone do campus** é realizada através de um cabo de fibra ótica monomodo, instalado na galeria técnica subterrânea que liga o edifício aos restantes pontos de distribuição do campus.
+
+![Campus backbone](level1_arrivals/campus_backbone.png)
+
+Total de cabo de fibra ótica necessário para o backbone do campus:
+
 ---
 ### 10. Inventário Técnico
 O total de cabos necessários para a infraestrutura **horizontal e backbone**, inclui as margens adicionais consideradas para:
