@@ -53,6 +53,8 @@ Fórmula utilizada: Outlets = $\lceil \frac{\text{Área (m²)}}{10} \times 2 \rc
 
 ![Medidas do Level 0 - Arrivals](level0_arrivals/medidas_level0.png)
 
+- NOTA: As medidas na imagem estão em metros (m)
+
 
 | Sala | Medidas (cm)        | Dimensões Reais (m)      | Área (m²) | Outlets | Notas                  |
 | ---- | ------------------- | ------------------------- | ----------- | ------- | ---------------------- |
@@ -79,6 +81,7 @@ Fórmula utilizada: Outlets = $\lceil \frac{\text{Área (m²)}}{10} \times 2 \rc
 
 ![Medidas do Level 2 - Departures](level2_departures/medidas_level2.png)
 
+- NOTA: As medidas na imagem estão em metros (m)
 
 | Sala | Medidas (cm)        | Dimensões Reais (m)      | Área (m²) | Outlets | Notas               |
 | ---- | ------------------- | ------------------------- | ----------- | ------- | ------------------- |
@@ -104,11 +107,10 @@ Fórmula utilizada: Outlets = $\lceil \frac{\text{Área (m²)}}{10} \times 2 \rc
 | 20   | 1,35 x 0,7          | 21,77 x 11,29             | 245,80      | 50      |                     |
 | 21   | 1,35 x 0,7          | 21,77 x 11,29             | 245,80      | 50      |                     |
 
-**Total Outlets Piso 2 (Salas): 807**
+**Total Outlets Piso 2 (Salas): 757**
 
 ---
 
----
 
 ## 4. Tomadas nas Paredes Exteriores (Level 2)
 
@@ -140,7 +142,7 @@ Outlets = $\left\lceil \frac{\text{Comprimento útil da parede}}{5} \right\rceil
 
 ## 5. Pontos de Acesso Wireless (Wi-Fi)
 
-Ambos os pisos do Terminal 2 requerem cobertura de rede sem fios.
+Ambos os pisos do Terminal 4 requerem cobertura de rede sem fios.
 
 Cada Wireless Access Point (WAP) garante uma cobertura circular aproximada com **50 metros de diâmetro (25 metros de raio)**.
 
@@ -186,17 +188,24 @@ N_real ≈ **16 WAPs por piso**
 
 ### Posicionamento no teto falso
 
-#### Level 1 - Arrivals
+#### Level 0 - Arrivals
 
 ![Access Points do level 0 - Arrivals](level0_arrivals/level0_aps.png)
 
 **Nota**: Cada WAP requer uma **tomada de rede RJ45 (ISO 8877)** instalada no **teto falso**, localizado a 4 metros de altura.
 
-#### Level 4 - Departures
+#### Level 2 - Departures
 
 ![Access Points do level 2 - Departures](level2_departures/level2_aps.png)
 
 **Nota**: Cada WAP requer uma **tomada de rede RJ45 (ISO 8877)** instalada no **teto falso**, localizado a 4 metros de altura.
+
+### Atribuição de Canais Wi-Fi
+
+Na banda de 2,4 GHz do protocolo IEEE 802.11, existem apenas **três canais
+não sobrepostos: 1, 6 e 11**. Conforme abordado nas aulas laboratoriais (PL02),
+a utilização exclusiva destes três canais garante que células vizinhas não
+partilham frequências, eliminando interferências entre Access Points adjacentes.
 
 ---
 
@@ -239,7 +248,7 @@ Para alojar o IC, HC, equipamentos ativos (switches, UPS) e espaço de expansão
 
 ### Estratégia de Consolidation Points (CPs) – Level 0
 
-Devido às dimensões do piso (**aproximadamente 198 × 99 metros**) e à limitação de **90 metros de cabo horizontal em cobre**, foram implementados **Consolidation Points (CPs)** distribuídos pelo piso.
+Devido às dimensões do piso (**aproximadamente 200 × 100 metros**) e à limitação de **90 metros de cabo horizontal em cobre**, foram implementados **Consolidation Points (CPs)** distribuídos pelo piso.
 
 Os CPs permitem:
 - reduzir o número de cabos de cobre diretos ligados ao HC
@@ -329,9 +338,9 @@ Número de ligações: **73**
 | Patch Panel | Portas | Espaço |
 |---|---|---|
 | Patch Panel | 48 portas | 2U |
-| Patch Panel | 24 portas | 1U |
+| Patch Panel | 48 portas | 2U |
 
-Espaço total ocupado: **3U** → 4 × 3 = 12U → **rack de 12U**
+Espaço total ocupado: **4U** → 4 × 4 = 16U → **rack de 24U**
 
 ---
 
@@ -385,6 +394,7 @@ Número de ligações: **67**
 
 Espaço total ocupado: **3U** → 4 × 3 = 12U → **rack de 12U**
 
+---
 
 ### Level 2 – Departures
 
@@ -410,7 +420,7 @@ Espaço total ocupado: **1U** → 4 × 1 = 4U → **rack de 6U**
 
 ### Estratégia de Consolidation Points (CPs) – Level 2
 
-Devido às dimensões do piso (**aproximadamente 198 × 99 metros**) e à limitação de **90 metros de cabo horizontal em cobre**, foram implementados **Consolidation Points (CPs)** distribuídos estrategicamente pelo piso.
+Devido às dimensões do piso (**aproximadamente 200 × 100 metros**) e à limitação de **90 metros de cabo horizontal em cobre**, foram implementados **Consolidation Points (CPs)** distribuídos estrategicamente pelo piso.
 
 A ligação **HC → CP** é realizada por **fibra ótica OM4**. A ligação **CP → outlets** é realizada por **cabo de cobre CAT7** (máximo 90 metros).
 
@@ -696,12 +706,12 @@ Esta abordagem garante:
 
 ### Resumo Global de Racks – Terminal 4
 
-| Tamanho | Quantidade |
-|---------|-----------|
-| 6U  | 4 |
-| 12U | 14 |
-| 24U | 6 |
-| 42U | 1 |
+| Tamanho | Quantidade   |
+|---------|--------------|
+| 6U  | 4            |
+| 12U | 14           |
+| 24U | 6            |
+| 42U | 1            |
 | **Total** | **25 racks** |
 
 
@@ -732,10 +742,201 @@ Utilizada principalmente para alimentar:
 
 ## Nota Técnica
 
-Todas as ligações entre o **Intermediate Cross-Connect (IC)** localizado na **Sala 6** e os restantes **HCs e CPs remotos** são realizadas através de **fibra ótica monomodo**, constituindo o **backbone interno do edifício**.
+Todas as ligações entre o **Intermediate Cross-Connect (IC)** localizado na **Sala 4** e os CPs remotos são realizadas através de **fibra ótica monomodo**, constituindo o **backbone interno do edifício**.
 A distribuição final até às tomadas de utilizador é efetuada utilizando **cabos de cobre CAT7**, respeitando os limites de distância definidos pelas normas de cablagem estruturada.
 
 ---
 
+## 9. Inventário de Cabos e Equipamentos
 
+O inventário apresentado inclui todos os materiais necessários para a infraestrutura de cablagem estruturada do Terminal 4, abrangendo cablagem horizontal, backbone interno, terminações e armários de telecomunicações.
 
+---
+
+### 9.1. Cabo de Fibra Ótica OM4
+
+#### Backbone
+
+| Segmento | Comprimento |
+|----------|-------------|
+| HC – Sala 3 (L2) → IC – Sala 4 (L0) | 15 m |
+| **Subtotal backbone** | **15 m** |
+
+> **Nota:** A ligação entre o IC do Terminal 4 (Sala 4, Level 0) e o MC do campus é da responsabilidade da tarefa T.1.1 (Sprint Master). O IC do Terminal 4 está localizado na **Sala 4, Level 0**.
+
+#### HC → CPs – Level 0
+
+| Segmento | Comprimento |
+|----------|-------------|
+| HC → CP Sala 2 | 61,3 m |
+| HC → CP Sala 1 | 108,1 m |
+| HC → CP Sala 12 | 125,8 m |
+| HC → CP Sala 13 | 101,6 m |
+| HC → CP Sala 14 | 80,6 m |
+| HC → CP Sala 15 | 50,0 m |
+| HC → CP Sala 6 | 46,8 m |
+| HC → CP Sala 7 | 74,2 m |
+| HC → CP Sala 16 | 104,8 m |
+| **Subtotal HC→CPs L0** | **753,2 m** |
+
+#### HC → CPs – Level 2
+
+| Segmento | Comprimento |
+|----------|-------------|
+| HC → CP Sala 5 | 40,3 m |
+| HC → CP1 (Salas 7+9) | 75,8 m |
+| HC → CP2 (Sala 21) | 116,1 m |
+| HC → CP Parede Direita | 117,7 m |
+| HC → CP Parede Inferior 1 | 145,2 m |
+| HC → CP Sala 2 | 74,2 m |
+| HC → CP Sala 1 | 112,9 m |
+| HC → CP1 (Salas 12+13) | 96,8 m |
+| HC → CP2 (Salas 14+15) | 61,3 m |
+| HC → CP3 (Salas 16+20) | 32,3 m |
+| HC → CP4 (Sala 17) | 121,0 m |
+| HC → CP5 (Sala 18) | 104,8 m |
+| HC → CP6 (Sala 19) | 64,5 m |
+| HC → CP Parede Inferior 2 | 169,4 m |
+| **Subtotal HC→CPs L2** | **1.332,3 m** |
+
+| | **TOTAL Fibra OM4** | **2.100,5 m** |
+|---|---|---|
+
+---
+
+### 9.2. Cabo de Cobre CAT7 U/UTP LSZH
+
+O comprimento total de cabo por sala foi estimado com base na distância mínima e máxima medida na planta entre o CP e as tomadas dessa sala, aplicando a seguinte fórmula:
+
+$$\bar{d} = \frac{d_{min} + d_{max}}{2} \qquad \Rightarrow \qquad L_{total} = \bar{d} \times n_{outlets}$$
+
+> **Nota sobre os Access Points:** Para os APs não foi aplicada esta fórmula de estimativa, uma vez que cada AP tem uma localização fixa e específica no teto falso. O comprimento de cada cabo foi medido individualmente na planta desde o CP até à tomada do respetivo AP.
+
+#### Level 0 – Arrivals
+
+| Sala | Dist. mín. | Dist. máx. | Média | Outlets | Total |
+|------|-----------|-----------|-------|---------|-------|
+| Sala 1  | 3,2 m  | 48,4 m | 25,8 m | 74  | 1.909 m |
+| Sala 2  | 3,2 m  | 40,3 m | 21,8 m | 71  | 1.548 m |
+| Sala 3 *(direto HC)* | 40,3 m | 64,5 m | 52,4 m | 55 | 2.882 m |
+| Sala 5 *(direto HC)* | 11,3 m | 32,3 m | 21,8 m | 44 | 959 m |
+| Sala 6  | 3,2 m  | 40,3 m | 21,8 m | 62  | 1.352 m |
+| Sala 7  | 1,6 m  | 35,5 m | 18,5 m | 58  | 1.073 m |
+| Sala 12 | 3,2 m  | 43,5 m | 23,4 m | 73  | 1.708 m |
+| Sala 13 | 1,6 m  | 37,1 m | 19,4 m | 68  | 1.319 m |
+| Sala 14 | 3,2 m  | 45,2 m | 24,2 m | 91  | 2.202 m |
+| Sala 15 | 3,2 m  | 40,3 m | 21,8 m | 63  | 1.373 m |
+| Sala 16 | 3,2 m  | 40,3 m | 21,8 m | 67  | 1.461 m |
+| APs L0  | — | — | — | 16 | 287 m |
+| **Subtotal L0** | | | | **729** | **18.073 m** |
+
+#### Level 2 – Departures
+
+| Sala | Dist. mín. | Dist. máx. | Média | Outlets | Total |
+|------|-----------|-----------|-------|---------|-------|
+| Sala 1  | 2,4 m  | 48,4 m | 25,4 m | 74  | 1.880 m |
+| Sala 2  | 2,4 m  | 48,4 m | 25,4 m | 71  | 1.803 m |
+| Sala 4 *(direto HC)* | 1,6 m | 19,4 m | 10,5 m | 44 | 462 m |
+| Sala 5  | 2,4 m  | 40,3 m | 21,4 m | 55  | 1.177 m |
+| Sala 7  | 1,6 m  | 25,8 m | 13,7 m | 37  | 507 m |
+| Sala 9  | 1,6 m  | 25,8 m | 13,7 m | 37  | 507 m |
+| Sala 12 | 2,4 m  | 27,4 m | 14,9 m | 40  | 596 m |
+| Sala 13 | 2,4 m  | 24,2 m | 13,3 m | 27  | 359 m |
+| Sala 14 | 2,4 m  | 25,8 m | 14,1 m | 32  | 451 m |
+| Sala 15 | 2,4 m  | 25,8 m | 14,1 m | 32  | 451 m |
+| Sala 16 | 2,4 m  | 27,4 m | 14,9 m | 34  | 507 m |
+| Sala 17 | 2,4 m  | 48,4 m | 25,4 m | 55  | 1.397 m |
+| Sala 18 | 2,4 m  | 40,3 m | 21,4 m | 51  | 1.091 m |
+| Sala 19 | 3,2 m  | 37,1 m | 20,2 m | 70  | 1.414 m |
+| Sala 20 | 3,2 m  | 30,6 m | 16,9 m | 50  | 845 m |
+| Sala 21 | 2,4 m  | 37,1 m | 19,8 m | 51  | 1.010 m |
+| APs L2  | — | — | — | 16 | 263 m |
+| Parede Direita | 2,4 m | 56,5 m | 29,4 m | 21 | 617 m |
+| Parede Inf. CP1 | 8,1 m | 62,9 m | 35,5 m | 20 | 710 m |
+| Parede Inf. CP2 | 8,1 m | 66,1 m | 37,1 m | 20 | 742 m |
+| **Subtotal L2** | | | | **887** | **16.789 m** |
+
+| | **TOTAL Cobre CAT7** | **34.862 m** |
+|---|---|---|
+
+---
+
+### 9.3. Tomadas de Rede
+
+| Piso | Tomadas salas | Tomadas APs | Tomadas paredes ext. | Total |
+|------|--------------|-------------|----------------------|-------|
+| Level 0 | 713 | 16 | 0 | **729** |
+| Level 2 | 757 | 16 | 60 | **833** |
+| **Total** | **1.470** | **32** | **60** | **1.562** |
+
+---
+
+### 9.4. Conetividade e Terminação
+
+| Item | Especificação | Quantidade | Justificação |
+|------|--------------|------------|--------------|
+| Tomadas de rede | ISO 8877 (RJ45) CAT7, T568B | **1.562** | 713+757 salas + 32 APs + 60 paredes ext. |
+| Conetores de fibra | LC duplex (UPC) | **96** | 24 links × 2 extremidades × 2 fibras |
+| Patch cords cobre | CAT7 (0,5 m e 3 m) | **3.124** | 2 por cada outlet (rack + utilizador) |
+| Patch cords fibra | OM4 duplex | **48** | 2 por cada link de fibra (24 links) |
+
+---
+
+### 9.5. Patch Panels
+
+| Equipamento | Capacidade | Quantidade | Total de Portas |
+|-------------|-----------|------------|-----------------|
+| Patch Panel Cobre | 48 portas (2U) | **26**     | 1.248           |
+| Patch Panel Cobre | 24 portas (1U) | **17**     | 408             |
+| Patch Panel Fibra OM4 | 24 portas (1U) | **2**      | 48              |
+
+---
+
+### 9.6. Dimensionamento dos Armários (Racks de 19")
+
+Para dimensionar os armários de telecomunicações foi aplicada a regra:
+
+$$\text{Tamanho do Rack} = 4 \times S$$
+
+Onde **S** representa o espaço ocupado pelos patch panels passivos. Esta abordagem garante espaço para equipamentos ativos (switches), gestão de cabos e reserva de capacidade futura (~100%).
+
+| Localização | Espaço Painéis (S) | Cálculo (4 × S) | Rack Selecionado |
+|-------------|-------------------|-----------------|-----------------|
+| Sala 4 – L0 (IC + HC) | 1U (fibra OM4) | fixo (IC + HC + switches + UPS) | **42U** |
+| CPs alta densidade (salas 1, 12, 14 no L0; salas 1, 16+20, 7+9 no L2) | 4U | 4 × 4 = 16U | **24U** (6×) |
+| CPs média densidade (restantes salas) | 3U | 4 × 3 = 12U | **12U** (14×) |
+| HC – Sala 3 – L2 + CPs paredes exteriores | 1U | 4 × 1 = 4U | **6U** (4×) |
+
+**Resumo Global de Racks:**
+
+| Tamanho | Quantidade |
+|---------|-----------|
+| 6U  | 4 |
+| 12U | 14 |
+| 24U | 6 |
+| 42U | 1 |
+| **Total** | **25 racks** |
+
+---
+
+### 9.7. Resumo Global do Inventário – Terminal 4
+
+| Item | Especificação | Quantidade   |
+|------|--------------|--------------|
+| Tomadas de rede | Keystone CAT7 RJ45, T568B | **1.562**    |
+| Cabo cobre horizontal | CAT7 U/UTP LSZH | **34.862 m** |
+| Cabo fibra backbone (interno) | OM4 multimodo | **15 m**     |
+| Cabo fibra HC→CPs | OM4 multimodo | **2.086 m**  |
+| **Total fibra OM4** | | **2.101 m**  |
+| Patch panel cobre 48p (2U) | CAT7 | **26**       |
+| Patch panel cobre 24p (1U) | CAT7 | **17**       |
+| Patch panel fibra 24p (1U) | OM4 | **2**        |
+| Patch cords cobre | CAT7 | **3.124**    |
+| Patch cords fibra | OM4 duplex | **48**       |
+| Conetores fibra | LC duplex UPC | **96**       |
+| Rack 6U | | **4**        |
+| Rack 12U | | **14**       |
+| Rack 24U | | **6**        |
+| Rack 42U | | **1**        |
+| Access Points Wi-Fi | Wi-Fi 6 (802.11ax) | **32**       |
+| Consolidation Points (CP) | — | **25**       |
