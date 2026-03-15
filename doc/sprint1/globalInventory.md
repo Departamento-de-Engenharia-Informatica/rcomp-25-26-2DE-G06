@@ -6,7 +6,7 @@
 |---|-------------|---------------|-----------------|
 | Tomadas de Rede | 1 635       | 1 562         | **3 197**       |
 | Cabo CAT7 | 38 572,90 m | 34 862 m      | **73 434,90 m** |
-| Fibra Ótica | 3 680,65 m  | 2 101 m       | **5 781,65 m**  |
+| Fibra Ótica | 3 680,65 m  | 2 101 m       | **7 229,65 m**  | 
 | Patch Panels Cobre | 46          | 43            | **89**          |
 | Patch Panels Fibra | 25          | 2             | **27**          |
 | Patch Cords Cobre | 3 286       | 3 124         | **6 410**       |
@@ -21,3 +21,5 @@
 | Racks 12U | 3           | 14            | **14**          |
 | Racks 24U | 14          | 6             | **6**           |
 | Racks 42U | 2           | 1             | **1**           |
+
+(**Nota**: Fibra ótica considerando o campus backbone)
