@@ -840,7 +840,7 @@ A ligação entre o **Main Cross-Connect (MC)** do Terminal 2 e o **backbone do 
 
 ![Campus backbone](level1_arrivals/campus_backbone.png)
 
-Total de cabo de fibra ótica necessário para o backbone do campus:
+Total de cabo de fibra ótica necessário para o backbone do campus: 688 (T2-T4) + 760 (T2-T3) = **1 448 metros**.
 
 ---
 ### 10. Inventário Técnico
@@ -857,11 +857,20 @@ O total de cabos necessários para a infraestrutura **horizontal e backbone**, i
 | Cabo de Cobre | CAT7 S/STP | **18 127,36 metros** | Soma de todos os troços horizontais calculados |
 | Cabo de Fibra Ótica | Monomode (8 fibras) | **1 862,20 metros** | Soma das ligações MC → IC → HC e HC → CP |
 
+### Level 4 – Departures
+
+| Item | Especificação | Quantidade Total | Justificação Técnica |
+|---|---|---|---|
+| Cabo de Cobre | CAT7 S/STP | **20 445,54 metros** | Soma de todos os troços horizontais para as 902 tomadas |
+| Cabo de Fibra Ótica | Monomode (8 fibras) | **1 818,45 metros** | Soma das ligações IC → HC e HC → CP |
+
 ---
 
 ## Conetividade e Terminação (Outlets e Conetores)
 
 Cálculo baseado no número total de tomadas de rede e nas terminações necessárias para as ligações de fibra ótica.
+
+### Level 1 - Arrivals
 
 | Item | Especificação | Quantidade         | Justificação                                                                       |
 |---|---|--------------------|------------------------------------------------------------------------------------|
@@ -870,14 +879,33 @@ Cálculo baseado no número total de tomadas de rede e nas terminações necess�
 | Patch Cords (Cobre) | CAT7 (0.5 m e 3 m) | **1 482 unidades** | 2 por cada outlet (uma no rack e outra no utilizador)                              |
 | Patch Cords (Fibra) | Monomode Duplex | **20 unidades**    | 2 por cada link de backbone ativo                                                  |
 
+### Level 4 - Departures
+
+| Item | Especificação | Quantidade | Observações |
+|---|---|---|---|
+| Tomadas de Rede | ISO 8877 (RJ45) CAT7 | **902 unidades** | 800 (salas) + 30 (WAPs) + 72 (paredes externas) |
+| Conetores de Fibra | LC ou SC (UPC) | **224 unidades** | 14 links (3 IC-HC + 11 HC-CP) × 16 conetores |
+| Patch Cords (Cobre) | CAT7 (0.5 m e 3 m) | **1 804 unidades** | 2 por cada outlet |
+| Patch Cords (Fibra) | Monomode Duplex | **28 unidades** | 2 por cada link de backbone ativo |
+
+
 ---
 
 ## Painéis de Distribuição (Patch Panels)
+
+### Level 1 – Arrivals
 
 | Equipamento | Capacidade | Quantidade | Total de Portas |
 |---|---|---|---|
 | Patch Panel Cobre | 48 portas (2U) | 11 | 528 |
 | Patch Panel Cobre | 24 portas (1U) | 6 | 144 |
+
+### Level 4 – Departures
+
+| Equipamento | Capacidade | Quantidade | Total de Portas |
+|---|---|---|---|
+| Patch Panel Cobre | 48 portas (2U) | 18 | 864 |
+| Patch Panel Cobre | 24 portas (1U) | 11 | 264 |
 
 ---
 
@@ -892,6 +920,8 @@ Esta abordagem garante:
 - espaço para **gestão de cabos**
 - **capacidade de expansão futura (~100%)**
 
+### Level 1 – Arrivals
+
 | Localização | Espaço Painéis (S) | Cálculo (4 × S) | Rack Selecionado |
 |---|---|---|---|
 | Sala 6 (MC / IC / HC) | 5U (HC) + backbone | - | **42U** |
@@ -900,3 +930,33 @@ Esta abordagem garante:
 | CPs Alta Densidade | 4U a 6U | 16U a 24U | **24U** (Salas 1, 3, 4, 7, 8) |
 | CPs Parede / Baixa Densidade | 1U | 4U | **6U** |
 
+### Level 4 – Departures
+
+| Localização | Espaço Painéis (S) | Cálculo (4 × S) | Rack Sugerido |
+|---|---|---|---|
+| Sala 8 (HC / ligação ao IC) | Alta densidade | - | **42U** |
+| Salas 17 e 18 (HC) | 1U a 2U | 4U a 8U | **12U** |
+| CPs Alta Densidade | 4U a 5U | 16U a 20U | **24U** |
+| CPs Baixa Densidade | 1U a 2U | 4U a 8U | **12U** |
+
+---
+
+# 11- Resumo Global da Infraestrutura (Level 1 + Level 4)
+
+| Elemento          | Level 1     | Level 4     | Total           |
+|-------------------|-------------|-------------|-----------------|
+| Tomadas de Rede   | 741         | 902         | **1 643**       |
+| Cabo CAT7         | 18 127,36 m | 20 445,54 m | **38 572,90 m** |
+| Fibra Ótica       | 1 862,20 m  | 1 818,45 m  | **3 680,65 m**  |
+| Patch Panels      | 17          | 29          | **46**          |
+| Patch Cords Cobre | 1 482       | 1 804       | **3 286**       |
+| Patch Cords Fibra | 20          | 28          | **48**          |
+| Conetores Fibra   | 160         | 224         | **384**         |
+| WAPS              | 30          | 30          | **60**          |
+| CPS               | 8           | 12          | **20**          |
+| MC                | 1           | 0           | **1**           |
+| IC                | 1           | 0           | **1**           |
+| HCS               | 3           | 3           | **6**           |
+
+
+Este resumo apresenta a dimensão total da infraestrutura de rede implementada no **Terminal 2**, considerando os pisos **Level 1 (Arrivals)** e **Level 4 (Departures)**.
