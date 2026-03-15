@@ -29,7 +29,5 @@ RCOMP 2025-2026 Project 1 - Sprint 1 planning
 * 1240895 - Structured cable design for Terminal 4
 
 ### Nota sobre a tarefa T.1.4
-
 Inicialmente, a equipa era composta por quatro elementos e a tarefa T.1.4 (Terminal 4) foi atribuída ao estudante 1240895.
-
 Posteriormente, devido a uma reorganização dos grupos, a equipa passou a ter apenas três elementos. Apesar disso, após contacto com a docente da unidade curricular, foi autorizada a continuação do desenvolvimento da tarefa T.1.4 pelo estudante 1240895.

@@ -945,7 +945,7 @@ Esta abordagem garante:
 
 | Elemento          | Level 1     | Level 4     | Total           |
 |-------------------|-------------|-------------|-----------------|
-| Tomadas de Rede   | 741         | 902         | **1 643**       |
+| Tomadas de Rede   | 733         | 902         | **1 635**       |
 | Cabo CAT7         | 18 127,36 m | 20 445,54 m | **38 572,90 m** |
 | Fibra Ótica       | 1 862,20 m  | 1 818,45 m  | **3 680,65 m**  |
 | Patch Panels      | 17          | 29          | **46**          |
