@@ -15,7 +15,7 @@ The subtask backlog accomplishment can be assessed as one of:
 
 - 1240914: Totally implemented with no issues.
 - 1241138: 
-- 1240895: 
+- 1240895: Totally implemented with no issues.
 
 
 ## Options for subtask backlog accomplishment assessment:
@@ -33,8 +33,5 @@ Unimplemented features and issues solving is assigned to the same member on the 
 ## 2.2. 2222222 - Structured cable design for Terminal Y #
 ### Totally implemented with issues. ###
 The number of outlets in room X is incorrect.
-## 2.3. 3333333 - Structured cable design for Terminal Z #
-### Partially implemented with issues. ###
-A better solution for the cable pathways in Level 0 between the floor distributer and rooms Z and Y should be found.
-## 2.4. 4444444 - Structured cable design for Terminal T #
+## 2.3. 1240895 - Structured cabling design for Terminal 4 ##
 ### Totally implemented with no issues. ###
