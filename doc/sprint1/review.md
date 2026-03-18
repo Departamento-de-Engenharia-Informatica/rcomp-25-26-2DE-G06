@@ -1,7 +1,7 @@
 RCOMP 2025-2026 Project 1 - Sprint 1 review
 =========================================
 ### Sprint master: 1240914 ###
-(This file is to be created/edited by the sprint master only)
+
 # 1. Sprint's backlog #
 >  T.1.1 - Development of a structured cabling project for Terminal 2 encompassed floors, including the campus backbone.
 
@@ -33,5 +33,8 @@ Unimplemented features and issues solving is assigned to the same member on the 
 ## 2.2. 2222222 - Structured cable design for Terminal Y #
 ### Totally implemented with issues. ###
 The number of outlets in room X is incorrect.
-## 2.3. 1240895 - Structured cabling design for Terminal 4 ##
+## 2.3. 3333333 - Structured cable design for Terminal Z #
+### Partially implemented with issues. ###
+A better solution for the cable pathways in Level 0 between the floor distributer and rooms Z and Y should be found.
+## 2.4. 4444444 - Structured cable design for Terminal T #
 ### Totally implemented with no issues. ###
