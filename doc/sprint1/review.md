@@ -14,7 +14,7 @@ One by one, each team member presents his/her outcomes to the team, the team ass
 The subtask backlog accomplishment can be assessed as one of:
 
 - 1240914: Totally implemented with no issues.
-- 1241138: 
+- 1241138: Totally implemented with no issues.
 - 1240895: Totally implemented with no issues.
 
 
