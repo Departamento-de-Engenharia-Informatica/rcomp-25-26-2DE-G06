@@ -117,6 +117,6 @@ O bloco **10.63.128.0/17** foi dividido utilizando VLSM, começando pelas redes 
 # 3. Subtasks assignment #
 
 #### Distribution: ####
-* 1240914- Structured cable design for Terminal 2
-* 1241138 - Structured cable design for Terminal 3
-* 1240895 - Structured cable design for Terminal 4
+* 1240914- Development of the Packet Tracer simulation for Terminal 2
+* 1241138 - Development of the Packet Tracer simulation for Terminal 3
+* 1240895 - Development of the Packet Tracer simulation for Terminal 4
