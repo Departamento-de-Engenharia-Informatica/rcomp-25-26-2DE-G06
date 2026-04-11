@@ -94,42 +94,56 @@ Para cada switch (IC, HC, CP):
 
 vlan 773
 name CampusBackbone
+exit
 
 vlan 774
 name SwitchesDMZ
+exit
 
 vlan 775
 name T2-UserOutlets
+exit
 
 vlan 776
 name T2-WiFi
+exit
 
 vlan 777
 name T2-VoIP
+exit
 
 vlan 778
 name T2-ServersDMZ
+exit
 
 vlan 779
 name T3-UserOutlets
+exit
 
 vlan 780
 name T3-WiFi
+exit
 
 vlan 781
 name T3-VoIP
+exit
 
 vlan 782
 name T3-ServersDMZ
+exit
 
 vlan 783
 name T4-UserOutlets
+exit
 
 vlan 784
 name T4-WiFi
+exit
 
 vlan 785
 name T4-VoIP
+exit
 
 vlan 786
 name T4-ServersDMZ
+exit
