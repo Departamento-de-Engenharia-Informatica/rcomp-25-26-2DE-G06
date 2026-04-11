@@ -33,22 +33,22 @@ A tarefa T.2.3 (Terminal 5) é ignorada por a equipa possuir apenas 3 elementos,
 
 Todas as VLANs deverão ser configuradas em todos os switches (via VTP ou manualmente), permitindo comunicação através de ligações **trunk**.
 
-| VLAN Name | VLAN ID | Finalidade |
-|---|---|---|
-| CampusBackbone | 773 | Tráfego entre routers dos terminais |
-| SwitchesDMZ | 774 | Gestão remota dos switches |
-| T2-UserOutlets | 775 | Tomadas de utilizador do Terminal 2 |
-| T2-WiFi | 776 | Rede Wireless do Terminal 2 |
-| T2-VoIP | 777 | Telefonia IP do Terminal 2 |
-| T2-ServersDMZ | 778 | Servidores do Terminal 2 |
-| T3-UserOutlets | 779 | Tomadas de utilizador do Terminal 3 |
-| T3-WiFi | 780 | Rede Wireless do Terminal 3 |
-| T3-VoIP | 781 | Telefonia IP do Terminal 3 |
-| T3-ServersDMZ | 782 | Servidores do Terminal 3 |
-| T4-UserOutlets | 783 | Tomadas de utilizador do Terminal 4 |
-| T4-WiFi | 784 | Rede Wireless do Terminal 4 |
-| T4-VoIP | 785 | Telefonia IP do Terminal 4 |
-| T4-ServersDMZ | 786 | Servidores do Terminal 4 |
+| VLAN Name      | VLAN ID | Finalidade                          |
+|----------------|---------|-------------------------------------|
+| CampusBackbone | 773     | Tráfego entre routers dos terminais |
+| SwitchesDMZ    | 774     | Gestão remota dos switches          |
+| T2-UserOutlets | 775     | Tomadas de utilizador do Terminal 2 |
+| T2-WiFi        | 776     | Rede Wireless do Terminal 2         |
+| T2-VoIP        | 777     | Telefonia IP do Terminal 2          |
+| T2-ServersDMZ  | 778     | Servidores do Terminal 2            |
+| T3-UserOutlets | 779     | Tomadas de utilizador do Terminal 3 |
+| T3-WiFi        | 780     | Rede Wireless do Terminal 3         |
+| T3-VoIP        | 781     | Telefonia IP do Terminal 3          |
+| T3-ServersDMZ  | 782     | Servidores do Terminal 3            |
+| T4-UserOutlets | 783     | Tomadas de utilizador do Terminal 4 |
+| T4-WiFi        | 784     | Rede Wireless do Terminal 4         |
+| T4-VoIP        | 785     | Telefonia IP do Terminal 4          |
+| T4-ServersDMZ  | 786     | Servidores do Terminal 4            |
 
 ---
 
@@ -56,22 +56,22 @@ Todas as VLANs deverão ser configuradas em todos os switches (via VTP ou manual
 
 O bloco **10.63.128.0/17** foi dividido utilizando VLSM, começando pelas redes com maior número de nós para otimizar o espaço de endereçamento.
 
-| VLAN / Rede | Máscara | Endereço de Rede | Intervalo de IPs Válidos | Nós Máx. |
-|---|---|---|---|---|
-| T2-WiFi | /21 | 10.63.128.0 | 10.63.128.1 - 10.63.135.254 | 2046 |
-| T4-WiFi | /21 | 10.63.136.0 | 10.63.136.1 - 10.63.143.254 | 2046 |
-| T3-WiFi | /21 | 10.63.144.0 | 10.63.144.1 - 10.63.151.254 | 2046 |
-| T2-UserOutlets | /22 | 10.63.152.0 | 10.63.152.1 - 10.63.155.254 | 1022 |
-| T3-UserOutlets | /22 | 10.63.156.0 | 10.63.156.1 - 10.63.159.254 | 1022 |
-| T4-UserOutlets | /22 | 10.63.160.0 | 10.63.160.1 - 10.63.163.254 | 1022 |
-| SwitchesDMZ | /23 | 10.63.164.0 | 10.63.164.1 - 10.63.165.254 | 510 |
-| T2-VoIP | /23 | 10.63.166.0 | 10.63.166.1 - 10.63.167.254 | 510 |
-| T4-VoIP | /23 | 10.63.168.0 | 10.63.168.1 - 10.63.169.254 | 510 |
-| T3-VoIP | /23 | 10.63.170.0 | 10.63.170.1 - 10.63.171.254 | 510 |
-| CampusBackbone | /24 | 10.63.172.0 | 10.63.172.1 - 10.63.172.254 | 254 |
-| T3-ServersDMZ | /24 | 10.63.173.0 | 10.63.173.1 - 10.63.173.254 | 254 |
-| T4-ServersDMZ | /25 | 10.63.174.0 | 10.63.174.1 - 10.63.174.126 | 126 |
-| T2-ServersDMZ | /25 | 10.63.174.128 | 10.63.174.129 - 10.63.174.254 | 126 |
+| VLAN / Rede    | Máscara | Endereço de Rede | Intervalo de IPs Válidos      | Nós Máx. |
+|----------------|---------|------------------|-------------------------------|----------|
+| T2-WiFi        | /21     | 10.63.128.0      | 10.63.128.1 - 10.63.135.254   | 2046     |
+| T4-WiFi        | /21     | 10.63.136.0      | 10.63.136.1 - 10.63.143.254   | 2046     |
+| T3-WiFi        | /21     | 10.63.144.0      | 10.63.144.1 - 10.63.151.254   | 2046     |
+| T2-UserOutlets | /22     | 10.63.152.0      | 10.63.152.1 - 10.63.155.254   | 1022     |
+| T3-UserOutlets | /22     | 10.63.156.0      | 10.63.156.1 - 10.63.159.254   | 1022     |
+| T4-UserOutlets | /22     | 10.63.160.0      | 10.63.160.1 - 10.63.163.254   | 1022     |
+| SwitchesDMZ    | /23     | 10.63.164.0      | 10.63.164.1 - 10.63.165.254   | 510      |
+| T2-VoIP        | /23     | 10.63.166.0      | 10.63.166.1 - 10.63.167.254   | 510      |
+| T4-VoIP        | /23     | 10.63.168.0      | 10.63.168.1 - 10.63.169.254   | 510      |
+| T3-VoIP        | /23     | 10.63.170.0      | 10.63.170.1 - 10.63.171.254   | 510      |
+| CampusBackbone | /24     | 10.63.172.0      | 10.63.172.1 - 10.63.172.254   | 254      |
+| T3-ServersDMZ  | /24     | 10.63.173.0      | 10.63.173.1 - 10.63.173.254   | 254      |
+| T4-ServersDMZ  | /25     | 10.63.174.0      | 10.63.174.1 - 10.63.174.126   | 126      |
+| T2-ServersDMZ  | /25     | 10.63.174.128    | 10.63.174.129 - 10.63.174.254 | 126      |
 
 ---
 
@@ -85,7 +85,7 @@ O bloco **10.63.128.0/17** foi dividido utilizando VLSM, começando pelas redes 
 ### Routers – Campus Backbone
 
 | Router | Endereço IP |
-|---|---|
+|--------|-------------|
 | Rtr-T2 | 10.63.172.1 |
 | Rtr-T3 | 10.63.172.2 |
 | Rtr-T4 | 10.63.172.3 |
@@ -102,16 +102,19 @@ O bloco **10.63.128.0/17** foi dividido utilizando VLSM, começando pelas redes 
 
 ### Gestão de Switches (SwitchesDMZ)
 
-| Terminal | Intervalo de IP |
-|---|---|
-| T2 | 10.63.164.1 – 10.63.164.100 |
-| T3 | 10.63.164.101 – 10.63.164.200 |
-| T4 | 10.63.165.1 – 10.63.165.100 |
+| Terminal | Intervalo de IP               |
+|----------|-------------------------------|
+| T2       | 10.63.164.1 – 10.63.164.100   |
+| T3       | 10.63.164.101 – 10.63.164.200 |
+| T4       | 10.63.165.1 – 10.63.165.100   |
 
 
-### Device naming convention:
-* Switches: Sw-[Terminal]-[Localização/Sala] (ex: Sw-T2-Sala6).
-* Routers: Rtr-[Terminal] (ex: Rtr-T2).
+### Device naming convention examples:
+* Switches: 
+* MC: MC-[Terminal]-[Level]-[Localização/Sala] (ex: MC-T2-L1-Sala6).
+* HC: HC-[Terminal]-[Level]-[Localização/Sala] (ex: HC-T2-L1-Sala6).
+* CP: CP-[Terminal]-[Level]-[Localização/Sala] (ex: CP-T2-L1-Sala6).
+* Routers: Rtr-[Terminal]-[Level]-[Localização/Sala] (ex: Rtr-T2-L1-Sala6).
 * Hostnames: Devem coincidir com o Display Name mas sem espaços.
 
 # 3. Subtasks assignment #
