@@ -28,7 +28,7 @@
 
 ---
 
-## 3. Construção da Topologia (Layer 1)
+## 3. Construção da Topologia
 
 ### Equipamentos utilizados:
 - 1 Router Cisco 2811
@@ -70,6 +70,8 @@ Em cada switch:
 > hostname MC-T2-L1-Sala6
 
 ### 4.2 Configuração VTP
+VTP (VLAN Trunking Protocol) é um protocolo de camada 2 que permite a propagação de informações de VLANs em uma rede. Ele é usado para gerenciar VLANs em uma rede com múltiplos switches, garantindo que as VLANs sejam consistentes em toda a rede.
+
 > vtp domain rc2526deg6
 
 > vtp mode server
@@ -86,11 +88,14 @@ Para cada switch (IC, HC, CP):
 
 
 ### 5.2 Configuração VTP
+VTP (VLAN Trunking Protocol) é um protocolo de camada 2 que permite a propagação de informações de VLANs em uma rede. Ele é usado para gerenciar VLANs em uma rede com múltiplos switches, garantindo que as VLANs sejam consistentes em toda a rede.
+
 > vtp domain rc2526deg6
  
 > vtp mode client
 
 ## 6. Criação de VLANs (no MC)
+VLANs são usadas para segmentar uma rede em domínios de broadcast menores, melhorando a segurança e o desempenho. Cada VLAN é identificada por um número (ID) e pode ser associada a um nome para facilitar a identificação.
 
 vlan 773
 name CampusBackbone
@@ -147,3 +152,103 @@ exit
 vlan 786
 name T4-ServersDMZ
 exit
+
+---
+
+## 7. Configuração de Trunk
+
+Um trunk é uma ligação entre switches que permite transportar tráfego de múltiplas VLANs através da mesma ligação física.  
+Este tipo de ligação é essencial para o funcionamento do VTP e para garantir a comunicação entre todas as VLANs distribuídas pela rede.
+
+---
+
+### 7.1 Objetivo dos Trunks
+
+Os trunks permitem:
+- Transporte de várias VLANs simultaneamente entre switches
+- Propagação correta das VLANs criadas no VTP Server
+- Interligação de toda a infraestrutura de switching do campus
+- Suporte à arquitetura hierárquica da rede (MC → IC → HC → CP)
+
+---
+
+### 7.2 Topologia onde são aplicados trunks
+
+Os trunks são configurados apenas entre switches, mais concretamente:
+
+- Entre o **MC (Main Core switch)** e os **IC (Intermediate switches)**
+- Entre o **IC e os HCs (Horizontal switches)**
+
+---
+
+### 7.3 Configuração dos Trunks
+
+A configuração de trunk deve ser aplicada em ambos os lados de cada ligação entre switches.
+
+#### Exemplo de configuração (modo trunk)
+
+Em cada interface de ligação entre switches:
+
+> enable
+
+> configure terminal
+
+> interface gig0/1
+
+> switchport mode trunk
+
+> switchport trunk allowed vlan 773-786
+
+> exit
+
+### 7.4 Configuração por ligação
+
+#### MC ↔ IC
+
+- No MC:
+  interface g0/1
+  switchport mode trunk
+  switchport trunk allowed vlan 773-786
+- No IC:
+  interface g0/1
+  switchport mode trunk
+  switchport trunk allowed vlan 773-786
+
+#### IC ↔ HC1 (HC-T2-L1-Sala6)
+
+- No IC:
+  interface g0/2
+  switchport mode trunk
+  switchport trunk allowed vlan 773-786
+- No HC1:
+  interface g0/1
+  switchport mode trunk
+  switchport trunk allowed vlan 773-786
+
+#### IC ↔ HC2 (HC-T2-L1-Sala12)
+
+- No IC:
+  interface g0/3
+  switchport mode trunk
+  switchport trunk allowed vlan 773-786
+- No HC2:
+  interface g0/1
+  switchport mode trunk
+  switchport trunk allowed vlan 773-786
+
+#### IC ↔ HC3 (HC-T2-L1-Sala11)
+
+- No IC:
+  interface g0/4
+  switchport mode trunk
+  switchport trunk allowed vlan 773-786
+- No HC3:
+  interface g0/1
+  switchport mode trunk
+  switchport trunk allowed vlan 773-786
+
+### 7.5 Verificação da Configuração
+Para verificar a configuração dos trunks, podem ser utilizados os seguintes comandos:
+- `show interfaces trunk` → Exibe as interfaces configuradas como trunk e as VLANs permitidas
+- `show vlan` → Exibe as VLANs configuradas e as interfaces associadas
+- `show vtp status` → Exibe o status do VTP, incluindo o modo e o domínio configurados
