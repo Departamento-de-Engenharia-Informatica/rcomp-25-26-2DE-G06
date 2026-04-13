@@ -1,0 +1,102 @@
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname Rtr-T2-L1-Sala6
+!
+!
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+!
+!
+license udi pid CISCO2811/K9 sn FTX1017T6Z1-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ no ip address
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/0.773
+ encapsulation dot1Q 773
+ ip address 10.63.172.1 255.255.255.0
+!
+interface FastEthernet0/0.774
+ encapsulation dot1Q 774
+ ip address 10.63.164.1 255.255.254.0
+!
+interface FastEthernet0/0.775
+ encapsulation dot1Q 775
+ ip address 10.63.152.1 255.255.252.0
+!
+interface FastEthernet0/0.776
+ encapsulation dot1Q 776
+ ip address 10.63.128.1 255.255.248.0
+!
+interface FastEthernet0/0.777
+ encapsulation dot1Q 777
+ ip address 10.63.166.1 255.255.254.0
+!
+interface FastEthernet0/0.778
+ encapsulation dot1Q 778
+ ip address 10.63.174.129 255.255.255.128
+!
+interface FastEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+ip classless
+!
+ip flow-export version 9
+!
+!
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
+
