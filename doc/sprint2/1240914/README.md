@@ -193,7 +193,7 @@ Em cada interface de ligação entre switches:
 
 > configure terminal
 
-> interface gig0/1
+> interface gigabitEthernet9/1
 
 > switchport mode trunk
 
@@ -206,49 +206,371 @@ Em cada interface de ligação entre switches:
 #### MC ↔ IC
 
 - No MC:
-  interface g0/1
+  interface gigabitEthernet9/1
   switchport mode trunk
   switchport trunk allowed vlan 773-786
 - No IC:
-  interface g0/1
+  interface gigabitEthernet8/1
   switchport mode trunk
   switchport trunk allowed vlan 773-786
 
 #### IC ↔ HC1 (HC-T2-L1-Sala6)
 
 - No IC:
-  interface g0/2
+  interface gigabitEthernet9/1
   switchport mode trunk
   switchport trunk allowed vlan 773-786
 - No HC1:
-  interface g0/1
+  interface gigabitEthernet9/1
   switchport mode trunk
   switchport trunk allowed vlan 773-786
 
 #### IC ↔ HC2 (HC-T2-L1-Sala12)
 
 - No IC:
-  interface g0/3
+  interface gigabitEthernet7/1
   switchport mode trunk
   switchport trunk allowed vlan 773-786
 - No HC2:
-  interface g0/1
+  interface gigabitEthernet8/1
   switchport mode trunk
   switchport trunk allowed vlan 773-786
 
 #### IC ↔ HC3 (HC-T2-L1-Sala11)
 
 - No IC:
-  interface g0/4
+  interface gigabitEthernet6/1
   switchport mode trunk
   switchport trunk allowed vlan 773-786
 - No HC3:
-  interface g0/1
+  interface gigabitEthernet6/1
   switchport mode trunk
   switchport trunk allowed vlan 773-786
 
 ### 7.5 Verificação da Configuração
 Para verificar a configuração dos trunks, podem ser utilizados os seguintes comandos:
-- `show interfaces trunk` → Exibe as interfaces configuradas como trunk e as VLANs permitidas
-- `show vlan` → Exibe as VLANs configuradas e as interfaces associadas
-- `show vtp status` → Exibe o status do VTP, incluindo o modo e o domínio configurados
+- show cdp neighbors - Exibe os vizinhos CDP (Cisco Discovery Protocol) e as interfaces de ligação.
+- show vlan brief - Exibe um resumo das VLANs configuradas e das suas associações.
+- show ip interface brief - Exibe um resumo das interfaces e dos seus estados.
+
+
+---
+
+## 8. Configuração de Layer 3 (Router-on-a-Stick)
+
+Após a configuração da infraestrutura de Layer 2 (VLANs e Trunks), foi implementado o encaminhamento entre VLANs (Inter-VLAN Routing) através de um router Cisco 2811, utilizando a técnica de **Router-on-a-Stick**.
+
+---
+
+### 8.1 Ligação Router ↔ Switch (MC)
+
+O router foi ligado ao switch principal (MC) através da seguinte ligação:
+
+- Router: FastEthernet0/0
+- MC: FastEthernet8/1
+
+Esta ligação foi configurada como **trunk** no switch, permitindo o transporte de múltiplas VLANs.
+
+#### Configuração no MC:
+
+> enable  
+> configure terminal  
+> interface fastEthernet8/1  
+> switchport mode trunk  
+> switchport trunk allowed vlan 773-786  
+> no shutdown  
+> exit
+
+---
+
+### 8.2 Configuração do Router
+
+Foi utilizada a técnica de subinterfaces no router, permitindo associar uma interface lógica a cada VLAN.
+
+#### Ativação da interface física:
+
+> enable  
+> configure terminal  
+> interface fastEthernet0/0  
+> no shutdown  
+> exit
+
+---
+
+### 8.3 Configuração das Subinterfaces (VLANs – Terminal 2)
+
+Cada subinterface foi configurada com:
+- encapsulamento IEEE 802.1Q
+- endereço IP correspondente à gateway da VLAN
+
+---
+
+#### VLAN 773 – Campus Backbone
+
+> interface fastEthernet0/0.773  
+> encapsulation dot1Q 773  
+> ip address 10.63.172.1 255.255.255.0
+> exit
+
+---
+
+#### VLAN 774 – T2 SwitchesDMZ
+
+> interface fastEthernet0/0.774  
+> encapsulation dot1Q 774  
+> ip address 10.63.164.1 255.255.254.0
+> exit
+
+---
+
+#### VLAN 775 – T2 UserOutlets
+
+> interface fastEthernet0/0.775  
+> encapsulation dot1Q 775  
+> ip address 10.63.152.1 255.255.252.0
+> exit
+
+---
+
+#### VLAN 776 – T2 WiFi
+
+> interface fastEthernet0/0.776  
+> encapsulation dot1Q 776  
+> ip address 10.63.128.1 255.255.248.0
+> exit
+
+---
+
+#### VLAN 777 – T2 VoIP
+
+> interface fastEthernet0/0.777  
+> encapsulation dot1Q 777  
+> ip address 10.63.166.1 255.255.254.0
+> exit
+
+---
+
+#### VLAN 778 – T2 ServersDMZ
+
+> interface fastEthernet0/0.778  
+> encapsulation dot1Q 778  
+> ip address 10.63.174.129 255.255.255.128
+> exit
+
+---
+
+### 8.4 Verificação
+
+Para validar a configuração, foram utilizados os seguintes comandos:
+
+- Verificação do estado das interfaces:
+  - `show ip interface brief`
+
+Este comando permite confirmar:
+- Interfaces ativas (up/up)
+- Subinterfaces corretamente configuradas
+- Endereços IP atribuídos
+
+---
+
+### 8.5 Resultado
+
+Com esta configuração:
+- Cada VLAN possui uma gateway configurada no router
+- É possível comunicação entre diferentes VLANs
+- A rede Layer 3 encontra-se operacional no Terminal 2
+
+---
+
+## 9. Configuração de End Devices (Layer 2 + Layer 3)
+
+---
+
+### 9.1 Objetivo
+
+Configurar dispositivos finais (end devices) para cada VLAN do Terminal 2, garantindo:
+
+* Associação correta à VLAN
+* Configuração IP válida
+* Comunicação com o router (gateway)
+
+---
+
+### 9.2 Equipamentos necessários
+
+Adicionar no Packet Tracer:
+
+* 2 PCs
+* 1 Laptop
+* 1 Access Point (não usar wireless router)
+* 1 Server
+* 1 IP Phone (modelo 7960)
+
+---
+
+### 9.3 Ligações físicas
+
+#### Tipo de cabos:
+
+* PC / Server / AP / Phone → **Copper Straight-Through**
+* Ligações feitas a um **CP (Access Switch)**
+
+---
+
+#### Ligações exemplo (num CP)
+
+| Dispositivo  | Porta do CP |
+| ------------ | ----------- |
+| PC (User)    | Fa0/1       |
+| PC (DMZ)     | Fa0/2       |
+| Server       | Fa0/3       |
+| Access Point | Fa0/4       |
+| IP Phone     | Fa0/5       |
+
+---
+
+### 9.4 Configuração das portas no CP
+
+Aceder ao switch CP:
+
+
+enable
+configure terminal
+
+
+---
+
+#### PC – User VLAN (775)
+
+
+interface fa0/1
+switchport mode access
+switchport access vlan 775
+exit
+
+
+---
+
+#### PC – SwitchesDMZ (774)
+
+
+interface fa0/2
+switchport mode access
+switchport access vlan 774
+exit
+
+
+---
+
+#### Server – ServersDMZ (778)
+
+
+interface fa0/3
+switchport mode access
+switchport access vlan 778
+exit
+
+
+---
+
+#### Access Point – WiFi (776)
+
+
+interface fa0/4
+switchport mode access
+switchport access vlan 776
+exit
+
+
+---
+
+#### IP Phone – VoIP (777)
+
+
+interface fa0/5
+switchport mode access
+no switchport access vlan
+switchport voice vlan 777
+exit
+
+
+---
+
+### 9.5 Configuração IPv4 dos dispositivos
+
+#### PC – User VLAN
+
+* IP: 10.63.152.2
+* Máscara: 255.255.252.0
+* Gateway: 10.63.152.1
+
+---
+
+#### PC – SwitchesDMZ
+
+* IP: 10.63.164.2
+* Máscara: 255.255.254.0
+* Gateway: (opcional / pode ficar vazio)
+
+---
+
+#### Server – ServersDMZ
+
+* IP: 10.63.174.130
+* Máscara: 255.255.255.128
+* Gateway: 10.63.174.129
+
+---
+
+#### Access Point
+
+* IP: 10.63.128.2
+* Máscara: 255.255.248.0
+* Gateway: 10.63.128.1
+
+---
+
+#### Laptop (WiFi)
+
+Após ligação ao Access Point:
+
+* IP: 10.63.128.3
+* Máscara: 255.255.248.0
+* Gateway: 10.63.128.1
+
+---
+
+#### IP Phone
+
+* Não configurar IP nesta fase (configurado no Sprint 3)
+
+---
+
+### 9.6 Verificação
+
+Testar conectividade:
+
+No PC (User VLAN):
+
+
+ping 10.63.152.1
+
+
+Teste inter-VLAN:
+
+
+ping 10.63.174.130
+
+
+---
+
+### 9.7 Notas
+
+* Todas as portas de acesso devem estar em `switchport mode access`
+* Cada dispositivo deve estar na VLAN correta
+* A VLAN SwitchesDMZ é uma rede isolada
+* O router funciona como gateway para todas as VLANs
+* A comunicação entre VLANs é feita através do router (router-on-a-stick)
+
+---
+
