@@ -76,6 +76,12 @@ VTP (VLAN Trunking Protocol) é um protocolo de camada 2 que permite a propagaç
 
 > vtp mode server
 
+
+### 4.3 Comando para ver VTP status
+- show vtp status - Exibe o status do VTP, incluindo o modo de operação.
+
+---
+
 ## 5. Configuração dos restantes switches
 Para cada switch (IC, HC, CP):
 
@@ -247,7 +253,46 @@ Em cada interface de ligação entre switches:
   switchport mode trunk
   switchport trunk allowed vlan 773-786
 
-### 7.5 Verificação da Configuração
+---
+
+### 7.5 Configuração dos CP (Access Switches)
+
+Os CP (Access Switches) são utilizados para ligação de dispositivos finais (end devices) e são conectados aos HC através de ligações Layer 2.
+
+---
+
+## 7.5.1 Tipo de ligação
+
+* A ligação é configurada como **trunk no HC**
+* No CP é configurada conforme o tipo de portas (access ou voice VLAN)
+
+---
+
+## 7.5.2 Ligação HC ↔ CP (uplink)
+
+### Exemplo genérico de configuração
+
+#### No HC (uplink para CP)
+
+
+interface gigabitEthernetX/X
+switchport mode trunk
+switchport trunk allowed vlan 773-786
+
+
+---
+
+#### No CP (uplink para HC)
+
+
+interface gigabitEthernetX/X
+switchport mode trunk
+no shutdown
+
+---
+
+
+### 7.6 Verificação da Configuração
 Para verificar a configuração dos trunks, podem ser utilizados os seguintes comandos:
 - show cdp neighbors - Exibe os vizinhos CDP (Cisco Discovery Protocol) e as interfaces de ligação.
 - show vlan brief - Exibe um resumo das VLANs configuradas e das suas associações.
@@ -404,7 +449,7 @@ Adicionar no Packet Tracer:
 * 1 Laptop
 * 1 Access Point (não usar wireless router)
 * 1 Server
-* 1 IP Phone (modelo 7960)
+* 1 VoIP (modelo 7960)
 
 ---
 
@@ -412,22 +457,9 @@ Adicionar no Packet Tracer:
 
 #### Tipo de cabos:
 
-* PC / Server / AP / Phone → **Copper Straight-Through**
+* PC / Server / AP / VoIP → **Copper Straight-Through**
 * Ligações feitas a um **CP (Access Switch)**
 
----
-
-#### Ligações exemplo (num CP)
-
-| Dispositivo  | Porta do CP |
-| ------------ | ----------- |
-| PC (User)    | Fa0/1       |
-| PC (DMZ)     | Fa0/2       |
-| Server       | Fa0/3       |
-| Access Point | Fa0/4       |
-| IP Phone     | Fa0/5       |
-
----
 
 ### 9.4 Configuração das portas no CP
 
@@ -442,10 +474,12 @@ configure terminal
 
 #### PC – User VLAN (775)
 
-
-interface fa0/1
+enable
+conf t
+interface fa8/1
 switchport mode access
 switchport access vlan 775
+no shutdown
 exit
 
 
@@ -453,21 +487,24 @@ exit
 
 #### PC – SwitchesDMZ (774)
 
-
-interface fa0/2
+enable
+conf t
+interface fa7/1
 switchport mode access
 switchport access vlan 774
+no shutdown
 exit
-
 
 ---
 
 #### Server – ServersDMZ (778)
 
-
-interface fa0/3
+enable
+conf t
+interface fa6/1
 switchport mode access
 switchport access vlan 778
+no shutdown
 exit
 
 
@@ -475,10 +512,12 @@ exit
 
 #### Access Point – WiFi (776)
 
-
-interface fa0/4
+enable
+conf t
+interface fa4/1
 switchport mode access
 switchport access vlan 776
+no shutdown
 exit
 
 
@@ -486,11 +525,13 @@ exit
 
 #### IP Phone – VoIP (777)
 
-
-interface fa0/5
+enable
+conf t
+interface fa5/1
 switchport mode access
 no switchport access vlan
 switchport voice vlan 777
+no shutdown
 exit
 
 
@@ -510,7 +551,7 @@ exit
 
 * IP: 10.63.164.2
 * Máscara: 255.255.254.0
-* Gateway: (opcional / pode ficar vazio)
+* Gateway: (pode ficar vazio ou 10.63.164.1)
 
 ---
 
@@ -523,7 +564,8 @@ exit
 ---
 
 #### Access Point
-
+O SSID foi trocado de Default para T2-WiFi.
+ainda nao feito
 * IP: 10.63.128.2
 * Máscara: 255.255.248.0
 * Gateway: 10.63.128.1
@@ -534,15 +576,18 @@ exit
 
 Após ligação ao Access Point:
 
+* Foi adicionado o modulo WMP300N ao laptop para permitir a conexão wireless.
+* Foi ligado ao SSID T2-WiFi através do menu de conexões wireless do laptop.
+
 * IP: 10.63.128.3
 * Máscara: 255.255.248.0
 * Gateway: 10.63.128.1
 
 ---
 
-#### IP Phone
+#### IP VoIP
 
-* Não configurar IP nesta fase (configurado no Sprint 3)
+* Não configurar IP nesta fase 
 
 ---
 
@@ -561,16 +606,7 @@ Teste inter-VLAN:
 
 ping 10.63.174.130
 
+Foram feitos testes de ping para verificar a conectividade entre o PC e o router (gateway) e entre o PC e o server na VLAN ServersDMZ. Ambos os testes foram bem-sucedidos, confirmando a correta configuração da VLAN, do trunk e do router-on-a-stick.
 
----
 
-### 9.7 Notas
-
-* Todas as portas de acesso devem estar em `switchport mode access`
-* Cada dispositivo deve estar na VLAN correta
-* A VLAN SwitchesDMZ é uma rede isolada
-* O router funciona como gateway para todas as VLANs
-* A comunicação entre VLANs é feita através do router (router-on-a-stick)
-
----
 
