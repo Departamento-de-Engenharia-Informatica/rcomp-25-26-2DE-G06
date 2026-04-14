@@ -549,9 +549,9 @@ exit
 
 #### PC – SwitchesDMZ
 
-* IP: 10.63.164.2
+* IP: 10.63.164.100
 * Máscara: 255.255.254.0
-* Gateway: (pode ficar vazio ou 10.63.164.1)
+* Gateway: 10.63.164.1
 
 ---
 
@@ -590,23 +590,244 @@ Após ligação ao Access Point:
 * Não configurar IP nesta fase 
 
 ---
+## 9.6 Verificação e Testes
 
-### 9.6 Verificação
+Após a configuração da infraestrutura de Layer 2 (VLANs, trunking e VTP) e Layer 3 (Router-on-a-Stick), foram realizados vários testes de conectividade com o objetivo de validar o correto funcionamento da rede e o encaminhamento entre VLANs.
 
-Testar conectividade:
+---
 
-No PC (User VLAN):
+### 9.6.1 Teste de conectividade com o gateway (Router-on-a-Stick)
 
+**Objetivo:**
+Validar se os dispositivos conseguem comunicar com o gateway da sua própria VLAN, garantindo que a configuração IP e a ligação ao switch estão corretas.
 
+**Dispositivo:** PC – VLAN UserOutlets
+**Comando:**
+
+```
 ping 10.63.152.1
+```
 
+**Descrição:**
+O endereço IP 10.63.152.1 corresponde à subinterface do router associada à VLAN 775 (UserOutlets), funcionando como gateway.
 
-Teste inter-VLAN:
+**Resultado:**
+✔ Resposta recebida com sucesso (0% packet loss)
 
+---
 
+### 9.6.2 Teste de comunicação inter-VLAN (User → Servers DMZ)
+
+**Objetivo:**
+Validar o funcionamento do Router-on-a-Stick, garantindo que dispositivos em VLANs diferentes conseguem comunicar entre si.
+
+**Dispositivo:** PC – VLAN UserOutlets
+**Comando:**
+
+```
 ping 10.63.174.130
+```
 
-Foram feitos testes de ping para verificar a conectividade entre o PC e o router (gateway) e entre o PC e o server na VLAN ServersDMZ. Ambos os testes foram bem-sucedidos, confirmando a correta configuração da VLAN, do trunk e do router-on-a-stick.
+**Descrição:**
+O endereço IP 10.63.174.130 corresponde ao servidor localizado na VLAN 778 (ServersDMZ). Este teste confirma o encaminhamento entre VLAN 775 e VLAN 778.
+
+**Resultado:**
+✔ Comunicação entre VLANs bem-sucedida
+
+---
+
+### 9.6.3 Teste de conectividade WiFi (Laptop → Gateway)
+
+**Objetivo:**
+Validar a ligação do dispositivo wireless ao Access Point e à respetiva VLAN.
+
+**Dispositivo:** Laptop – VLAN WiFi
+**Comando:**
+
+```
+ping 10.63.128.1
+```
+
+**Descrição:**
+O endereço IP 10.63.128.1 corresponde ao gateway da VLAN 776 (WiFi).
+
+**Resultado:**
+✔ Gateway WiFi acessível
+
+---
+
+### 9.6.4 Teste de comunicação inter-VLAN (WiFi → UserOutlets)
+
+**Objetivo:**
+Confirmar que dispositivos ligados via WiFi conseguem comunicar com outras VLANs.
+
+**Dispositivo:** Laptop – VLAN WiFi
+**Comando:**
+
+```
+ping 10.63.152.1
+```
+
+**Descrição:**
+Teste de comunicação entre VLAN 776 (WiFi) e VLAN 775 (UserOutlets).
+
+**Resultado:**
+✔ Comunicação inter-VLAN validada
+
+---
+
+### 9.6.5 Teste de conectividade na VLAN SwitchesDMZ
+
+**Objetivo:**
+Validar a conectividade dentro da VLAN de gestão dos switches.
+
+**Dispositivo:** PC – VLAN SwitchesDMZ
+**Comando:**
+
+```
+ping 10.63.164.1
+ping 10.63.164.2
+ping 10.63.164.10
+```
+
+**Descrição:**
+
+* 10.63.164.1 → Gateway da VLAN 774
+* 10.63.164.2 → Switch IC
+* 10.63.164.10 → Switch HC
+
+Este teste confirma a conectividade entre o PC e os dispositivos de rede.
+
+**Resultado:**
+✔ Conectividade com gateway e switches validada
+
+---
+
+### 9.6.6 Teste de comunicação a partir do Server (Servers DMZ)
+
+**Objetivo:**
+Validar que o servidor consegue comunicar com dispositivos noutras VLANs, confirmando o encaminhamento bidirecional.
+
+**Dispositivo:** Server – VLAN ServersDMZ
+**Comando:**
+
+```
+ping 10.63.152.2
+```
+
+**Descrição:**
+O endereço IP 10.63.152.2 corresponde ao PC da VLAN UserOutlets. Este teste valida comunicação entre VLAN 778 (ServersDMZ) e VLAN 775 (UserOutlets).
+
+**Resultado:**
+✔ Comunicação inter-VLAN validada a partir do servidor
+
+---
+
+### 9.6.7 Verificação do Access Point
+
+**Objetivo:**
+Confirmar o correto funcionamento do Access Point e a associação de dispositivos à rede WiFi.
+
+**Procedimento:**
+
+* Configuração do SSID "T2-WiFi"
+* Associação do laptop à rede wireless
+* Obtenção de conectividade IP na VLAN 776
+
+**Resultado:**
+✔ Associação WiFi realizada com sucesso
+✔ Conectividade com gateway e outras VLANs validada
+
+---
+
+### 9.6.8 Verificação da VLAN VoIP
+
+**Objetivo:**
+Garantir que o dispositivo VoIP se encontra corretamente ligado à VLAN definida.
+
+**Procedimento:**
+
+* Ligação do telefone IP à porta configurada com VLAN 777 (VoIP)
+* Verificação da associação à VLAN correta
+
+**Resultado:**
+✔ Dispositivo corretamente associado à VLAN VoIP
+
+*Nota:* Não foram realizados testes de comunicação VoIP nesta fase, uma vez que a configuração de serviços de voz não faz parte do âmbito desta etapa.
+
+---
+
+### 9.6.9 Conclusão dos testes
+
+Os testes realizados permitiram validar:
+
+* ✔ Funcionamento correto das VLANs
+* ✔ Configuração adequada das portas em modo access
+* ✔ Funcionamento do trunking entre switches
+* ✔ Encaminhamento inter-VLAN através do Router-on-a-Stick
+* ✔ Conectividade da rede WiFi
+* ✔ Comunicação bidirecional entre VLANs
+* ✔ Acesso à VLAN de gestão dos switches
+
+Conclui-se que a infraestrutura de rede do Terminal 2 se encontra corretamente configurada e totalmente operacional.
+
+---
+## 10. Switches Remote Management (Switches DMZ)
+
+Para permitir a gestão remota dos switches através de protocolos como SSH, SNMP e HTTP, foi configurada uma rede de gestão dedicada designada por Switches DMZ, associada à VLAN 774.
+
+Esta rede tem como objetivo fornecer conectividade de gestão aos dispositivos de switching do Terminal 2, garantindo separação lógica relativamente ao tráfego de utilizador, servidores e outras VLANs.
+
+---
+
+### 10.1 Implementação da rede de gestão
+
+Cada switch possui uma interface virtual (SVI – Switch Virtual Interface) associada à VLAN 774, permitindo a atribuição de um endereço IPv4 de gestão.
+
+A configuração é realizada da seguinte forma:
+
+interface vlan 774
+ip address 10.63.164.X 255.255.254.0
+no shutdown
 
 
+---
+
+### 10.2 Endereçamento dos switches
+
+| Switch | IP de gestão |
+|--------|--------------|
+| MC     | 10.63.164.2  |
+| IC     | 10.63.164.3  |
+| HC     | 10.63.164.10 |
+| CP     | 10.63.164.20 |
+
+---
+
+### 10.3 Conectividade da VLAN de gestão
+
+A VLAN 774 é transportada entre todos os switches através de ligações trunk, permitindo conectividade de camada 2 entre os dispositivos de gestão ao longo da hierarquia da rede.
+
+Esta implementação garante que cada switch pode ser acedido a partir da estação de gestão localizada na mesma VLAN.
+
+---
+
+### 10.4 Considerações sobre isolamento
+
+A rede Switches DMZ é logicamente isolada, sendo utilizada exclusivamente para gestão e monitorização da infraestrutura.
+
+Embora exista routing global no projeto (Router-on-a-Stick), a VLAN 774 é utilizada apenas para tráfego de administração, não sendo o seu objetivo fornecer comunicação entre redes de utilizadores.
+
+---
+
+### 10.5 Resultado
+
+A rede de gestão encontra-se operacional, permitindo:
+
+- Acesso remoto aos switches
+- Monitorização da infraestrutura de rede
+- Separação lógica do tráfego de gestão
+- Administração centralizada da topologia do Terminal 2
+
+Conclui-se que a infraestrutura de gestão está corretamente implementada e funcional.
 

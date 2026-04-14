@@ -114,7 +114,7 @@ O bloco **10.63.128.0/17** foi dividido utilizando VLSM, começando pelas redes 
 * MC: MC-[Terminal]-[Level]-[Localização/Sala] (ex: MC-T2-L1-Sala6).
 * HC: HC-[Terminal]-[Level]-[Localização/Sala] (ex: HC-T2-L1-Sala6).
 * CP: CP-[Terminal]-[Level]-[Localização/Sala] (ex: CP-T2-L1-Sala6).
-* Routers: Rtr-[Terminal]-[Level]-[Localização/Sala] (ex: Rtr-T2-L1-Sala6).
+* Routers: Rtr-[Terminal] (ex: Rtr-T2).
 * Hostnames: Devem coincidir com o Display Name mas sem espaços.
 
 # 3. Subtasks assignment #

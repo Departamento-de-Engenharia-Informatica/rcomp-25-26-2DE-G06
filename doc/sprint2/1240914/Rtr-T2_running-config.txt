@@ -4,7 +4,7 @@ no service timestamps log datetime msec
 no service timestamps debug datetime msec
 no service password-encryption
 !
-hostname Rtr-T2-L1-Sala6
+hostname Rtr-T2
 !
 !
 !
@@ -80,6 +80,8 @@ interface Vlan1
  shutdown
 !
 ip classless
+ip route 10.63.152.0 255.255.252.0 FastEthernet0/0.775 
+ip route 10.63.164.0 255.255.254.0 FastEthernet0/0.774 
 !
 ip flow-export version 9
 !

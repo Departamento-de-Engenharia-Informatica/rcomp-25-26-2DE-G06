@@ -35,6 +35,9 @@ interface Vlan1
  no ip address
  shutdown
 !
+interface Vlan774
+ ip address 10.63.164.3 255.255.254.0
+!
 !
 !
 !
