@@ -563,8 +563,8 @@ exit
 ---
 
 #### Access Point
-O SSID foi trocado de Default para T2-WiFi.
-ainda nao feito
+O Access Point foi configurado com o SSID "T2-WiFi" e associado à VLAN 776.
+
 * IP: 10.63.128.2
 * Máscara: 255.255.248.0
 * Gateway: 10.63.128.1
@@ -753,12 +753,9 @@ Esta configuração garante que o tráfego de resposta proveniente da Internet c
 
 Com esta configuração:
 
-- ✔ O Terminal 2 tem acesso à Internet
-- ✔ Os restantes terminais conseguem aceder à Internet através do T2
-- ✔ Existe encaminhamento de ida e volta (full connectivity)
-- ✔ A infraestrutura do campus está corretamente integrada com o ISP
-
-Conclui-se que a ligação à Internet se encontra corretamente configurada e funcional.
+- ✔ O Terminal 2 estabelece conectividade com o router do ISP
+- ✔ Os restantes terminais conseguem encaminhar tráfego até ao ISP
+- ✔ Existe encaminhamento de ida e volta dentro da topologia simulada
 
 ---
 ### 11.5 Simulação dos Terminais T3 e T4 (Campus Backbone)
@@ -1028,21 +1025,6 @@ Garantir que o dispositivo VoIP está corretamente associado à VLAN.
 *Nota:* Não foram realizados testes de comunicação VoIP nesta fase.
 
 ---
-### 12.13 Teste de conectividade no Campus Backbone (entre routers)
-
-Objetivo:
-Validar a comunicação direta entre routers através da VLAN 773.
-
-Dispositivo: Rtr-T2
-Comando:
-
-ping 10.63.172.2
-ping 10.63.172.3
-
-Resultado esperado:
-✔ Comunicação bem-sucedida com ambos os routers
-
----
 ### 12.14 Teste de continuidade Layer 2 (Switching Backbone)
 
 Objetivo:
@@ -1057,10 +1039,42 @@ Resultado esperado:
 ✔ VLAN 773 presente em todos os trunks
 ✔ Interfaces em estado trunking
 ✔ Sem portas bloqueadas indevidamente
+---
+### 12.15 Teste de Default Route (saída para ISP)
+
+Objetivo:
+Confirmar que o router T2 encaminha tráfego desconhecido para o ISP.
+
+Dispositivo: Rtr-T2  
+Comando:
+show ip route
+
+Resultado esperado:
+
+✔ Presença de:
+S* 0.0.0.0/0 [1/0] via 89.73.67.134
+
+✔ Indica que a rota por defeito está corretamente configurada
+---
+### 12.16 Teste de rota de retorno no ISP
+
+Objetivo:
+Confirmar que o ISP consegue encaminhar tráfego para o campus.
+
+Dispositivo: ISP Router  
+Comando:
+show ip route
+
+Resultado esperado:
+
+✔ Presença de rota:
+10.63.128.0/17 via 89.73.67.133
+
+✔ Garante comunicação de retorno para o Terminal 2
 
 ---
 
-### 12.14 Conclusão dos testes
+### 12.17 Conclusão dos testes
 
 Os testes realizados permitiram validar:
 
