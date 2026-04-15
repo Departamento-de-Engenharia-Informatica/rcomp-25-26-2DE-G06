@@ -21,6 +21,7 @@ interface FastEthernet4/1
  switchport voice vlan 776
 !
 interface FastEthernet5/1
+ switchport access vlan 777
  switchport mode access
  switchport voice vlan 777
 !

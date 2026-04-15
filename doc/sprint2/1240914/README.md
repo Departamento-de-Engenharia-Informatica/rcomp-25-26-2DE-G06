@@ -361,10 +361,9 @@ Cada subinterface foi configurada com:
 
 #### VLAN 774 – T2 SwitchesDMZ
 
-> interface fastEthernet0/0.774  
-> encapsulation dot1Q 774  
-> ip address 10.63.164.1 255.255.254.0
-> exit
+Esta VLAN foi configurada como uma rede isolada de gestão, não estando associada a qualquer subinterface no router.
+
+Desta forma, não existe gateway configurado para esta VLAN, garantindo que o tráfego de gestão permanece restrito ao domínio de camada 2.
 
 ---
 
@@ -590,189 +589,7 @@ Após ligação ao Access Point:
 * Não configurar IP nesta fase 
 
 ---
-## 9.6 Verificação e Testes
-
-Após a configuração da infraestrutura de Layer 2 (VLANs, trunking e VTP) e Layer 3 (Router-on-a-Stick), foram realizados vários testes de conectividade com o objetivo de validar o correto funcionamento da rede e o encaminhamento entre VLANs.
-
----
-
-### 9.6.1 Teste de conectividade com o gateway (Router-on-a-Stick)
-
-**Objetivo:**
-Validar se os dispositivos conseguem comunicar com o gateway da sua própria VLAN, garantindo que a configuração IP e a ligação ao switch estão corretas.
-
-**Dispositivo:** PC – VLAN UserOutlets
-**Comando:**
-
-```
-ping 10.63.152.1
-```
-
-**Descrição:**
-O endereço IP 10.63.152.1 corresponde à subinterface do router associada à VLAN 775 (UserOutlets), funcionando como gateway.
-
-**Resultado:**
-✔ Resposta recebida com sucesso (0% packet loss)
-
----
-
-### 9.6.2 Teste de comunicação inter-VLAN (User → Servers DMZ)
-
-**Objetivo:**
-Validar o funcionamento do Router-on-a-Stick, garantindo que dispositivos em VLANs diferentes conseguem comunicar entre si.
-
-**Dispositivo:** PC – VLAN UserOutlets
-**Comando:**
-
-```
-ping 10.63.174.130
-```
-
-**Descrição:**
-O endereço IP 10.63.174.130 corresponde ao servidor localizado na VLAN 778 (ServersDMZ). Este teste confirma o encaminhamento entre VLAN 775 e VLAN 778.
-
-**Resultado:**
-✔ Comunicação entre VLANs bem-sucedida
-
----
-
-### 9.6.3 Teste de conectividade WiFi (Laptop → Gateway)
-
-**Objetivo:**
-Validar a ligação do dispositivo wireless ao Access Point e à respetiva VLAN.
-
-**Dispositivo:** Laptop – VLAN WiFi
-**Comando:**
-
-```
-ping 10.63.128.1
-```
-
-**Descrição:**
-O endereço IP 10.63.128.1 corresponde ao gateway da VLAN 776 (WiFi).
-
-**Resultado:**
-✔ Gateway WiFi acessível
-
----
-
-### 9.6.4 Teste de comunicação inter-VLAN (WiFi → UserOutlets)
-
-**Objetivo:**
-Confirmar que dispositivos ligados via WiFi conseguem comunicar com outras VLANs.
-
-**Dispositivo:** Laptop – VLAN WiFi
-**Comando:**
-
-```
-ping 10.63.152.1
-```
-
-**Descrição:**
-Teste de comunicação entre VLAN 776 (WiFi) e VLAN 775 (UserOutlets).
-
-**Resultado:**
-✔ Comunicação inter-VLAN validada
-
----
-
-### 9.6.5 Teste de conectividade na VLAN SwitchesDMZ
-
-**Objetivo:**
-Validar a conectividade dentro da VLAN de gestão dos switches.
-
-**Dispositivo:** PC – VLAN SwitchesDMZ
-**Comando:**
-
-```
-ping 10.63.164.1
-ping 10.63.164.2
-ping 10.63.164.10
-```
-
-**Descrição:**
-
-* 10.63.164.1 → Gateway da VLAN 774
-* 10.63.164.2 → Switch IC
-* 10.63.164.10 → Switch HC
-
-Este teste confirma a conectividade entre o PC e os dispositivos de rede.
-
-**Resultado:**
-✔ Conectividade com gateway e switches validada
-
----
-
-### 9.6.6 Teste de comunicação a partir do Server (Servers DMZ)
-
-**Objetivo:**
-Validar que o servidor consegue comunicar com dispositivos noutras VLANs, confirmando o encaminhamento bidirecional.
-
-**Dispositivo:** Server – VLAN ServersDMZ
-**Comando:**
-
-```
-ping 10.63.152.2
-```
-
-**Descrição:**
-O endereço IP 10.63.152.2 corresponde ao PC da VLAN UserOutlets. Este teste valida comunicação entre VLAN 778 (ServersDMZ) e VLAN 775 (UserOutlets).
-
-**Resultado:**
-✔ Comunicação inter-VLAN validada a partir do servidor
-
----
-
-### 9.6.7 Verificação do Access Point
-
-**Objetivo:**
-Confirmar o correto funcionamento do Access Point e a associação de dispositivos à rede WiFi.
-
-**Procedimento:**
-
-* Configuração do SSID "T2-WiFi"
-* Associação do laptop à rede wireless
-* Obtenção de conectividade IP na VLAN 776
-
-**Resultado:**
-✔ Associação WiFi realizada com sucesso
-✔ Conectividade com gateway e outras VLANs validada
-
----
-
-### 9.6.8 Verificação da VLAN VoIP
-
-**Objetivo:**
-Garantir que o dispositivo VoIP se encontra corretamente ligado à VLAN definida.
-
-**Procedimento:**
-
-* Ligação do telefone IP à porta configurada com VLAN 777 (VoIP)
-* Verificação da associação à VLAN correta
-
-**Resultado:**
-✔ Dispositivo corretamente associado à VLAN VoIP
-
-*Nota:* Não foram realizados testes de comunicação VoIP nesta fase, uma vez que a configuração de serviços de voz não faz parte do âmbito desta etapa.
-
----
-
-### 9.6.9 Conclusão dos testes
-
-Os testes realizados permitiram validar:
-
-* ✔ Funcionamento correto das VLANs
-* ✔ Configuração adequada das portas em modo access
-* ✔ Funcionamento do trunking entre switches
-* ✔ Encaminhamento inter-VLAN através do Router-on-a-Stick
-* ✔ Conectividade da rede WiFi
-* ✔ Comunicação bidirecional entre VLANs
-* ✔ Acesso à VLAN de gestão dos switches
-
-Conclui-se que a infraestrutura de rede do Terminal 2 se encontra corretamente configurada e totalmente operacional.
-
----
-## 10. Switches Remote Management (Switches DMZ)
+## 9. Switches Remote Management (Switches DMZ)
 
 Para permitir a gestão remota dos switches através de protocolos como SSH, SNMP e HTTP, foi configurada uma rede de gestão dedicada designada por Switches DMZ, associada à VLAN 774.
 
@@ -780,7 +597,7 @@ Esta rede tem como objetivo fornecer conectividade de gestão aos dispositivos d
 
 ---
 
-### 10.1 Implementação da rede de gestão
+### 9.1 Implementação da rede de gestão
 
 Cada switch possui uma interface virtual (SVI – Switch Virtual Interface) associada à VLAN 774, permitindo a atribuição de um endereço IPv4 de gestão.
 
@@ -793,7 +610,7 @@ no shutdown
 
 ---
 
-### 10.2 Endereçamento dos switches
+### 9.2 Endereçamento dos switches
 
 | Switch | IP de gestão |
 |--------|--------------|
@@ -804,7 +621,7 @@ no shutdown
 
 ---
 
-### 10.3 Conectividade da VLAN de gestão
+### 9.3 Conectividade da VLAN de gestão
 
 A VLAN 774 é transportada entre todos os switches através de ligações trunk, permitindo conectividade de camada 2 entre os dispositivos de gestão ao longo da hierarquia da rede.
 
@@ -812,7 +629,7 @@ Esta implementação garante que cada switch pode ser acedido a partir da estaç
 
 ---
 
-### 10.4 Considerações sobre isolamento
+### 9.4 Considerações sobre isolamento
 
 A rede Switches DMZ é logicamente isolada, sendo utilizada exclusivamente para gestão e monitorização da infraestrutura.
 
@@ -820,7 +637,7 @@ Embora exista routing global no projeto (Router-on-a-Stick), a VLAN 774 é utili
 
 ---
 
-### 10.5 Resultado
+### 9.5 Resultado
 
 A rede de gestão encontra-se operacional, permitindo:
 
@@ -831,3 +648,336 @@ A rede de gestão encontra-se operacional, permitindo:
 
 Conclui-se que a infraestrutura de gestão está corretamente implementada e funcional.
 
+---
+## 10. Routers and Static Routing
+
+No Terminal 2 foi configurado um router Cisco 2811 com o objetivo de assegurar o encaminhamento de tráfego IPv4 entre as redes locais e os restantes terminais do campus.
+
+Foi utilizada a técnica de **Router-on-a-Stick**, permitindo a ligação a múltiplas VLANs através de uma única interface física em modo trunk, recorrendo a subinterfaces com encapsulamento IEEE 802.1Q.
+
+A VLAN 774 (SwitchesDMZ) não foi configurada no router, garantindo o seu isolamento conforme os requisitos do projeto.
+
+---
+
+### 10.1 Ligação ao Campus Backbone
+
+O router foi ligado à VLAN 773 (Campus Backbone), permitindo a comunicação com os routers dos restantes terminais.
+
+| Terminal | Endereço IP |
+|----------|------------|
+| T2       | 10.63.172.1 |
+| T3       | 10.63.172.2 |
+| T4       | 10.63.172.3 |
+
+---
+
+### 10.2 Configuração de Rotas Estáticas
+
+Para permitir a comunicação com os restantes terminais (T3 e T4), foram configuradas rotas estáticas com base no plano de endereçamento IPv4 (VLSM).
+
+Cada rota utiliza como next-hop o endereço IP do router de destino na rede de backbone.
+
+---
+
+#### Rotas para o Terminal 3 (T3)
+ip route 10.63.144.0 255.255.248.0 10.63.172.2
+ip route 10.63.156.0 255.255.252.0 10.63.172.2
+ip route 10.63.170.0 255.255.254.0 10.63.172.2
+ip route 10.63.173.0 255.255.255.0 10.63.172.2
+
+
+---
+
+#### Rotas para o Terminal 4 (T4)
+ip route 10.63.136.0 255.255.248.0 10.63.172.3
+ip route 10.63.160.0 255.255.252.0 10.63.172.3
+ip route 10.63.168.0 255.255.254.0 10.63.172.3
+ip route 10.63.174.0 255.255.255.128 10.63.172.3
+
+
+---
+
+### 10.3 Resultado
+
+Com esta configuração:
+
+- ✔ Encaminhamento correto entre VLANs locais
+- ✔ Comunicação funcional entre os diferentes terminais
+- ✔ Separação garantida da VLAN SwitchesDMZ (774)
+- ✔ Estrutura preparada para integração com o backbone
+
+Conclui-se que o encaminhamento IPv4 entre os terminais do campus se encontra corretamente configurado.
+
+---
+## 11. Internet Connection
+
+O Terminal 2 possui ligação à Internet, sendo responsável por encaminhar o tráfego externo de toda a infraestrutura do campus.
+
+---
+
+### 11.1 Ligação ao ISP
+
+A ligação à Internet foi representada através de um modem DSL ligado ao router do Terminal 2, estabelecendo comunicação com o router do ISP.
+
+- **Endereço do ISP:** 89.73.67.134/30
+- **Meio físico:** ligação DSL (modem)
+- **Router do terminal:** Rtr-T2
+
+---
+
+### 11.2 Configuração de Rota por Defeito
+
+Para permitir o encaminhamento de tráfego destinado a redes externas ao campus, foi configurada uma rota por defeito no router do Terminal 2.
+ip route 0.0.0.0 0.0.0.0 89.73.67.134
+
+
+Esta rota indica que todo o tráfego cujo destino não esteja presente na tabela de encaminhamento deve ser enviado para o router do ISP.
+
+---
+
+### 11.3 Configuração do Router do ISP
+
+O router do ISP foi configurado com rotas estáticas de retorno, permitindo encaminhar corretamente o tráfego destinado ao bloco de endereços do campus:
+
+- **Bloco de endereçamento do campus:** 10.63.128.0/17
+
+Exemplo de configuração no ISP:
+ip route 10.63.128.0 255.255.128.0 <IP_do_Rtr-T2>
+
+
+Esta configuração garante que o tráfego de resposta proveniente da Internet consegue alcançar corretamente a infraestrutura interna do campus.
+
+---
+
+### 11.4 Resultado
+
+Com esta configuração:
+
+- ✔ O Terminal 2 tem acesso à Internet
+- ✔ Os restantes terminais conseguem aceder à Internet através do T2
+- ✔ Existe encaminhamento de ida e volta (full connectivity)
+- ✔ A infraestrutura do campus está corretamente integrada com o ISP
+
+Conclui-se que a ligação à Internet se encontra corretamente configurada e funcional.
+
+---
+## 12. Testes de Validação Final
+Após a configuração completa da infraestrutura de rede do Terminal 2, incluindo:
+* VLANs e VTP
+* Trunking entre switches
+* Inter-VLAN routing (Router-on-a-Stick)
+* Routing estático entre terminais
+* Ligação ao ISP (Internet)
+* Configuração de dispositivos finais
+foram realizados testes de validação para garantir o correto funcionamento de toda a rede.
+
+---
+
+### 12.1 Teste de conectividade com o gateway (Router-on-a-Stick)
+
+**Objetivo:**
+Validar se os dispositivos conseguem comunicar com o gateway da sua própria VLAN.
+
+**Dispositivo:** PC – VLAN UserOutlets  
+**Comando:**
+ping 10.63.152.1
+
+
+**Resultado esperado:**
+✔ Resposta com sucesso (0% packet loss)
+
+---
+
+### 12.2 Teste de comunicação inter-VLAN (User → Servers DMZ)
+
+**Objetivo:**
+Confirmar o encaminhamento entre VLANs através do Router-on-a-Stick.
+
+**Dispositivo:** PC – VLAN UserOutlets  
+**Comando:**
+ping 10.63.174.130
+
+
+**Resultado esperado:**
+✔ Comunicação bem-sucedida
+
+---
+
+### 12.3 Teste de conectividade WiFi (Laptop → Gateway)
+
+**Objetivo:**
+Validar a ligação do dispositivo wireless ao Access Point e à VLAN correspondente.
+
+**Dispositivo:** Laptop – VLAN WiFi  
+**Comando:**
+ping 10.63.128.1
+
+**Resultado esperado:**
+✔ Gateway acessível
+
+---
+
+### 12.4 Teste de comunicação inter-VLAN (WiFi → UserOutlets)
+
+**Objetivo:**
+Confirmar comunicação entre dispositivos WiFi e outras VLANs.
+
+**Dispositivo:** Laptop – VLAN WiFi  
+**Comando:**
+ping 10.63.152.1
+
+**Resultado esperado:**
+✔ Comunicação bem-sucedida
+
+---
+
+### 12.5 Teste de comunicação a partir do Server (Servers DMZ)
+
+**Objetivo:**
+Validar comunicação bidirecional entre VLANs.
+
+**Dispositivo:** Server – VLAN ServersDMZ  
+**Comando:**
+ping 10.63.152.2
+
+**Resultado esperado:**
+✔ Comunicação bem-sucedida
+
+---
+
+### 12.6 Teste de isolamento da VLAN SwitchesDMZ
+
+**Objetivo:**
+Confirmar que a VLAN 774 (SwitchesDMZ) se encontra isolada e sem acesso a outras redes.
+
+---
+
+#### 12.6.1 Users → VLAN 774
+
+**Dispositivo:** PC – VLAN UserOutlets  
+**Comando:**
+ping 10.63.164.2
+
+**Resultado esperado:**
+✘ Falha (Destination host unreachable)
+
+---
+
+#### 12.6.2 Comunicação interna na VLAN 774
+
+**Dispositivo:** PC – VLAN SwitchesDMZ  
+**Comando:**
+ping 10.63.164.2
+ping 10.63.164.3
+ping 10.63.164.10
+
+**Resultado esperado:**
+✔ Comunicação bem-sucedida (Layer 2)
+
+---
+
+#### 12.6.3 VLAN 774 → Gateway inexistente
+
+**Dispositivo:** PC – VLAN SwitchesDMZ  
+**Comando:**
+ping 10.63.164.1
+
+**Resultado esperado:**
+✘ Falha (sem gateway configurado)
+
+---
+
+### 12.7 Teste de conectividade com o ISP (Internet)
+
+**Objetivo:**
+Validar a ligação entre o Router do Terminal 2 e o ISP.
+
+**Dispositivo:** Rtr-T2  
+**Comando:**
+ping 89.73.67.134
+**Resultado esperado:**
+✔ Conectividade com ISP estabelecida
+
+---
+
+### 12.8 Teste de routing estático entre terminais (Campus Backbone)
+
+**Objetivo:**
+Validar comunicação entre terminais através do backbone.
+
+**Dispositivo:** Rtr-T2  
+**Comando:**
+
+ping 10.63.172.2 (Rtr-T3)
+ping 10.63.172.3 (Rtr-T4)
+
+**Resultado esperado:**
+✔ Comunicação entre routers bem-sucedida
+
+---
+
+### 12.9 Teste de conectividade com Internet (simulação externa)
+
+**Objetivo:**
+Validar acesso a redes externas.
+
+**Dispositivo:** Rtr-T2  
+**Comando:**
+ping 8.8.8.8
+
+**Resultado esperado:**
+✔ Sucesso (se ISP tiver routing externo configurado)
+ou
+✘ Falha (caso não exista simulação de Internet externa no Packet Tracer)
+
+---
+
+### 12.10 Verificação do Access Point
+
+**Objetivo:**
+Confirmar o correto funcionamento da rede WiFi.
+
+**Procedimento:**
+- Configuração do SSID "T2-WiFi"
+- Associação do laptop à rede
+- Validação de conectividade IP
+
+**Resultado esperado:**
+✔ Associação WiFi realizada com sucesso  
+✔ Conectividade com gateway e outras VLANs
+
+---
+
+### 12.11 Verificação da VLAN VoIP
+
+**Objetivo:**
+Garantir que o dispositivo VoIP está corretamente associado à VLAN.
+
+**Procedimento:**
+- Ligação do telefone IP à porta configurada com voice VLAN 777
+- Verificação da associação automática
+
+**Resultado esperado:**
+✔ Dispositivo corretamente associado à VLAN VoIP
+
+*Nota:* Não foram realizados testes de comunicação VoIP nesta fase.
+
+---
+
+### 12.12 Conclusão dos testes
+
+Os testes realizados permitiram validar:
+
+- ✔ Funcionamento correto das VLANs
+- ✔ Configuração adequada das portas em modo access e trunk
+- ✔ Encaminhamento inter-VLAN através do Router-on-a-Stick
+- ✔ Routing estático entre terminais (Campus Backbone)
+- ✔ Conectividade com ISP (Terminal 2)
+- ✔ Conectividade da rede WiFi
+- ✔ Comunicação bidirecional entre VLANs
+- ✔ Isolamento da VLAN 774 (SwitchesDMZ)
+- ✔ Comunicação interna da VLAN de gestão assegurada por Layer 2
+
+Conclui-se que a infraestrutura de rede do Terminal 2 se encontra corretamente configurada, funcional e em conformidade com os requisitos do projeto.
+
+---
