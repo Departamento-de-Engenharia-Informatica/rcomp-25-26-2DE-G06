@@ -446,7 +446,7 @@ Adicionar no Packet Tracer:
 
 * 2 PCs
 * 1 Laptop
-* 1 Access Point (não usar wireless router)
+* 1 Access Point 
 * 1 Server
 * 1 VoIP (modelo 7960)
 
@@ -761,6 +761,71 @@ Com esta configuração:
 Conclui-se que a ligação à Internet se encontra corretamente configurada e funcional.
 
 ---
+### 11.5 Simulação dos Terminais T3 e T4 (Campus Backbone)
+
+Para validar o correto funcionamento do encaminhamento entre terminais, foram criadas simulações simplificadas dos Terminais 3 e 4.
+
+#### 11.5.1 Topologia simplificada
+
+Foram adicionados os seguintes equipamentos:
+
+1 switch IC para cada terminal:
+* IC-T3-L1
+* IC-T4-L1
+1 router por terminal:
+* Rtr-T3
+* Rtr-T4
+
+#### 11.5.2 Ligações
+
+A interligação foi realizada da seguinte forma:
+* MC-T2 ligado aos ICs dos outros terminais através de trunks
+* Cada IC ligado ao respetivo router através de uma porta access VLAN 773
+
+#### 11.5.3 Configuração dos ICs (T3 e T4)
+Porta para o MC (uplink)
+
+interface gigabitEthernet9/1
+switchport mode trunk
+switchport trunk allowed vlan 773-786
+no shutdown
+
+Porta para o Router (backbone)
+
+interface fastEthernet8/1
+switchport mode access
+switchport access vlan 773
+no shutdown
+
+#### 11.5.4 Configuração dos Routers (Backbone)
+##### Rtr-T3
+
+interface fastEthernet0/0
+ip address 10.63.172.2 255.255.255.0
+no shutdown
+
+###### Rtr-T4
+
+interface fastEthernet0/0
+ip address 10.63.172.3 255.255.255.0
+no shutdown
+
+#### 11.5.5 Objetivo da simulação
+Esta implementação permitiu:
+
+* Simular o Campus Backbone (VLAN 773)
+* Testar conectividade entre routers dos diferentes terminais
+* Validar o funcionamento do routing estático
+* Garantir integração futura com os restantes elementos do grupo
+
+#### 11.5.6 Resultado
+Com esta configuração:
+
+✔ Comunicação entre Rtr-T2, Rtr-T3 e Rtr-T4 estabelecida
+✔ Backbone funcional
+✔ Estrutura preparada para integração completa da rede
+
+---
 ## 12. Testes de Validação Final
 Após a configuração completa da infraestrutura de rede do Terminal 2, incluindo:
 * VLANs e VTP
@@ -963,8 +1028,39 @@ Garantir que o dispositivo VoIP está corretamente associado à VLAN.
 *Nota:* Não foram realizados testes de comunicação VoIP nesta fase.
 
 ---
+### 12.13 Teste de conectividade no Campus Backbone (entre routers)
 
-### 12.12 Conclusão dos testes
+Objetivo:
+Validar a comunicação direta entre routers através da VLAN 773.
+
+Dispositivo: Rtr-T2
+Comando:
+
+ping 10.63.172.2
+ping 10.63.172.3
+
+Resultado esperado:
+✔ Comunicação bem-sucedida com ambos os routers
+
+---
+### 12.14 Teste de continuidade Layer 2 (Switching Backbone)
+
+Objetivo:
+Confirmar que os trunks entre MC e ICs estão operacionais.
+
+Comando nos switches:
+
+show interfaces trunk
+
+Resultado esperado:
+
+✔ VLAN 773 presente em todos os trunks
+✔ Interfaces em estado trunking
+✔ Sem portas bloqueadas indevidamente
+
+---
+
+### 12.14 Conclusão dos testes
 
 Os testes realizados permitiram validar:
 
@@ -977,6 +1073,7 @@ Os testes realizados permitiram validar:
 - ✔ Comunicação bidirecional entre VLANs
 - ✔ Isolamento da VLAN 774 (SwitchesDMZ)
 - ✔ Comunicação interna da VLAN de gestão assegurada por Layer 2
+- ✔ Simulação do Campus Backbone com múltiplos terminais validada
 
 Conclui-se que a infraestrutura de rede do Terminal 2 se encontra corretamente configurada, funcional e em conformidade com os requisitos do projeto.
 

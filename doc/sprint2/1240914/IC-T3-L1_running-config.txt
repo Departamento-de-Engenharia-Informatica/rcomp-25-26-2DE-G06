@@ -4,7 +4,7 @@ no service timestamps log datetime msec
 no service timestamps debug datetime msec
 no service password-encryption
 !
-hostname MC-T2-L1-Sala6
+hostname IC-T3-L1
 !
 !
 !
@@ -15,17 +15,9 @@ ptp clock transparent domain 0 profile default
 spanning-tree mode pvst
 spanning-tree extend system-id
 !
-interface GigabitEthernet6/1
- switchport trunk allowed vlan 773-786
- switchport mode trunk
-!
-interface GigabitEthernet7/1
- switchport trunk allowed vlan 773-786
- switchport mode trunk
-!
 interface FastEthernet8/1
- switchport trunk allowed vlan 773-786
- switchport mode trunk
+ switchport access vlan 773
+ switchport mode access
 !
 interface GigabitEthernet9/1
  switchport trunk allowed vlan 773-786
@@ -34,9 +26,6 @@ interface GigabitEthernet9/1
 interface Vlan1
  no ip address
  shutdown
-!
-interface Vlan774
- ip address 10.63.164.2 255.255.254.0
 !
 !
 !
