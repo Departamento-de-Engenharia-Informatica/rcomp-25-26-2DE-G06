@@ -50,6 +50,43 @@ Todas as VLANs deverão ser configuradas em todos os switches (via VTP ou manual
 | T4-VoIP        | 785     | Telefonia IP do Terminal 4          |
 | T4-ServersDMZ  | 786     | Servidores do Terminal 4            |
 
+
+## Justification of VLAN ID selection
+
+A atribuição dos VLAN IDs segue requisitos técnicos definidos pelo enunciado do projeto e não resulta de uma escolha arbitrária.
+
+### Cumprimento do intervalo obrigatório
+
+- O enunciado define para o Grupo 6 da Turma 2DE o intervalo obrigatório de VLAN IDs:
+  - **773 a 793**
+- Todos os VLAN IDs utilizados no Terminal 2 encontram-se dentro deste intervalo, garantindo conformidade com as regras globais do projeto.
+
+### Consistência global do campus
+
+- A utilização de um intervalo comum entre todos os terminais (T2, T3, T4) assegura:
+  - integração sem conflitos na fase final (`campus.pkt`)
+  - compatibilidade com VTP (VLAN Trunking Protocol)
+  - propagação consistente das VLANs entre switches
+
+### Segmentação funcional da rede
+
+As VLANs foram organizadas por função lógica, permitindo:
+
+- separação de tráfego por serviço (Users, WiFi, VoIP, Servers)
+- redução de broadcast domains
+- aumento da segurança lógica entre serviços
+- melhor escalabilidade da infraestrutura
+
+### VLAN de backbone e gestão
+
+- VLAN 773 (CampusBackbone) foi reservada para interligação entre routers dos terminais
+- VLAN 774 (SwitchesDMZ) foi reservada para gestão de equipamentos de rede
+
+Esta separação garante isolamento entre:
+- tráfego de gestão (administração de switches)
+- tráfego de routing inter-terminal
+- tráfego de utilizadores finais
+
 ---
 
 ## 2.2 IPv4 Addressing Plan (VLSM)
@@ -72,6 +109,73 @@ O bloco **10.63.128.0/17** foi dividido utilizando VLSM, começando pelas redes 
 | T3-ServersDMZ  | /24     | 10.63.173.0      | 10.63.173.1 - 10.63.173.254   | 254      |
 | T4-ServersDMZ  | /25     | 10.63.174.0      | 10.63.174.1 - 10.63.174.126   | 126      |
 | T2-ServersDMZ  | /25     | 10.63.174.128    | 10.63.174.129 - 10.63.174.254 | 126      |
+
+## Justification of IPv4 addressing plan (VLSM)
+
+O plano de endereçamento IPv4 foi desenvolvido com base no bloco atribuído:
+
+- **10.63.128.0/17**
+
+Foi aplicada a metodologia **VLSM (Variable Length Subnet Masking)** para otimizar a utilização do espaço de endereçamento.
+
+---
+
+### A) Dimensionamento por requisitos de nós
+
+Cada sub-rede foi dimensionada de acordo com o número máximo de dispositivos previstos:
+
+- T2-WiFi: ~2000 hosts → /21 (2046 hosts utilizáveis)
+- T2-UserOutlets: ~1000 hosts → /22 (1022 hosts utilizáveis)
+- SwitchesDMZ: ~410 hosts → /23 (510 hosts utilizáveis)
+- Backbone: ~190 hosts → /24 (254 hosts utilizáveis)
+
+- o **primeiro endereço** da sub-rede ser reservado para identificação da rede (Network Address)
+- o **último endereço** ser reservado para broadcast
+
+Assim, estes endereços não podem ser atribuídos a hosts.
+
+A escolha das máscaras segue diretamente a fórmula:
+2^(32 - N) - 2 ≥ número de hosts necessários
+
+---
+
+### B) Aplicação da regra VLSM (ordenação por tamanho)
+
+O planeamento foi feito seguindo a regra fundamental do VLSM:
+
+- ordenar redes da maior para a menor
+- alocar blocos sequencialmente no espaço disponível
+- evitar sobreposição de sub-redes
+
+Isto permite:
+- utilização eficiente do espaço IPv4
+- eliminação de desperdício de endereços
+- facilidade de expansão futura
+
+---
+
+### C) Prevenção de sobreposição entre terminais
+
+O bloco /17 foi dividido entre T2, T3 e T4 de forma estruturada:
+
+- cada terminal recebeu blocos contíguos
+- não existem interseções entre sub-redes
+- garante-se compatibilidade com routing estático entre routers
+
+Exemplo:
+- T2 WiFi → 10.63.128.0/21
+- T3 WiFi → 10.63.144.0/21
+- T4 WiFi → 10.63.136.0/21
+
+---
+
+### D) Eficiência e escalabilidade
+
+A abordagem VLSM permite:
+
+- crescimento futuro sem reconfiguração global
+- adição de novas VLANs dentro do bloco /17
+- manutenção simplificada da infraestrutura
 
 ---
 
@@ -123,3 +227,4 @@ O bloco **10.63.128.0/17** foi dividido utilizando VLSM, começando pelas redes 
 * 1240914- Development of the Packet Tracer simulation for Terminal 2
 * 1241138 - Development of the Packet Tracer simulation for Terminal 3
 * 1240895 - Development of the Packet Tracer simulation for Terminal 4
+

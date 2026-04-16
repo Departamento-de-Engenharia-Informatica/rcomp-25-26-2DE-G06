@@ -307,20 +307,20 @@ Após a configuração da infraestrutura de Layer 2 (VLANs e Trunks), foi implem
 
 ---
 
-### 8.1 Ligação Router ↔ Switch (MC)
+### 8.1 Ligação Router ↔ Switch (IC)
 
-O router foi ligado ao switch principal (MC) através da seguinte ligação:
+O router foi ligado ao switch IC através da seguinte ligação:
 
 - Router: FastEthernet0/0
-- MC: FastEthernet8/1
+- IC: FastEthernet5/1
 
 Esta ligação foi configurada como **trunk** no switch, permitindo o transporte de múltiplas VLANs.
 
-#### Configuração no MC:
+#### Configuração no IC:
 
 > enable  
 > configure terminal  
-> interface fastEthernet8/1  
+> interface fastEthernet5/1  
 > switchport mode trunk  
 > switchport trunk allowed vlan 773-786  
 > no shutdown  
@@ -1055,6 +1055,7 @@ Resultado esperado:
 S* 0.0.0.0/0 [1/0] via 89.73.67.134
 
 ✔ Indica que a rota por defeito está corretamente configurada
+
 ---
 ### 12.16 Teste de rota de retorno no ISP
 
@@ -1071,6 +1072,22 @@ Resultado esperado:
 10.63.128.0/17 via 89.73.67.133
 
 ✔ Garante comunicação de retorno para o Terminal 2
+
+---
+### 12.17 Teste de traceroute para o ISP
+
+Objetivo:
+Validar o caminho seguido pelo tráfego até ao ISP.
+
+Dispositivo: PC VLAN 775  
+Comando:
+tracert 89.73.67.134
+
+Resultado esperado:
+
+✔ Primeiro salto: gateway (Rtr-T2)
+✔ Segundo salto: ISP
+---
 
 ---
 

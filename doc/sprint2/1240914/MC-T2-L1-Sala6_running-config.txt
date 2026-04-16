@@ -24,8 +24,7 @@ interface GigabitEthernet7/1
  switchport mode trunk
 !
 interface FastEthernet8/1
- switchport trunk allowed vlan 773-786
- switchport mode trunk
+ shutdown
 !
 interface GigabitEthernet9/1
  switchport trunk allowed vlan 773-786
