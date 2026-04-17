@@ -205,4 +205,39 @@ ip address 10.63.165.X 255.255.254.0
 no shutdown
 ```
 
+## 8. Configuração de Layer 3 (Router-on-a-Stick)
+
+O encaminhamento entre VLANs é realizado pelo router Cisco 2811 (Rtr-T4) através da técnica Router-on-a-Stick, utilizando sub-interfaces com encapsulamento IEEE 802.1Q na FastEthernet0/0.
+
+### 8.1 Ativação da interface física
+
+```
+enable
+configure terminal
+interface FastEthernet0/0
+no ip address
+no shutdown
+```
+
+### 8.2 Sub-interfaces (VLANs do Terminal 4)
+
+| **Sub-interface** | **VLAN** | **IP Gateway** | **Máscara** |
+| --- | --- | --- | --- |
+| Fa0/0.773 | 773 - CampusBackbone | 10.63.172.3 | 255.255.255.0 |
+| Fa0/0.783 | 783 - T4-UserOutlets | 10.63.160.1 | 255.255.252.0 |
+| Fa0/0.784 | 784 - T4-WiFi | 10.63.136.1 | 255.255.248.0 |
+| Fa0/0.785 | 785 - T4-VoIP | 10.63.168.1 | 255.255.254.0 |
+| Fa0/0.786 | 786 - T4-ServersDMZ | 10.63.174.1 | 255.255.255.128 |
+
+Exemplo de configuração de uma sub-interface:
+
+```
+interface FastEthernet0/0.783
+encapsulation dot1Q 783
+ip address 10.63.160.1 255.255.252.0
+no shutdown
+```
+
+> Nota: A VLAN 774 (SwitchesDMZ) não possui sub-interface no router, garantindo o seu isolamento. O acesso a esta VLAN é apenas de camada 2.
+
 ---
