@@ -241,3 +241,61 @@ no shutdown
 > Nota: A VLAN 774 (SwitchesDMZ) não possui sub-interface no router, garantindo o seu isolamento. O acesso a esta VLAN é apenas de camada 2.
 
 ---
+
+## 9. Configuração dos End Devices
+
+### 9.1 Equipamentos adicionados
+
+- 2 PCs (utilizadores - VLAN 783)
+- 2 PCs (DMZ - VLAN 786)
+- 1 Laptop (WiFi - VLAN 784) por piso
+- 2 Access Points (VLAN 784)
+- 2 Servers (VLAN 786)
+- 2 Telefones VoIP 7960 (VLAN 785)
+
+### 9.2 Configuração das portas nos CPs
+
+Cada porta do CP é configurada em modo access na VLAN correspondente ao dispositivo ligado:
+
+```
+interface FastEthernetX/X
+switchport mode access
+switchport access vlan [VLAN ID]
+no shutdown
+```
+
+### 9.3 Endereçamento IPv4 - Level 0
+
+| **Dispositivo** | **VLAN** | **IP** | **Máscara** | **Gateway** |
+| --- | --- | --- | --- | --- |
+| PC-T4-Users-1 | 783 | 10.63.160.2 | 255.255.252.0 | 10.63.160.1 |
+| PC-T4-DMZ-1 | 786 | 10.63.174.2 | 255.255.255.128 | 10.63.174.1 |
+| T4-Server-1 | 786 | 10.63.174.3 | 255.255.255.128 | 10.63.174.1 |
+| T4-F0-AP1 | 784 | 10.63.136.2 | 255.255.248.0 | 10.63.136.1 |
+| T4-VoIP-1 | 785 | 10.63.168.2 | 255.255.254.0 | 10.63.168.1 |
+| T4-Laptop-WiFi-1 | 784 | 10.63.136.3 | 255.255.248.0 | 10.63.136.1 |
+
+### 9.4 Endereçamento IPv4 - Level 2
+
+| **Dispositivo** | **VLAN** | **IP** | **Máscara** | **Gateway** |
+| --- | --- | --- | --- | --- |
+| PC-T4-Users-2 | 783 | 10.63.160.3 | 255.255.252.0 | 10.63.160.1 |
+| PC-T4-DMZ-2 | 786 | 10.63.174.4 | 255.255.255.128 | 10.63.174.1 |
+| T4-Server-2 | 786 | 10.63.174.5 | 255.255.255.128 | 10.63.174.1 |
+| T4-F2-AP1 | 784 | 10.63.136.4 | 255.255.248.0 | 10.63.136.1 |
+| T4-VoIP-2 | 785 | 10.63.168.3 | 255.255.254.0 | 10.63.168.1 |
+| T4-Laptop-WiFi-2 | 784 | 10.63.136.5 | 255.255.248.0 | 10.63.136.1 |
+
+### 9.5 Configuração do Laptop (WiFi)
+
+Para ligar o laptop ao Access Point no Packet Tracer:
+
+1. Abrir o laptop -> separador Physical
+2. Desligar o laptop
+3. Remover a placa de rede com fio
+4. Inserir a placa wireless WPC300N
+5. Ligar o laptop
+6. Aceder a Desktop -> PC Wireless e ligar ao SSID do AP
+7. Configurar o IP manualmente em Desktop -> IP Configuration
+
+---
