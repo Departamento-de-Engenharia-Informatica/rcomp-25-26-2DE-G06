@@ -1,0 +1,85 @@
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname Rtr-T2
+!
+!
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+!
+!
+license udi pid CISCO2811/K9 sn FTX1017O486-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ ip address 10.63.172.1 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+ip classless
+ip route 10.63.144.0 255.255.248.0 10.63.172.2
+ip route 10.63.156.0 255.255.252.0 10.63.172.2
+ip route 10.63.170.0 255.255.254.0 10.63.172.2
+ip route 10.63.173.0 255.255.255.0 10.63.172.2
+ip route 10.63.136.0 255.255.248.0 10.63.172.3
+ip route 10.63.160.0 255.255.252.0 10.63.172.3
+ip route 10.63.168.0 255.255.254.0 10.63.172.3
+ip route 10.63.174.0 255.255.255.128 10.63.172.3
+!
+ip flow-export version 9
+!
+!
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
