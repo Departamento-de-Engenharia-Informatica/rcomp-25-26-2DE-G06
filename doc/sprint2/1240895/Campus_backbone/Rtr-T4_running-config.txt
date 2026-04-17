@@ -49,10 +49,6 @@ interface FastEthernet0/0.773
  encapsulation dot1Q 773
  ip address 10.63.172.3 255.255.255.0
 !
-interface FastEthernet0/0.774
- encapsulation dot1Q 774
- ip address 10.63.165.1 255.255.254.0
-!
 interface FastEthernet0/0.783
  encapsulation dot1Q 783
  ip address 10.63.160.1 255.255.252.0
