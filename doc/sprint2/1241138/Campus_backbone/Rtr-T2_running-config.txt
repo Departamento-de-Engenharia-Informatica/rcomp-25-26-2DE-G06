@@ -4,7 +4,7 @@ no service timestamps log datetime msec
 no service timestamps debug datetime msec
 no service password-encryption
 !
-hostname Rtr-T4
+hostname Rtr-T2
 !
 !
 !
@@ -19,7 +19,7 @@ no ipv6 cef
 !
 !
 !
-license udi pid CISCO2811/K9 sn FTX1017HZX8-
+license udi pid CISCO2811/K9 sn FTX1017CGY6-
 !
 !
 !
@@ -47,7 +47,7 @@ interface FastEthernet0/0
 !
 interface FastEthernet0/0.773
  encapsulation dot1Q 773
- ip address 10.63.172.3 255.255.255.0
+ ip address 10.63.172.1 255.255.255.0
 !
 interface FastEthernet0/1
  no ip address
@@ -60,6 +60,14 @@ interface Vlan1
  shutdown
 !
 ip classless
+ip route 10.63.144.0 255.255.248.0 10.63.172.2
+ip route 10.63.156.0 255.255.252.0 10.63.172.2
+ip route 10.63.170.0 255.255.254.0 10.63.172.2
+ip route 10.63.173.0 255.255.255.0 10.63.172.2
+ip route 10.63.160.0 255.255.252.0 10.63.172.3
+ip route 10.63.136.0 255.255.248.0 10.63.172.3
+ip route 10.63.168.0 255.255.254.0 10.63.172.3
+ip route 10.63.174.0 255.255.255.128 10.63.172.3
 !
 ip flow-export version 9
 !
@@ -79,6 +87,3 @@ line vty 0 4
 !
 !
 end
-
-
-Rtr-T4#

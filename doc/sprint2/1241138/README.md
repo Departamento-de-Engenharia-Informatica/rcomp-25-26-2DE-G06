@@ -6,13 +6,13 @@
 
 ## 1. Preparação
 
-| **Parâmetro**      | **Valor**                    |
-|--------------------|------------------------------|
+| **Parâmetro** | **Valor** |
+| --- | --- |
 | Software utilizado | Cisco Packet Tracer 9.0.0810 |
-| Terminal           | T3                           |
-| VTP Domain         | rc2526deg6                   |
-| Bloco IPv4         | 10.63.128.0/17               |
-| Estudante          | 1241138                      |
+| Terminal | T3 |
+| VTP Domain | rc2526deg6 |
+| Bloco IPv4 | 10.63.128.0/17 |
+| Estudante | 1241138 |
 
 ---
 
@@ -20,21 +20,20 @@
 
 ### 2.1 Switches
 
-| **Tipo**       | **Exemplo**                                                                                                |
-|----------------|------------------------------------------------------------------------------------------------------------|
-| MC             | MC-T3-L1-Sala1                                                                                             |
-| IC             | IC-T3-L1-Sala1                                                                                             |
-| HC             | HC-T3-L1-Sala1 / HC-T3-L1-Sala11 / HC-T3-L1-Sala15 / HC-T3-L2-Sala1 / HC-T3-L2-Sala13 / HC-T3-L2-Sala20    |
-| CP             | CP-T3-L1-ParedeSup / CP-T3-L1-Sala13 / CP-T3-L1-Sala5 / CP-T3-L2-Sala4 / CP-T3-L2-Sala13 / CP-T3-L2-Sala20 |
-| Stubs backbone | MC-T2-stub / MC-T4-stub                                                                                    |
+| **Tipo** | **Exemplo** |
+| --- | --- |
+| MC | MC |
+| IC | IC-T3-L1-Sala1 / IC-T2 / IC-T4 |
+| HC | HC-T3-L1-Sala1 / HC-T3-L1-Sala11 / HC-T3-L1-Sala15 / HC-T3-L2-Sala1 / HC-T3-L2-Sala13 / HC-T3-L2-Sala20 |
+| CP | CP-T3-L1-ParedeSup / CP-T3-L1-Sala13 / CP-T3-L1-Sala5 / CP-T3-L2-Sala4 / CP-T3-L2-Sala13 / CP-T3-L2-Sala20 |
 
 ### 2.2 Routers
 
-| **Hostname**    | **Função**                                 |
-|-----------------|--------------------------------------------|
-| Rtr-T3-L1-Sala1 | Router principal do Terminal 3             |
-| Rtr-T2          | Router representativo do Terminal 2 (stub) |
-| Rtr-T4          | Router representativo do Terminal 4 (stub) |
+| **Hostname** | **Função** |
+| --- | --- |
+| Rtr-T3-L1-Sala1 | Router principal do Terminal 3 |
+| Rtr-T2 | Router representativo do Terminal 2 |
+| Rtr-T4 | Router representativo do Terminal 4 |
 
 > Nota: Os hostnames coincidem com o Display Name, sem espaços.
 
@@ -44,58 +43,73 @@
 
 ### 3.1 Equipamentos utilizados
 
-- 1 Router Cisco 2811 principal (`Rtr-T3-L1-Sala1`)
-- 2 Routers Cisco 2811 representativos dos terminais externos (`Rtr-T2` e `Rtr-T4`)
-- Switches modelo PT-Empty:
-    - 1 MC (`MC-T3-L1-Sala1`)
-    - 1 IC (`IC-T3-L1-Sala1`)
+No ficheiro `Terminal3.pkt` foram utilizados:
+
+- 1 router Cisco 2811 principal (`Rtr-T3-L1-Sala1`)
+- 2 routers Cisco 2811 representativos dos terminais externos (`Rtr-T2` e `Rtr-T4`)
+- switches modelo PT-Empty:
+    - 1 MC backbone simplificado (`MC`)
+    - 1 IC real do Terminal 3 (`IC-T3-L1-Sala1`)
+    - 2 ICs representativos do backbone (`IC-T2` e `IC-T4`)
     - 3 HC no Level 1 (`HC-T3-L1-Sala1`, `HC-T3-L1-Sala11`, `HC-T3-L1-Sala15`)
     - 3 HC no Level 2 (`HC-T3-L2-Sala1`, `HC-T3-L2-Sala13`, `HC-T3-L2-Sala20`)
     - 3 CP representativos no Level 1 (`CP-T3-L1-ParedeSup`, `CP-T3-L1-Sala13`, `CP-T3-L1-Sala5`)
     - 3 CP representativos no Level 2 (`CP-T3-L2-Sala4`, `CP-T3-L2-Sala13`, `CP-T3-L2-Sala20`)
-    - 2 stubs de backbone (`MC-T2-stub`, `MC-T4-stub`)
 
-> Nota: Na simulação foram utilizados **CPs representativos por grupo/zona**, em vez de todos os CPs físicos do Sprint 1. Esta simplificação mantém a hierarquia MC → IC → HC → CP e permite demonstrar corretamente trunking, VTP, gestão de switches, backbone e ligação de end devices.
+> Na simulação foram utilizados **CPs representativos por grupo/zona**, em vez de todos os CPs físicos do Sprint 1. Esta simplificação mantém a hierarquia IC → HC → CP e permite demonstrar trunking, VTP, gestão de switches, backbone e ligação de end devices.
 >
-> O switch **CP-T3-L2-Sala13** foi o CP representativo configurado com os end devices para demonstrar o funcionamento de todas as VLANs do Terminal 3.
+> O switch **CP-T3-L2-Sala13** foi o CP representativo configurado com os end devices para demonstrar o funcionamento das VLANs do Terminal 3.
 
 ### 3.2 Módulos adicionados
 
 Em cada switch PT-Empty:
 
 1. Aba **Physical**
-2. Desligar o switch (botão verde)
-3. Adicionar módulos:
-    - **PT-SWITCH-NM-1FGE-SM** — para ligações de fibra monomodo (backbone)
-    - **PT-SWITCH-NM-1CGE** — para ligações de cobre (horizontal)
+2. Desligar o switch
+3. Adicionar módulos conforme necessário:
+    - módulo Gigabit de fibra para backbone
+    - módulo Gigabit de cobre para ligações horizontais
 4. Ligar novamente
 
 ### 3.3 Ligações
 
-- Backbone interno (MC → IC e IC → HCs) → **Fibra ótica monomodo**
-- Ligações horizontais (HC → CP e CP → end devices) → **Cobre**
-- MC-T3-L1-Sala1 ligado a MC-T2-stub e MC-T4-stub via fibra (campus backbone)
-- Rtr-T3-L1-Sala1 ligado ao MC-T3-L1-Sala1 via cobre (único link trunk — router-on-a-stick)
-- Rtr-T2 ligado ao MC-T2-stub via cobre
-- Rtr-T4 ligado ao MC-T4-stub via cobre
+#### Backbone simplificado
+
+- `MC Gig0/1` ↔ `IC-T3-L1-Sala1 Gig0/1`
+- `MC Gig1/1` ↔ `IC-T4 Gig0/1`
+- `MC Gig2/1` ↔ `IC-T2 Gig0/1`
+
+#### Ligações do Terminal 3
+
+- `IC-T3-L1-Sala1 Gig1/1` ↔ `HC-T3-L1-Sala1 Gig0/1`
+- `IC-T3-L1-Sala1 Gig2/1` ↔ `HC-T3-L1-Sala11 Gig0/1`
+- `IC-T3-L1-Sala1 Gig3/1` ↔ `HC-T3-L1-Sala15 Gig0/1`
+- `IC-T3-L1-Sala1 Gig4/1` ↔ `HC-T3-L2-Sala1 Gig0/1`
+- `IC-T3-L1-Sala1 Gig5/1` ↔ `HC-T3-L2-Sala13 Gig0/1`
+- `IC-T3-L1-Sala1 Gig6/1` ↔ `HC-T3-L2-Sala20 Gig0/1`
+
+#### Ligações horizontais
+
+- `HC-T3-L1-Sala1 Gig1/1` ↔ `CP-T3-L1-ParedeSup Gig0/1`
+- `HC-T3-L1-Sala11 Gig1/1` ↔ `CP-T3-L1-Sala13 Gig0/1`
+- `HC-T3-L1-Sala15 Gig1/1` ↔ `CP-T3-L1-Sala5 Gig0/1`
+- `HC-T3-L2-Sala1 Gig1/1` ↔ `CP-T3-L2-Sala4 Gig0/1`
+- `HC-T3-L2-Sala13 Gig1/1` ↔ `CP-T3-L2-Sala13 Gig0/1`
+- `HC-T3-L2-Sala20 Gig1/1` ↔ `CP-T3-L2-Sala20 Gig0/1`
+
+#### Router-on-a-stick e backbone representativo
+
+- `IC-T3-L1-Sala1 Gig8/1` ↔ `Rtr-T3-L1-Sala1 Fa0/0`
+- `IC-T2 Gig1/1` ↔ `Rtr-T2 Fa0/0`
+- `IC-T4 Gig1/1` ↔ `Rtr-T4 Fa0/0`
+
+> No `Terminal3.pkt`, os terminais T2 e T4 surgem de forma **simplificada**, apenas para representar a backbone do campus e validar a comunicação entre routers.
 
 ---
 
-## 4. Configuração do Switch Principal (MC)
+## 4. Base de Dados VLAN
 
-O switch `MC-T3-L1-Sala1` funciona como **VTP Server**, sendo responsável pela criação e propagação da base de dados global de VLANs.
-
-### 4.1 Hostname e VTP
-
-```
-enable
-configure terminal
-hostname MC-T3-L1-Sala1
-vtp domain rc2526deg6
-vtp mode server
-```
-
-### 4.2 Criação das VLANs
+As VLANs utilizadas no projeto são as seguintes:
 
 | **VLAN ID** | **Nome** | **Finalidade** |
 | --- | --- | --- |
@@ -114,7 +128,25 @@ vtp mode server
 | 785 | T4-VoIP | Telefonia IP do Terminal 4 |
 | 786 | T4-ServersDMZ | Servidores do Terminal 4 |
 
+---
+
+## 5. Configuração de Switches
+
+### 5.1 MC backbone
+
+O switch `MC` funciona como **VTP Server**, sendo responsável pela criação e propagação da base de dados global de VLANs.
+
+```bash
+enable
+configure terminal
+hostname MC
+vtp domain rc2526deg6
+vtp mode server
 ```
+
+Criação das VLANs:
+
+```bash
 vlan 773
  name CampusBackbone
 vlan 774
@@ -146,13 +178,38 @@ vlan 786
 exit
 ```
 
----
+Portas trunk do backbone:
 
-## 5. Configuração dos Restantes Switches
-
-Todos os switches exceto o MC foram configurados como **VTP Client**, recebendo automaticamente a base de dados de VLANs propagada pelo MC.
-
+```bash
+interface GigabitEthernet0/1
+ description -> IC-T3
+ switchport mode trunk
+ switchport trunk allowed vlan 773-786
+ no shutdown
+exit
+interface GigabitEthernet1/1
+ description -> IC-T4
+ switchport mode trunk
+ switchport trunk allowed vlan 773-786
+ no shutdown
+exit
+interface GigabitEthernet2/1
+ description -> IC-T2
+ switchport mode trunk
+ switchport trunk allowed vlan 773-786
+ no shutdown
+exit
+interface vlan 774
+ ip address 10.63.164.1 255.255.254.0
+ no shutdown
+exit
 ```
+
+### 5.2 Restantes switches
+
+Todos os switches exceto o MC foram configurados em modo VTP Client.
+
+```bash
 enable
 configure terminal
 hostname [nome do switch]
@@ -160,54 +217,12 @@ vtp domain rc2526deg6
 vtp mode client
 ```
 
----
+### 5.3 Trunks
 
-## 6. Configuração de Trunks
+Todas as ligações entre switches foram configuradas em trunk. A ligação entre `IC-T3-L1-Sala1` e `Rtr-T3-L1-Sala1` também foi configurada em trunk para suportar o router-on-a-stick.
+Configuração típica:
 
-Todas as ligações entre switches foram configuradas em trunk, transportando as VLANs 773-786.
-
-### 6.1 Portas trunk por dispositivo
-
-#### MC-T3-L1-Sala1
-
-| **Porta**          | **Ligado a**    |
-|--------------------|-----------------|
-| GigabitEthernet0/1 | MC-T2-stub      |
-| GigabitEthernet1/1 | MC-T4-stub      |
-| GigabitEthernet2/1 | IC-T3-L1-Sala1  |
-| GigabitEthernet4/1 | Rtr-T3-L1-Sala1 |
-
-#### IC-T3-L1-Sala1
-
-| **Porta** | **Ligado a** |
-| --- | --- |
-| GigabitEthernet0/1 | MC-T3-L1-Sala1 |
-| GigabitEthernet1/1 | HC-T3-L1-Sala1 |
-| GigabitEthernet2/1 | HC-T3-L1-Sala11 |
-| GigabitEthernet3/1 | HC-T3-L1-Sala15 |
-| GigabitEthernet4/1 | HC-T3-L2-Sala1 |
-| GigabitEthernet5/1 | HC-T3-L2-Sala13 |
-| GigabitEthernet6/1 | HC-T3-L2-Sala20 |
-
-#### HCs Level 1
-
-| **Switch** | **Porta IC (uplink)** | **Porta CP (downlink)** |
-| --- | --- | --- |
-| HC-T3-L1-Sala1 | GigabitEthernet0/1 | GigabitEthernet1/1 → CP-T3-L1-ParedeSup |
-| HC-T3-L1-Sala11 | GigabitEthernet0/1 | GigabitEthernet1/1 → CP-T3-L1-Sala13 |
-| HC-T3-L1-Sala15 | GigabitEthernet0/1 | GigabitEthernet1/1 → CP-T3-L1-Sala5 |
-
-#### HCs Level 2
-
-| **Switch** | **Porta IC (uplink)** | **Porta CP (downlink)** |
-| --- | --- | --- |
-| HC-T3-L2-Sala1 | GigabitEthernet0/1 | GigabitEthernet1/1 → CP-T3-L2-Sala4 |
-| HC-T3-L2-Sala13 | GigabitEthernet0/1 | GigabitEthernet1/1 → CP-T3-L2-Sala13 |
-| HC-T3-L2-Sala20 | GigabitEthernet0/1 | GigabitEthernet1/1 → CP-T3-L2-Sala20 |
-
-### 6.2 Configuração típica de trunk
-
-```
+```bash
 interface GigabitEthernetX/1
  switchport mode trunk
  switchport trunk allowed vlan 773-786
@@ -215,44 +230,44 @@ interface GigabitEthernetX/1
 exit
 ```
 
-### 6.3 Verificação
+No `IC-T3-L1-Sala1`, a porta para o router ficou:
 
+```bash
+interface GigabitEthernet8/1
+ switchport mode trunk
+ switchport trunk allowed vlan 773-786
+ no shutdown
+exit
 ```
-show interfaces trunk
-show vlan brief
-show vtp status
-```
 
-Resultado esperado: todas as portas de interligação em estado `trunking`, encapsulamento `802.1q`, VLANs 773-786 permitidas e ativas.
+### 5.4 Gestão dos switches — VLAN 774
 
----
+A rede de gestão foi implementada com uma SVI (`interface vlan 774`) em todos os switches. A VLAN 774 é isolada e não possui sub-interface no router.
 
-## 7. Gestão dos Switches (SwitchesDMZ - VLAN 774)
+#### Endereçamento de gestão do Terminal 3
 
-A rede de gestão foi implementada com uma SVI (`interface vlan 774`) em todos os switches, permitindo acesso remoto e monitorização. A VLAN 774 é uma rede isolada — não possui sub-interface no router, garantindo que o tráfego de gestão permanece restrito à camada 2.
+| **Switch** | **IP de Gestão** |
+| --- | --- |
+| MC | 10.63.164.1 |
+| IC-T3-L1-Sala1 | 10.63.164.102 |
+| IC-T2 | 10.63.164.2 |
+| IC-T4 | 10.63.164.3 |
+| HC-T3-L1-Sala1 | 10.63.164.103 |
+| HC-T3-L1-Sala11 | 10.63.164.104 |
+| HC-T3-L1-Sala15 | 10.63.164.105 |
+| HC-T3-L2-Sala1 | 10.63.164.106 |
+| HC-T3-L2-Sala13 | 10.63.164.107 |
+| HC-T3-L2-Sala20 | 10.63.164.108 |
+| CP-T3-L1-ParedeSup | 10.63.164.110 |
+| CP-T3-L1-Sala13 | 10.63.164.111 |
+| CP-T3-L1-Sala5 | 10.63.164.112 |
+| CP-T3-L2-Sala4 | 10.63.164.120 |
+| CP-T3-L2-Sala13 | 10.63.164.121 |
+| CP-T3-L2-Sala20 | 10.63.164.122 |
 
-### 7.1 Endereçamento de gestão
+Configuração padrão:
 
-| **Switch** | **IP de Gestão** | **Máscara** |
-| --- | --- | --- |
-| MC-T3-L1-Sala1 | 10.63.164.101 | 255.255.254.0 |
-| IC-T3-L1-Sala1 | 10.63.164.102 | 255.255.254.0 |
-| HC-T3-L1-Sala1 | 10.63.164.103 | 255.255.254.0 |
-| HC-T3-L1-Sala11 | 10.63.164.104 | 255.255.254.0 |
-| HC-T3-L1-Sala15 | 10.63.164.105 | 255.255.254.0 |
-| HC-T3-L2-Sala1 | 10.63.164.106 | 255.255.254.0 |
-| HC-T3-L2-Sala13 | 10.63.164.107 | 255.255.254.0 |
-| HC-T3-L2-Sala20 | 10.63.164.108 | 255.255.254.0 |
-| CP-T3-L1-ParedeSup | 10.63.164.110 | 255.255.254.0 |
-| CP-T3-L1-Sala13 | 10.63.164.111 | 255.255.254.0 |
-| CP-T3-L1-Sala5 | 10.63.164.112 | 255.255.254.0 |
-| CP-T3-L2-Sala4 | 10.63.164.120 | 255.255.254.0 |
-| CP-T3-L2-Sala13 | 10.63.164.121 | 255.255.254.0 |
-| CP-T3-L2-Sala20 | 10.63.164.122 | 255.255.254.0 |
-
-### 7.2 Configuração aplicada em cada switch
-
-```
+```bash
 interface vlan 774
  ip address 10.63.164.X 255.255.254.0
  no shutdown
@@ -261,13 +276,13 @@ exit
 
 ---
 
-## 8. Configuração de Layer 3 (Router-on-a-Stick)
+## 6. Configuração de Layer 3 (Router-on-a-Stick)
 
-O encaminhamento entre VLANs é feito pelo router `Rtr-T3-L1-Sala1` (modelo Cisco 2811), ligado ao MC-T3-L1-Sala1 por um único link trunk. Cada VLAN aparece no router como uma sub-interface lógica com encapsulamento IEEE 802.1Q.
+O encaminhamento entre VLANs é feito pelo router `Rtr-T3-L1-Sala1`, ligado ao `IC-T3-L1-Sala1` pela interface `Fa0/0`.
 
-### 8.1 Ativação da interface física
+### 6.1 Ativação da interface física
 
-```
+```bash
 enable
 configure terminal
 interface FastEthernet0/0
@@ -276,7 +291,7 @@ interface FastEthernet0/0
 exit
 ```
 
-### 8.2 Sub-interfaces do Terminal 3
+### 6.2 Sub-interfaces do Terminal 3
 
 | **Sub-interface** | **VLAN** | **IP Gateway** | **Máscara** |
 | --- | --- | --- | --- |
@@ -286,45 +301,40 @@ exit
 | Fa0/0.781 | 781 — T3-VoIP | 10.63.170.1 | 255.255.254.0 |
 | Fa0/0.782 | 782 — T3-ServersDMZ | 10.63.173.1 | 255.255.255.0 |
 
-```
+```bash
 interface FastEthernet0/0.773
  encapsulation dot1Q 773
  ip address 10.63.172.2 255.255.255.0
- no shutdown
 exit
 interface FastEthernet0/0.779
  encapsulation dot1Q 779
  ip address 10.63.156.1 255.255.252.0
- no shutdown
 exit
 interface FastEthernet0/0.780
  encapsulation dot1Q 780
  ip address 10.63.144.1 255.255.248.0
- no shutdown
 exit
 interface FastEthernet0/0.781
  encapsulation dot1Q 781
  ip address 10.63.170.1 255.255.254.0
- no shutdown
 exit
 interface FastEthernet0/0.782
  encapsulation dot1Q 782
  ip address 10.63.173.1 255.255.255.0
- no shutdown
 exit
 ```
 
-> Nota: A VLAN 774 (SwitchesDMZ) não possui sub-interface no router, mantendo-se isolada a Layer 2.
+> A VLAN 774 não possui sub-interface no router, mantendo-se isolada a Layer 2.
 
 ---
 
-## 9. Routers Externos Representativos (Campus Backbone)
+## 7. Routers Representativos da Backbone
 
-Para tornar o campus backbone coerente com as rotas estáticas configuradas, foram adicionados dois routers representativos dos terminais T2 e T4. Conforme o enunciado, estes routers externos apenas necessitam da ligação à backbone e respetivo IP.
+Para representar a backbone do campus no `Terminal3.pkt`, foram adicionados dois routers simplificados: `Rtr-T2` e `Rtr-T4`.
 
 ### Rtr-T2
 
-```
+```bash
 interface FastEthernet0/0
  no ip address
  no shutdown
@@ -338,7 +348,7 @@ exit
 
 ### Rtr-T4
 
-```
+```bash
 interface FastEthernet0/0
  no ip address
  no shutdown
@@ -350,231 +360,183 @@ interface FastEthernet0/0.773
 exit
 ```
 
-### Campus Backbone — endereços dos routers
+### Endereços da backbone
 
-| **Router**      | **IP no Backbone** |
-|-----------------|--------------------|
-| Rtr-T2          | 10.63.172.1        |
-| Rtr-T3-L1-Sala1 | 10.63.172.2        |
-| Rtr-T4          | 10.63.172.3        |
+| **Router** | **IP Backbone** |
+| --- | --- |
+| Rtr-T2 | 10.63.172.1 |
+| Rtr-T3-L1-Sala1 | 10.63.172.2 |
+| Rtr-T4 | 10.63.172.3 |
 
 ---
 
-## 10. Routing Estático
+## 8. Plano de Endereçamento IPv4 (VLSM)
 
-O router `Rtr-T3-L1-Sala1` foi configurado com rotas estáticas para os terminais T2 e T4, utilizando como next-hop o IP do router de destino na rede de backbone (VLAN 773).
+| **VLAN / Rede** | **Prefixo** | **Endereço de Rede** | **Intervalo Válido** |
+| --- | --- | --- | --- |
+| T2-WiFi | /21 | 10.63.128.0 | 10.63.128.1 – 10.63.135.254 |
+| T4-WiFi | /21 | 10.63.136.0 | 10.63.136.1 – 10.63.143.254 |
+| T3-WiFi | /21 | 10.63.144.0 | 10.63.144.1 – 10.63.151.254 |
+| T2-UserOutlets | /22 | 10.63.152.0 | 10.63.152.1 – 10.63.155.254 |
+| T3-UserOutlets | /22 | 10.63.156.0 | 10.63.156.1 – 10.63.159.254 |
+| T4-UserOutlets | /22 | 10.63.160.0 | 10.63.160.1 – 10.63.163.254 |
+| SwitchesDMZ | /23 | 10.63.164.0 | 10.63.164.1 – 10.63.165.254 |
+| T2-VoIP | /23 | 10.63.166.0 | 10.63.166.1 – 10.63.167.254 |
+| T4-VoIP | /23 | 10.63.168.0 | 10.63.168.1 – 10.63.169.254 |
+| T3-VoIP | /23 | 10.63.170.0 | 10.63.170.1 – 10.63.171.254 |
+| CampusBackbone | /24 | 10.63.172.0 | 10.63.172.1 – 10.63.172.254 |
+| T3-ServersDMZ | /24 | 10.63.173.0 | 10.63.173.1 – 10.63.173.254 |
+| T4-ServersDMZ | /25 | 10.63.174.0 | 10.63.174.1 – 10.63.174.126 |
+| T2-ServersDMZ | /25 | 10.63.174.128 | 10.63.174.129 – 10.63.174.254 |
 
-### 10.1 Rotas para T2 (via 10.63.172.1)
+---
 
-```
+## 9. Routing Estático
+
+O router `Rtr-T3-L1-Sala1` foi configurado com rotas estáticas para os terminais T2 e T4.
+
+### 9.1 Rotas para T2
+
+```bash
 ip route 10.63.128.0 255.255.248.0 10.63.172.1
 ip route 10.63.152.0 255.255.252.0 10.63.172.1
 ip route 10.63.166.0 255.255.254.0 10.63.172.1
 ip route 10.63.174.128 255.255.255.128 10.63.172.1
 ```
 
-### 10.2 Rotas para T4 (via 10.63.172.3)
+### 9.2 Rotas para T4
 
-```
+```bash
 ip route 10.63.136.0 255.255.248.0 10.63.172.3
 ip route 10.63.160.0 255.255.252.0 10.63.172.3
 ip route 10.63.168.0 255.255.254.0 10.63.172.3
 ip route 10.63.174.0 255.255.255.128 10.63.172.3
 ```
 
-### 10.3 Default route (para internet via T2)
+### 9.3 Default route
 
-```
+```bash
 ip route 0.0.0.0 0.0.0.0 10.63.172.1
 ```
 
 ---
 
-## 11. End Devices
+## 10. End Devices
 
-O enunciado exige pelo menos um end device por VLAN em uso no terminal. Os end devices foram concentrados no CP representativo `CP-T3-L2-Sala13`.
+Os end devices foram concentrados no CP representativo `CP-T3-L2-Sala13`.
 
-### 11.1 Equipamentos adicionados
+### 10.1 Equipamentos adicionados
 
 | **Dispositivo** | **Modelo PT** |
 | --- | --- |
-| PC utilizadores | PC-PT |
-| PC gestão DMZ | PC-PT |
-| Servidor | Server-PT |
-| Access Point | AccessPoint-PT |
-| Laptop WiFi | Laptop-PT com WPC300N |
-| Telefone VoIP | Cisco 7960 |
+| PC-T3-Users-1 | PC-PT |
+| T3-Server-1 | Server-PT |
+| T3-AP1 | AccessPoint-PT |
+| T3-Laptop-WiFi-1 | Laptop-PT + WPC300N |
+| PC-T3-DMZ-1 | PC-PT |
+| VoIP 7960 | Cisco IP Phone 7960 |
 
-### 11.2 Configuração das portas no CP-T3-L2-Sala13
+### 10.2 Configuração das portas no CP-T3-L2-Sala13
 
-| **Porta** | **Função** | **VLAN** |
+| **Porta** | **Dispositivo** | **Configuração** |
 | --- | --- | --- |
-| GigabitEthernet0/1 | Uplink para HC-T3-L2-Sala13 | trunk 773-786 |
-| GigabitEthernet1/1 | PC-T3-Users-1 | access 779 |
-| GigabitEthernet2/1 | T3-Server-1 | access 782 |
-| GigabitEthernet3/1 | Access Point T3 | access 780 |
+| GigabitEthernet0/1 | Uplink | trunk 773-786 |
+| GigabitEthernet1/1 | PC-T3-Users-1 | access vlan 779 |
+| GigabitEthernet2/1 | T3-Server-1 | access vlan 782 |
+| GigabitEthernet3/1 | T3-AP1 | access vlan 780 |
 | GigabitEthernet4/1 | VoIP 7960 | voice vlan 781 |
-| GigabitEthernet5/1 | PC-T3-DMZ-1 | access 774 |
+| GigabitEthernet5/1 | PC-T3-DMZ-1 | access vlan 774 |
 
-```
-interface GigabitEthernet1/1
- switchport mode access
- switchport access vlan 779
- no shutdown
-exit
-interface GigabitEthernet2/1
- switchport mode access
- switchport access vlan 782
- no shutdown
-exit
-interface GigabitEthernet3/1
- switchport mode access
- switchport access vlan 780
- no shutdown
-exit
-interface GigabitEthernet4/1
- switchport mode access
- switchport voice vlan 781
- no shutdown
-exit
-interface GigabitEthernet5/1
- switchport mode access
- switchport access vlan 774
- no shutdown
-exit
-```
+### 10.3 Endereçamento IPv4
 
-### 11.3 Endereçamento IPv4 dos end devices
+| **Dispositivo** | **IP** | **Máscara** | **Gateway** |
+| --- | --- | --- | --- |
+| PC-T3-Users-1 | 10.63.156.10 | 255.255.252.0 | 10.63.156.1 |
+| T3-Server-1 | 10.63.173.10 | 255.255.255.0 | 10.63.173.1 |
+| T3-Laptop-WiFi-1 | 10.63.144.10 | 255.255.248.0 | 10.63.144.1 |
+| PC-T3-DMZ-1 | 10.63.164.130 | 255.255.254.0 | — |
 
-| **Dispositivo** | **VLAN** | **IP** | **Máscara** | **Gateway** |
-| --- | --- | --- | --- | --- |
-| PC-T3-Users-1 | 779 — T3-UserOutlets | 10.63.156.10 | 255.255.252.0 | 10.63.156.1 |
-| T3-Server-1 | 782 — T3-ServersDMZ | 10.63.173.10 | 255.255.255.0 | 10.63.173.1 |
-| T3-AP1 | 780 — T3-WiFi | SSID: T3-WIFI | — | — |
-| T3-Laptop-WiFi-1 | 780 — T3-WiFi | 10.63.144.10 | 255.255.248.0 | 10.63.144.1 |
-| PC-T3-DMZ-1 | 774 — SwitchesDMZ | 10.63.164.130 | 255.255.254.0 | — |
-| VoIP 7960 | 781 — T3-VoIP | — | — | Sprint 3 |
-
-> Nota: O PC da SwitchesDMZ não possui gateway — a VLAN 774 é uma rede isolada sem encaminhamento Layer 3.
-
-### 11.4 Configuração do Laptop WiFi
-
-1. Laptop → aba **Physical**
-2. Desligar o dispositivo
-3. Remover a placa de rede cablada
-4. Inserir a placa wireless **WPC300N**
-5. Ligar o laptop
-6. Ir a **Desktop → PC Wireless** e associar ao SSID `T3-WIFI`
-7. Configurar IP manualmente em **Desktop → IP Configuration**
-
-### 11.5 VoIP
-
-Foi utilizado o modelo **Cisco 7960**, conforme exigido pelo enunciado. O telefone foi ligado à porta `GigabitEthernet4/1` do CP-T3-L2-Sala13, configurada com `switchport voice vlan 781`.
-
-> Nota: A configuração IPv4 do telefone VoIP está fora do âmbito do Sprint 2.
+> O Access Point foi configurado com o SSID `T3-WIFI`.
 
 ---
 
-## 12. Testes de Validação Final
+## 11. Testes de Validação
 
-### 12.1 Teste Wi-Fi — laptop → gateway
+### 11.1 Testes internos do Terminal 3
 
-```
-ping 10.63.144.1
-```
-Resultado: ✔ sucesso (4/4 respostas)
+| **Origem** | **Comando** | **Resultado** |
+| --- | --- | --- |
+| T3-Laptop-WiFi-1 | ping 10.63.144.1 | ✔ |
+| T3-Laptop-WiFi-1 | ping 10.63.156.1 | ✔ |
+| T3-Laptop-WiFi-1 | ping 10.63.173.1 | ✔ |
+| PC-T3-DMZ-1 | ping 10.63.164.1 | ✔ |
+| PC-T3-DMZ-1 | ping 10.63.164.102 | ✔ |
+| PC-T3-DMZ-1 | ping 10.63.144.1 | ✘ esperado |
+| Rtr-T3-L1-Sala1 | ping 10.63.144.10 | ✔ |
+| Rtr-T3-L1-Sala1 | ping 10.63.156.10 | ✔ |
 
-### 12.2 Teste Wi-Fi — laptop → gateway UserOutlets
+### 11.2 Testes de backbone
 
-```
-ping 10.63.156.1
-```
-Resultado: ✔ sucesso
+| **Origem** | **Comando** | **Resultado** |
+| --- | --- | --- |
+| Rtr-T3-L1-Sala1 | ping 10.63.172.1 | ✔ |
+| Rtr-T3-L1-Sala1 | ping 10.63.172.3 | ✔ |
 
-### 12.3 Teste WiFi — laptop → gateway ServersDMZ
+### 11.3 Verificações de configuração
 
-```
-ping 10.63.173.1
-```
-Resultado: ✔ sucesso
-
-### 12.4 Teste SwitchesDMZ — comunicação interna
-
-```
-ping 10.63.164.101
-ping 10.63.164.102
-```
-Resultado: ✔ sucesso (Layer 2 dentro da VLAN 774)
-
-### 12.5 Teste de isolamento da SwitchesDMZ
-
-```
-ping 10.63.144.1
-```
-(a partir do PC-T3-DMZ-1)
-
-Resultado: ✘ falha — sem gateway configurado, como esperado
-
-### 12.6 Teste backbone — router T3 → routers externos
-
-```
-ping 10.63.172.1
-ping 10.63.172.3
-```
-Resultado: ✔ sucesso
-
-### 12.7 Verificação da tabela de routing
-
-```
+```bash
+show ip interface brief
 show ip route
-```
-
-Resultado obtido: redes T3 diretamente ligadas, rotas estáticas para T2 via `10.63.172.1`, rotas estáticas para T4 via `10.63.172.3`, default route via `10.63.172.1`.
-
-### 12.8 Verificação dos trunks
-
-```
 show interfaces trunk
+show vlan brief
+show vtp status
+show cdp neighbors
 ```
 
-Resultado obtido: todas as portas de interligação em estado `trunking`, encapsulamento `802.1q`, VLANs 773-786 permitidas e ativas em toda a hierarquia.
+### 11.4 Conclusão dos testes
 
-### 12.9 Conclusão dos testes
-
-| | |
-| --- | --- |
-| ✔ | VLANs correctamente configuradas e propagadas via VTP |
-| ✔ | Trunks operacionais em toda a hierarquia MC → IC → HC → CP |
-| ✔ | Encaminhamento inter-VLAN via router-on-a-stick |
-| ✔ | Rede WiFi funcional (SSID T3-WIFI, laptop associado) |
-| ✔ | SwitchesDMZ isolada — sem gateway Layer 3 |
-| ✔ | Comunicação backbone com T2 e T4 |
-| ✔ | Routing estático consistente com o plano de endereçamento |
-| ✔ | Default route para internet via T2 |
+- VLANs corretamente propagadas via VTP
+- Trunks operacionais em toda a hierarquia
+- Router-on-a-stick funcional
+- Rede WiFi funcional
+- SwitchesDMZ isolada
+- Backbone com T2 e T4 funcional
 
 ---
 
-## 13. Nota Técnica — CPs Representativos
+## 12. Nota Técnica — CPs Representativos
 
-O Terminal 3 possui 22 CPs físicos no Sprint 1 (11 por piso). Na simulação Packet Tracer, foram utilizados **CPs representativos por grupo/zona** para manter a hierarquia lógica sem duplicar desnecessariamente a complexidade da topologia.
+O Terminal 3 possui 22 CPs físicos no Sprint 1, mas na simulação foram utilizados CPs representativos por zona, mantendo a hierarquia lógica sem duplicar complexidade.
 
 ### Level 1
 
 | **CP Representativo** | **Zona** | **HC ligado** |
 | --- | --- | --- |
 | CP-T3-L1-ParedeSup | Parede superior e canto | HC-T3-L1-Sala1 |
-| CP-T3-L1-Sala13 | Zona esquerda (Salas 11-13) | HC-T3-L1-Sala11 |
-| CP-T3-L1-Sala5 | Zona direita e central (Salas 5-15) | HC-T3-L1-Sala15 |
+| CP-T3-L1-Sala13 | Zona esquerda | HC-T3-L1-Sala11 |
+| CP-T3-L1-Sala5 | Zona central e direita | HC-T3-L1-Sala15 |
 
 ### Level 2
 
 | **CP Representativo** | **Zona** | **HC ligado** |
 | --- | --- | --- |
-| CP-T3-L2-Sala4 | Zona superior direita | HC-T3-L2-Sala1 |
-| CP-T3-L2-Sala13 | Zona central e inferior | HC-T3-L2-Sala13 |
-| CP-T3-L2-Sala20 | Zona inferior direita | HC-T3-L2-Sala20 |
+| CP-T3-L2-Sala4 | Zona superior | HC-T3-L2-Sala1 |
+| CP-T3-L2-Sala13 | Zona central | HC-T3-L2-Sala13 |
+| CP-T3-L2-Sala20 | Zona inferior | HC-T3-L2-Sala20 |
 
-O `CP-T3-L2-Sala13` foi o CP representativo escolhido para concentrar todos os end devices, demonstrando o correto funcionamento das VLANs 779, 780, 781, 782 e 774.
+> O `CP-T3-L2-Sala13` foi o CP representativo escolhido para concentrar e configurar todos os end devices do Terminal 3, demonstrando o funcionamento das VLANs 774, 779, 780, 781 e 782. Os restantes CPs representativos mantêm apenas a configuração de trunk e gestão.
+---
+
+## 13. Integração em campus.pkt
+
+Como tarefa adicional do Terminal 3, foi criada a simulação `campus.pkt`, integrando os ficheiros de todos os elementos do grupo num único campus.
+
+Nesta integração:
+
+- foi mantido um único MC central
+- cada terminal ficou ligado ao MC através do respetivo IC
+- os routers ficaram ligados aos ICs dos respetivos terminais
+- o `campus.pkt` foi testado separadamente para validar a integração final
 
 ---
 

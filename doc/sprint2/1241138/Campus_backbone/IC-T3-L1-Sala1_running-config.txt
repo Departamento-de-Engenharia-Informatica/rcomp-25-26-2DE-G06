@@ -45,11 +45,16 @@ interface GigabitEthernet6/1
 !
 interface GigabitEthernet7/1
 !
+interface GigabitEthernet8/1
+ switchport trunk allowed vlan 773-786
+ switchport mode trunk
+!
 interface Vlan1
  no ip address
  shutdown
 !
 interface Vlan774
+ mac-address 0090.0c14.5d13
  ip address 10.63.164.102 255.255.254.0
 !
 !

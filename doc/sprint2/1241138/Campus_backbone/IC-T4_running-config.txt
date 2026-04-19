@@ -4,7 +4,7 @@ no service timestamps log datetime msec
 no service timestamps debug datetime msec
 no service password-encryption
 !
-hostname MC-T2-stub
+hostname IC-T4
 !
 !
 !
@@ -16,16 +16,22 @@ spanning-tree mode pvst
 spanning-tree extend system-id
 !
 interface GigabitEthernet0/1
+ description -> MC
  switchport trunk allowed vlan 773-786
  switchport mode trunk
 !
 interface GigabitEthernet1/1
+ description -> Router T4
  switchport trunk allowed vlan 773-786
  switchport mode trunk
+ spanning-tree portfast
 !
 interface Vlan1
  no ip address
  shutdown
+!
+interface Vlan774
+ ip address 10.63.164.3 255.255.254.0
 !
 !
 !

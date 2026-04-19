@@ -19,7 +19,7 @@ no ipv6 cef
 !
 !
 !
-license udi pid CISCO2811/K9 sn FTX10170QEV-
+license udi pid CISCO2811/K9 sn FTX10171PTN-
 !
 !
 !

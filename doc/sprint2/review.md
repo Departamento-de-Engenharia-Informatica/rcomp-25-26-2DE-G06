@@ -24,7 +24,7 @@ as previously agreed with the course lecturer.
 ### Totally implemented with no issues. ###
 
 ## 2.2. 1241138 - Network simulation for Terminal 3 ##
-###  ###
+### Totally implemented with no issues. ###
 
 ## 2.3. 1240895 - Network simulation for Terminal 4 ##
 ### Totally implemented with no issues.  ###
