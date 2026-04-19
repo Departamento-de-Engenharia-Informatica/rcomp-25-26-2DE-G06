@@ -21,7 +21,7 @@ as previously agreed with the course lecturer.
 # 2. Subtasks assessment #
 
 ## 2.1. 1240914 - Network simulation for Terminal 2 ##
-###  ###
+### Totally implemented with no issues. ###
 
 ## 2.2. 1241138 - Network simulation for Terminal 3 ##
 ###  ###

@@ -162,11 +162,6 @@ O bloco /17 foi dividido entre T2, T3 e T4 de forma estruturada:
 - não existem interseções entre sub-redes
 - garante-se compatibilidade com routing estático entre routers
 
-Exemplo:
-- T2 WiFi → 10.63.128.0/21
-- T3 WiFi → 10.63.144.0/21
-- T4 WiFi → 10.63.136.0/21
-
 ---
 
 ### D) Eficiência e escalabilidade
