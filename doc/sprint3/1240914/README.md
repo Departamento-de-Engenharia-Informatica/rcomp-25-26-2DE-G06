@@ -290,12 +290,13 @@ Isto permite:
 
 ## 4.5 Verificações
 1. Ver telefones registados: No router - show ephone
-2. Faezr ligação de um telemóvel para o outro
+2. Fazer ligação de um telemóvel para o outro
 exemplo: ligar do telemóvel 1 para o telemóvel 2
 ![ligação](images/ligacao.png)
 
 # FASE 5 — DNS (ROOT no T2)
 No server DNS (10.63.174.130):
+All DHCP clients are configured to use the local DNS server (10.63.174.130) and the domain name rcomp-25-26-2de-g6 automatically via DHCP configuration.
 
 ## 5.1 Configuração do servidor DNS
 Nome do servidor:
@@ -321,7 +322,12 @@ Adicionar os seguintes registos:
 | web.rcomp-25-26-2de-g6       | server1.rcomp-25-26-2de-g6 |
 | dns.rcomp-25-26-2de-g6       | ns.rcomp-25-26-2de-g6      |
 
-## 5.3 Glue Records (T3 e T4)
+## 5.3 Glue Records 
+
+### Terminal 2 Ns
+| Name                | Name Server            |
+|---------------------|------------------------|
+| rcomp-25-26-2de-g6  | ns.rcomp-25-26-2de-g6  |
 
 ### Terminal 3 Ns
 | Name                          | Name Server                      |
@@ -383,7 +389,7 @@ Browser no laptop:
 No router T2:
 
 ## 6.1 Interfaces NAT
-### Inside (todas as redes do campus)
+### Inside 
 interface fa0/0.775
 ip nat inside
 interface fa0/0.776
@@ -393,7 +399,7 @@ ip nat inside
 interface fa0/0.778
 ip nat inside
 
-### Outside (apenas ISP)
+### Outside 
 interface fa0/0.773
 ip nat outside
 interface fa0/1
@@ -438,17 +444,197 @@ No CLI do Router T2- show ip nat translations para ver as traduções ativas dur
 No browser do PC da terminal 3:
 http://10.63.172.1
 
+Resultado:
+![index](images/nattest.png)
+
 # FASE 7 — ACLs
-Aqui vai-se aplicar regras em ordem:
+Após a validação de OSPF, DHCP, DNS, HTTP/HTTPS e NAT, foram implementadas ACLs estáticas no router T2 para aplicar políticas de segurança à rede.
+As ACLs foram configuradas segundo a ordem de precedência definida no enunciado:
+1. Anti-spoofing 
+2. ICMP allow 
+3. Proteção da DMZ 
+4. Proteção do router 
+5. Permissão do restante tráfego
 
-## 7.1 Anti spoofing
+Foram utilizadas Extended Named ACLs, permitindo maior organização e controlo das regras.
 
-## 7.2 ICMP allow
+## 7.1 VLAN 775 — USEROUTLETS
+ip access-list extended ACL-T2-USEROUTLETS-IN
 
-## 7.3 DMZ rules
+! 1. Anti-spoofing
+10 permit ip 10.63.152.0 0.0.3.255 any
 
-## 7.4 Router protection
+! 2. ICMP allow
+20 permit icmp any any echo
+30 permit icmp any any echo-reply
 
-## 7.5 Allow rest
+! 3. DMZ protection (bloquear acessos indevidos à DMZ)
+40 permit udp any host 10.63.174.130 eq 53
+50 permit tcp any host 10.63.174.130 eq 53
+60 permit tcp any host 10.63.174.130 eq 80
+70 permit tcp any host 10.63.174.130 eq 443
+80 permit tcp any host 10.63.174.131 eq 80
+90 permit tcp any host 10.63.174.131 eq 443
+100 deny ip any 10.63.174.128 0.0.0.127
 
+! 4. Router services (DHCP + OSPF)
+110 permit udp host 0.0.0.0 eq 68 host 255.255.255.255 eq 67
+115 permit udp any host 10.63.166.1 eq 69
+120 permit ospf any any
+
+! Bloquear acesso a TODOS os IPs do Router (Proteção Total)
+130 deny ip any host 10.63.152.1   ! Gateway UserOutlets
+140 deny ip any host 10.63.128.1   ! Gateway WiFi
+150 deny ip any host 10.63.166.1   ! Gateway VoIP / TFTP
+160 deny ip any host 10.63.174.129 ! Gateway DMZ
+170 deny ip any host 10.63.172.1   ! IP Backbone
+
+! 5. Permitir resto do tráfego
+1000 permit ip any any
+
+Aplicação:
+interface fa0/0.775
+ip access-group ACL-T2-USEROUTLETS-IN in
+
+## 7.2 VLAN 776 — WIFI
+ip access-list extended ACL-T2-WIFI-IN
+
+10 permit ip 10.63.128.0 0.0.7.255 any
+
+20 permit icmp any any echo
+30 permit icmp any any echo-reply
+
+40 permit udp any host 10.63.174.130 eq 53
+50 permit tcp any host 10.63.174.130 eq 53
+60 permit tcp any host 10.63.174.130 eq 80
+70 permit tcp any host 10.63.174.130 eq 443
+80 permit tcp any host 10.63.174.131 eq 80
+90 permit tcp any host 10.63.174.131 eq 443
+
+100 deny ip any 10.63.174.128 0.0.0.127
+
+110 permit udp host 0.0.0.0 eq 68 host 255.255.255.255 eq 67
+115 permit udp any host 10.63.166.1 eq 69
+120 permit ospf any any
+
+! Router Protection (Bloqueio do resto)
+130 deny ip any host 10.63.152.1   ! Gateway UserOutlets
+140 deny ip any host 10.63.128.1   ! Gateway WiFi
+150 deny ip any host 10.63.166.1   ! Gateway VoIP / TFTP
+160 deny ip any host 10.63.174.129 ! Gateway DMZ
+170 deny ip any host 10.63.172.1   ! IP Backbone
+
+1000 permit ip any any
+
+Aplicar:
+interface fa0/0.776
+ip access-group ACL-T2-WIFI-IN in
+
+## 7.3 VLAN 777 — VOIP
+ip access-list extended ACL-T2-VOIP-IN
+
+10 permit ip 10.63.166.0 0.0.1.255 any
+
+20 permit icmp any any echo
+30 permit icmp any any echo-reply
+
+40 permit udp any host 10.63.174.130 eq 53
+50 permit tcp any host 10.63.174.130 eq 53
+60 permit tcp any host 10.63.174.130 eq 80
+70 permit tcp any host 10.63.174.130 eq 443
+80 permit tcp any host 10.63.174.131 eq 80
+90 permit tcp any host 10.63.174.131 eq 443
+
+100 deny ip any 10.63.174.128 0.0.0.127
+
+110 permit udp host 0.0.0.0 eq 68 host 255.255.255.255 eq 67
+115 permit udp any host 10.63.166.1 eq 69
+120 permit ospf any any
+
+! Router Protection (Bloqueio do resto)
+130 deny ip any host 10.63.152.1   ! Gateway UserOutlets
+140 deny ip any host 10.63.128.1   ! Gateway WiFi
+150 deny ip any host 10.63.166.1   ! Gateway VoIP / TFTP
+160 deny ip any host 10.63.174.129 ! Gateway DMZ
+170 deny ip any host 10.63.172.1   ! IP Backbone
+
+1000 permit ip any any
+
+Aplicar:
+interface fa0/0.777
+ip access-group ACL-T2-VOIP-IN in
+
+## 7.4 BACKBONE — VLAN 773 (CRÍTICO PARA NAT + OSPF)
+ip access-list extended ACL-T2-BACKBONE-IN
+
+! 1. Anti-spoofing externo
+10 deny ip 10.63.128.0 0.0.7.255 any
+20 deny ip 10.63.152.0 0.0.3.255 any
+30 deny ip 10.63.166.0 0.0.1.255 any
+40 deny ip 10.63.174.128 0.0.0.127 any
+
+! 2. ICMP
+50 permit icmp any any echo-reply
+60 permit icmp any any echo
+
+! 3. NAT / HTTP / HTTPS
+70 permit tcp any host 10.63.174.130 eq 80
+80 permit tcp any host 10.63.174.130 eq 443
+
+! 4. OSPF
+90 permit ospf any any
+
+100 deny ip any host 10.63.172.1
+
+110 deny ip any host 10.63.152.1
+120 deny ip any host 10.63.128.1
+130 deny ip any host 10.63.166.1
+140 deny ip any host 10.63.174.129
+
+! 5. Trânsito geral
+1000 permit ip any any
+
+Aplicar:
+interface fa0/0.773
+ip access-group ACL-T2-BACKBONE-IN in
+
+## 7.5 DMZ — VLAN 778 
+A DMZ NÃO é filtrada como firewall principal
+Só permite saída normal
+
+ip access-list extended ACL-T2-DMZ-IN
+
+10 permit ip 10.63.174.128 0.0.0.127 any
+
+Aplicar:
+interface fa0/0.778
+ip access-group ACL-T2-DMZ-IN in
+
+## 7.6 Verificações
+### Verificar ACLs aplicadas
+show access-lists
+show running-config | section access-list
+show ip interface
+
+### Testes funcionais
+ICMP
+ping 10.63.174.130
+ping 10.63.174.131
+
+### DNS
+ping server1.rcomp-25-26-2de-g6
+
+### HTTP
+No browser:
+http://server1.rcomp-25-26-2de-g6
+http://ns.rcomp-25-26-2de-g6
+http://www.rcomp-25-26-2de-g6
+
+### NAT (teste falha rever esta parte)
+A partir de outro terminal:
+http://10.63.172.1
+
+### Verificar contadores das ACLs
+show access-lists
+Os contadores (matches) devem aumentar durante os testes, comprovando que as ACLs estão a ser utilizadas corretamente.
 
