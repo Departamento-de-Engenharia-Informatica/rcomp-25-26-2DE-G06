@@ -577,6 +577,10 @@ ip access-list extended ACL-T2-BACKBONE-IN
 50 permit icmp any any echo-reply
 60 permit icmp any any echo
 
+! Inserir permissões para o IP de destino ORIGINAL antes do bloqueio
+65 permit tcp any host 10.63.172.1 eq 80
+66 permit tcp any host 10.63.172.1 eq 443
+
 ! 3. NAT / HTTP / HTTPS
 70 permit tcp any host 10.63.174.130 eq 80
 80 permit tcp any host 10.63.174.130 eq 443
@@ -630,7 +634,7 @@ http://server1.rcomp-25-26-2de-g6
 http://ns.rcomp-25-26-2de-g6
 http://www.rcomp-25-26-2de-g6
 
-### NAT (teste falha rever esta parte)
+### NAT 
 A partir de outro terminal:
 http://10.63.172.1
 
