@@ -7,7 +7,7 @@
 
 ## 1.1 Remover routing estático (EXCETO default route)
 
-No router T2:
+### No router T2:
 enable
 conf t
 no ip route 10.63.144.0 255.255.248.0 10.63.172.2
@@ -19,6 +19,38 @@ no ip route 10.63.136.0 255.255.248.0 10.63.172.3
 no ip route 10.63.160.0 255.255.252.0 10.63.172.3
 no ip route 10.63.168.0 255.255.254.0 10.63.172.3
 no ip route 10.63.174.0 255.255.255.128 10.63.172.3
+
+### No router T3:
+conf t
+
+no ip route 10.63.128.0 255.255.248.0 10.63.172.1
+no ip route 10.63.152.0 255.255.252.0 10.63.172.1
+no ip route 10.63.166.0 255.255.254.0 10.63.172.1
+no ip route 10.63.174.128 255.255.255.128 10.63.172.1
+
+no ip route 10.63.136.0 255.255.248.0 10.63.172.3
+no ip route 10.63.160.0 255.255.252.0 10.63.172.3
+no ip route 10.63.168.0 255.255.254.0 10.63.172.3
+no ip route 10.63.174.0 255.255.255.128 10.63.172.3
+
+no ip route 0.0.0.0 0.0.0.0 10.63.172.1
+
+
+### No router T4:
+conf t
+
+no ip route 10.63.128.0 255.255.248.0 10.63.172.1
+no ip route 10.63.152.0 255.255.252.0 10.63.172.1
+no ip route 10.63.166.0 255.255.254.0 10.63.172.1
+no ip route 10.63.174.128 255.255.255.128 10.63.172.1
+
+no ip route 10.63.144.0 255.255.248.0 10.63.172.2
+no ip route 10.63.156.0 255.255.252.0 10.63.172.2
+no ip route 10.63.170.0 255.255.254.0 10.63.172.2
+no ip route 10.63.173.0 255.255.255.0 10.63.172.2
+
+no ip route 0.0.0.0 0.0.0.0 10.63.172.1
+
 
 ## 1.2 Ativar OSPF no router T2
 
@@ -50,7 +82,39 @@ network 10.63.174.128 0.0.0.127 area 2
 
 default-information originate
 
-## 1.5 Verificações
+## 1.5 Configurações em T3 e T4 
+
+### T3 — configuração OSPF
+enable
+conf t
+
+router ospf 1
+router-id 3.3.3.3
+
+network 10.63.172.0 0.0.0.255 area 0
+
+network 10.63.144.0 0.0.7.255 area 3
+network 10.63.156.0 0.0.3.255 area 3
+network 10.63.170.0 0.0.1.255 area 3
+network 10.63.173.0 0.0.0.255 area 3
+
+
+### T4 — configuração OSPF
+enable
+conf t
+
+router ospf 1
+router-id 4.4.4.4
+
+network 10.63.172.0 0.0.0.255 area 0
+
+network 10.63.136.0 0.0.7.255 area 4
+network 10.63.160.0 0.0.3.255 area 4
+network 10.63.168.0 0.0.1.255 area 4
+network 10.63.174.0 0.0.0.127 area 4
+
+
+## 1.6 Verificações
 
 Ver se o OSPF está ativo: show ip protocols
 Ver vizinhos OSPF: show ip ospf neighbor (depois de t3 e t4 terem ospf ativo)
@@ -65,8 +129,8 @@ Ver interfaces OSPF: show ip ospf interface brief
 ## 2.1 Adicionar segundo servidor na DMZ (T2)
 
 **Na VLAN 778:**
-- server1 (nome ns) → já existe (DNS root + web depois) 
-- server2 (nome server1) → NOVO (HTTP/HTTPS) 
+- ns server → já existe (DNS root + web depois) 
+- server1 → NOVO (HTTP/HTTPS) 
 
 **Configurar:**
 - IP fixo: 10.63.174.131
@@ -226,6 +290,9 @@ Isto permite:
 
 ## 4.5 Verificações
 1. Ver telefones registados: No router - show ephone
+2. Faezr ligação de um telemóvel para o outro
+exemplo: ligar do telemóvel 1 para o telemóvel 2
+![ligação](images/ligacao.png)
 
 # FASE 5 — DNS (ROOT no T2)
 No server DNS (10.63.174.130):
@@ -336,7 +403,6 @@ ip nat outside
 O objetivo é:
 ✔ tráfego HTTP/HTTPS → IP do backbone → DNS server
 
-### ver esta parte
 ### Redirecionamento de tráfego vindo do Backbone (VLAN 773) para o Servidor DNS  
 ip nat inside source static tcp 10.63.174.130 80 10.63.172.1 80
 ip nat inside source static tcp 10.63.174.130 443 10.63.172.1 443
@@ -359,8 +425,6 @@ Para ver a página criado podemos ir ao laptop e pesquisar: http://10.63.174.130
 Teste 1 (interno)
 http://10.63.174.130
 (Deve aparecer a página do servidor DNS do T2.)
-Teste Nat
-http://10.63.172.1
 Teste 2 (DNS)
 http://server1.rcomp-25-26-2de-g6
 (Deve resolver o nome para .131 e mostrar a página do servidor HTTP dedicado.)
@@ -369,6 +433,10 @@ www.rcomp-25-26-2de-g6
 (Deve abrir a mesma página do Teste 2 (via CNAME).)
 Teste 4 (Router): 
 No CLI do Router T2- show ip nat translations para ver as traduções ativas durante os testes.
+
+### Teste nat com outras terminais
+No browser do PC da terminal 3:
+http://10.63.172.1
 
 # FASE 7 — ACLs
 Aqui vai-se aplicar regras em ordem:

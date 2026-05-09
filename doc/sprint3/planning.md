@@ -28,11 +28,11 @@ Nesta secção estão registadas as decisões que garantem a interoperabilidade 
    - Todos os nós finais usarão o servidor DNS local, configurado via DHCP (PCs) ou manualmente (servidores).
 
 ## 2.1 OSPF Area IDs, VoIP e DNS Schema
-| Terminal | OSPF Area ID | Prefixo VoIP | Domínio DNS Local             |
-|----------|--------------|--------------|-------------------------------|
-| T2       | Area 2       | 2            | rcomp-25-26-2de-g6            |           
-| T3       | Area 3       | 3            | terminal-3.rcomp-25-26-2de-g6 |   
-| T4       | Area 4       | 4            | terminal-4.rcomp-25-26-2de-g6 |  
+| Terminal | OSPF Area ID | Prefixo VoIP | Gama de números | Domínio DNS Local             | Router (backbone IP) |
+|----------|--------------|--------------|-----------------|-------------------------------|----------------------|
+| T2       | Area 2       | 2            | 2000 - 2999     | rcomp-25-26-2de-g6            | 10.63.172.1          |          
+| T3       | Area 3       | 3            | 3000 - 3999     | terminal-3.rcomp-25-26-2de-g6 | 10.63.172.2          |  
+| T4       | Area 4       | 4            | 4000 - 4999     | terminal-4.rcomp-25-26-2de-g6 | 10.63.172.3          |
 
 - **VoIP Call Forwarding:** Cada router terá dial-peers configurados para encaminhar chamadas com prefixos de outros terminais para o IP do router correspondente no backbone.
 - **Configuração de Switch:** As portas para os telefones 7960 terão switchport voice vlan ativa e no switchport access vlan.
