@@ -1,0 +1,253 @@
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname Rtr-T2
+!
+!
+!
+!
+ip dhcp excluded-address 10.63.152.1 10.63.152.10
+ip dhcp excluded-address 10.63.128.1 10.63.128.10
+ip dhcp excluded-address 10.63.166.1 10.63.166.10
+!
+ip dhcp pool T2-UserOutlets
+ network 10.63.152.0 255.255.252.0
+ default-router 10.63.152.1
+ dns-server 10.63.174.130
+ domain-name rcomp-25-26-2de-g6
+ip dhcp pool T2-WiFi
+ network 10.63.128.0 255.255.248.0
+ default-router 10.63.128.1
+ dns-server 10.63.174.130
+ domain-name rcomp-25-26-2de-g6
+ip dhcp pool T2-VoIP
+ network 10.63.166.0 255.255.254.0
+ default-router 10.63.166.1
+ option 150 ip 10.63.166.1
+ dns-server 10.63.174.130
+ domain-name rcomp-25-26-2de-g6
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+!
+!
+license udi pid CISCO2811/K9 sn FTX10179IC3-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ no ip address
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/0.773
+ encapsulation dot1Q 773
+ ip address 10.63.172.1 255.255.255.0
+ ip nat outside
+ ip access-group ACL-T2-BACKBONE-IN in
+!
+interface FastEthernet0/0.775
+ encapsulation dot1Q 775
+ ip address 10.63.152.1 255.255.252.0
+ ip nat inside
+ ip access-group ACL-T2-USEROUTLETS-IN in
+!
+interface FastEthernet0/0.776
+ encapsulation dot1Q 776
+ ip address 10.63.128.1 255.255.248.0
+ ip nat inside
+ ip access-group ACL-T2-WIFI-IN in
+!
+interface FastEthernet0/0.777
+ encapsulation dot1Q 777
+ ip address 10.63.166.1 255.255.254.0
+ ip nat inside
+ ip access-group ACL-T2-VOIP-IN in
+!
+interface FastEthernet0/0.778
+ encapsulation dot1Q 778
+ ip address 10.63.174.129 255.255.255.128
+ ip nat inside
+ ip access-group ACL-T2-DMZ-IN in
+!
+interface FastEthernet0/1
+ ip address 89.73.67.133 255.255.255.252
+ ip nat outside
+ duplex auto
+ speed auto
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router ospf 1
+ router-id 2.2.2.2
+ log-adjacency-changes
+ network 10.63.172.0 0.0.0.255 area 0
+ network 10.63.128.0 0.0.7.255 area 2
+ network 10.63.152.0 0.0.3.255 area 2
+ network 10.63.166.0 0.0.1.255 area 2
+ network 10.63.174.128 0.0.0.127 area 2
+ default-information originate
+!
+ip nat inside source list 1 interface FastEthernet0/1 overload
+ip nat inside source static tcp 10.63.174.130 80 10.63.172.1 80 
+ip nat inside source static tcp 10.63.174.130 443 10.63.172.1 443 
+ip classless
+ip route 0.0.0.0 0.0.0.0 89.73.67.134 
+!
+ip flow-export version 9
+!
+!
+ip access-list extended ACL-T2-USEROUTLETS-IN
+ permit ip 10.63.152.0 0.0.3.255 any
+ permit icmp any any echo
+ permit icmp any any echo-reply
+ permit udp any host 10.63.174.130 eq domain
+ permit tcp any host 10.63.174.130 eq domain
+ permit tcp any host 10.63.174.130 eq www
+ permit tcp any host 10.63.174.130 eq 443
+ permit tcp any host 10.63.174.131 eq www
+ permit tcp any host 10.63.174.131 eq 443
+ deny ip any 10.63.174.128 0.0.0.127
+ permit udp host 0.0.0.0 eq bootpc host 255.255.255.255 eq bootps
+ permit udp any host 10.63.166.1 eq tftp
+ permit ospf any any
+ deny ip any host 10.63.152.1
+ deny ip any host 10.63.128.1
+ deny ip any host 10.63.166.1
+ deny ip any host 10.63.174.129
+ deny ip any host 10.63.172.1
+ permit ip any any
+ip access-list extended ACL-T2-WIFI-IN
+ permit ip 10.63.128.0 0.0.7.255 any
+ permit icmp any any echo
+ permit icmp any any echo-reply
+ permit udp any host 10.63.174.130 eq domain
+ permit tcp any host 10.63.174.130 eq domain
+ permit tcp any host 10.63.174.130 eq www
+ permit tcp any host 10.63.174.130 eq 443
+ permit tcp any host 10.63.174.131 eq www
+ permit tcp any host 10.63.174.131 eq 443
+ deny ip any 10.63.174.128 0.0.0.127
+ permit udp host 0.0.0.0 eq bootpc host 255.255.255.255 eq bootps
+ permit udp any host 10.63.166.1 eq tftp
+ permit ospf any any
+ deny ip any host 10.63.152.1
+ deny ip any host 10.63.128.1
+ deny ip any host 10.63.166.1
+ deny ip any host 10.63.174.129
+ deny ip any host 10.63.172.1
+ permit ip any any
+ip access-list extended ACL-T2-VOIP-IN
+ permit ip 10.63.166.0 0.0.1.255 any
+ permit icmp any any echo
+ permit icmp any any echo-reply
+ permit udp any host 10.63.174.130 eq domain
+ permit tcp any host 10.63.174.130 eq domain
+ permit tcp any host 10.63.174.130 eq www
+ permit tcp any host 10.63.174.130 eq 443
+ permit tcp any host 10.63.174.131 eq www
+ permit tcp any host 10.63.174.131 eq 443
+ deny ip any 10.63.174.128 0.0.0.127
+ permit udp host 0.0.0.0 eq bootpc host 255.255.255.255 eq bootps
+ permit udp any host 10.63.166.1 eq tftp
+ permit ospf any any
+ deny ip any host 10.63.152.1
+ deny ip any host 10.63.128.1
+ deny ip any host 10.63.166.1
+ deny ip any host 10.63.174.129
+ deny ip any host 10.63.172.1
+ permit ip any any
+ip access-list extended ACL-T2-BACKBONE-IN
+ deny ip 10.63.128.0 0.0.7.255 any
+ deny ip 10.63.152.0 0.0.3.255 any
+ deny ip 10.63.166.0 0.0.1.255 any
+ deny ip 10.63.174.128 0.0.0.127 any
+ permit icmp any any echo-reply
+ permit icmp any any echo
+ permit tcp any host 10.63.172.1 eq www
+ permit tcp any host 10.63.172.1 eq 443
+ permit tcp any host 10.63.174.130 eq www
+ permit tcp any host 10.63.174.130 eq 443
+ permit ospf any any
+ deny ip any host 10.63.172.1
+ deny ip any host 10.63.152.1
+ deny ip any host 10.63.128.1
+ deny ip any host 10.63.166.1
+ deny ip any host 10.63.174.129
+ permit ip any any
+ip access-list extended ACL-T2-DMZ-IN
+ permit ip 10.63.174.128 0.0.0.127 any
+!
+!
+!
+!
+!
+dial-peer voice 3 voip
+ destination-pattern 3...
+ session target ipv4:10.63.172.2
+!
+dial-peer voice 4 voip
+ destination-pattern 4...
+ session target ipv4:10.63.172.3
+!
+telephony-service
+ max-ephones 10
+ max-dn 10
+ ip source-address 10.63.166.1 port 2000
+ auto assign 1 to 2
+!
+ephone-dn 1
+ number 2001
+!
+ephone-dn 2
+ number 2002
+!
+ephone 1
+ device-security-mode none
+ mac-address 0030.F28A.8364
+ type 7960
+ button 1:1
+!
+ephone 2
+ device-security-mode none
+ mac-address 0006.2AC0.984C
+ type 7960
+ button 1:2
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
+
