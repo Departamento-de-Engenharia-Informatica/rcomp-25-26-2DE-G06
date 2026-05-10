@@ -457,3 +457,167 @@ Ambos os telefones aparecem como **REGISTERED**:
 Teste de chamada entre os dois telefones (4001 → 4002) com sucesso:
 
 ![voip call test](images/ligacao.png)
+
+# FASE 5 — DNS (Subdomain no T4)
+No server DNS (10.63.174.2):
+Todos os clientes DHCP são configurados para usar o servidor DNS local (10.63.174.2) e o nome de domínio terminal-4.rcomp-25-26-2de-g6 automaticamente por meio da configuração DHCP.
+
+## 5.1 Configuração do servidor DNS
+Nome do servidor:
+ns.terminal-4.rcomp-25-26-2de-g6
+IP:
+10.63.174.2
+
+## 5.2 Registos obrigatórios:
+Ir ao:
+Server → Services → DNS → ON
+Adicionar os seguintes registos:
+
+### A Records
+| Name                                   | Address       |
+| -------------------------------------- | ------------- |
+| ns.terminal-4.rcomp-25-26-2de-g6      | 10.63.174.2   |
+| server1.terminal-4.rcomp-25-26-2de-g6 | 10.63.174.3   |
+
+### CNAME Records
+| Name                                   | Canonical Name                         |
+| -------------------------------------- | -------------------------------------- |
+| www.terminal-4.rcomp-25-26-2de-g6     | server1.terminal-4.rcomp-25-26-2de-g6 |
+| web.terminal-4.rcomp-25-26-2de-g6     | server1.terminal-4.rcomp-25-26-2de-g6 |
+| dns.terminal-4.rcomp-25-26-2de-g6     | ns.terminal-4.rcomp-25-26-2de-g6      |
+
+## 5.3 Glue Records
+
+### Terminal 4 Ns
+| Name                          | Name Server                       |
+| ----------------------------- | --------------------------------- |
+| terminal-4.rcomp-25-26-2de-g6 | ns.terminal-4.rcomp-25-26-2de-g6 |
+
+### Glue A Record (root DNS)
+| Name                   | Name Server           |
+| ---------------------- | --------------------- |
+| rcomp-25-26-2de-g6     | ns.rcomp-25-26-2de-g6 |
+
+### Glue A Record (root IP)
+| Name                   | Address        |
+| ---------------------- | -------------- |
+| ns.rcomp-25-26-2de-g6  | 10.63.174.130  |
+
+![fase 5](images/fase5.png)
+
+## 5.4 Verificações
+### Como verificar se o DNS funciona
+Nos PCs/laptops:
+Desktop → Command Prompt
+Testes:
+
+#### Resolver o servidor HTTP
+ping server1.terminal-4.rcomp-25-26-2de-g6
+Deve resolver para:
+10.63.174.3
+
+#### Testar alias www
+ping www.terminal-4.rcomp-25-26-2de-g6
+Também deve resolver para:
+10.63.174.3
+
+#### Abrir browser
+No browser do PC:
+http://server1.terminal-4.rcomp-25-26-2de-g6
+ou
+http://www.terminal-4.rcomp-25-26-2de-g6
+
+Pings no pc das useroutlets:
+![pings pc](images/pingspcuseroutlets.png)
+
+Browser no pc das useroutlets:
+![browser pc](images/browserpc.png)
+
+Pings no laptop:
+![pings laptop](images/pingslaptop.png)
+
+Browser no laptop:
+![browser laptop](images/browserlaptop.png)
+
+# FASE 6 — NAT (só depois de DNS funcionar)
+
+No router T4:
+
+## 6.1 Interfaces NAT
+
+### Inside
+
+```
+interface FastEthernet0/0.783
+ ip nat inside
+
+interface FastEthernet0/0.784
+ ip nat inside
+
+interface FastEthernet0/0.785
+ ip nat inside
+
+interface FastEthernet0/0.786
+ ip nat inside
+```
+
+### Outside
+
+```
+interface FastEthernet0/0.773
+ ip nat outside
+```
+
+## 6.2 NAT STATIC
+
+O objetivo é:
+✔ tráfego HTTP/HTTPS → IP do backbone → DNS server
+
+### Redirecionamento de tráfego vindo do Backbone (VLAN 773) para o Servidor DNS
+
+```
+ip nat inside source static tcp 10.63.174.2 80 10.63.172.3 80
+ip nat inside source static tcp 10.63.174.2 443 10.63.172.3 443
+```
+
+## 6.3 Servidor DNS (IMPORTANTE)
+
+No servidor ns (10.63.174.2):
+- Services → HTTP → ON
+- Services → HTTPS → ON
+
+### Página HTML (no DNS server)
+
+Editamos o index.html do ns:
+
+![index](images/indexhtmlns.png)
+
+Para ver a página criada podemos ir ao laptop e pesquisar: http://10.63.174.2
+
+![index](images/htmlns.png)
+
+## 6.4 Verificações
+
+Teste 1 (interno)
+http://10.63.174.2
+(Deve aparecer a página do servidor DNS do T4.)
+
+Teste 2 (DNS)
+http://server1.terminal-4.rcomp-25-26-2de-g6
+(Deve resolver o nome para .3 e mostrar a página do servidor HTTP dedicado.)
+
+Teste 3 (browser)
+http://www.terminal-4.rcomp-25-26-2de-g6
+(Deve abrir a mesma página do Teste 2 (via CNAME).)
+
+Teste 4 (Router):
+No CLI do Router T4 — show ip nat translations para ver as traduções ativas durante os testes.
+
+### Teste NAT com outros terminais
+
+No browser do PC do Terminal 2 ou Terminal 3:
+http://10.63.172.3
+
+Resultado:
+
+![index](images/nattest.png)
