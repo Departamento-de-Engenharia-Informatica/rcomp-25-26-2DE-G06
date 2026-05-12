@@ -621,3 +621,236 @@ http://10.63.172.3
 Resultado:
 
 ![index](images/nattest.png)
+
+# FASE 7 — ACLs
+
+Após a validação de OSPF, DHCP, DNS, HTTP/HTTPS e NAT, foram implementadas ACLs estáticas no router T4 para aplicar políticas de segurança à rede.
+As ACLs foram configuradas segundo a ordem de precedência definida no enunciado:
+1. Anti-spoofing
+2. ICMP allow
+3. Proteção da DMZ
+4. Proteção do router
+5. Permissão do restante tráfego
+
+Foram utilizadas Extended Named ACLs, permitindo maior organização e controlo das regras.
+
+## 7.1 VLAN 783 — USEROUTLETS
+
+```
+ip access-list extended ACL-T4-USEROUTLETS-IN
+
+ ! 1. Anti-spoofing
+ permit ip 10.63.160.0 0.0.3.255 any
+
+ ! 2. ICMP allow
+ permit icmp any any echo
+ permit icmp any any echo-reply
+
+ ! 3. DMZ protection
+ permit udp any host 10.63.174.2 eq 53
+ permit tcp any host 10.63.174.2 eq 53
+ permit tcp any host 10.63.174.2 eq 80
+ permit tcp any host 10.63.174.2 eq 443
+ permit tcp any host 10.63.174.3 eq 80
+ permit tcp any host 10.63.174.3 eq 443
+ deny ip any 10.63.174.0 0.0.0.127
+
+ ! 4. Router services (DHCP + TFTP + ITS + OSPF)
+ permit udp host 0.0.0.0 eq 68 host 255.255.255.255 eq 67
+ permit udp any host 10.63.168.1 eq 69
+ permit tcp any host 10.63.168.1 eq 2000
+ permit ospf any any
+
+ ! Bloquear acesso a TODOS os IPs do Router (Proteção Total)
+ deny ip any host 10.63.160.1   ! Gateway UserOutlets
+ deny ip any host 10.63.136.1   ! Gateway WiFi
+ deny ip any host 10.63.168.1   ! Gateway VoIP / TFTP
+ deny ip any host 10.63.174.1   ! Gateway DMZ
+ deny ip any host 10.63.172.3   ! IP Backbone
+
+ ! 5. Permitir resto do tráfego
+ permit ip any any
+```
+
+Aplicação:
+```
+interface FastEthernet0/0.783
+ ip access-group ACL-T4-USEROUTLETS-IN in
+```
+
+## 7.2 VLAN 784 — WIFI
+
+```
+ip access-list extended ACL-T4-WIFI-IN
+
+ permit ip 10.63.136.0 0.0.7.255 any
+
+ permit icmp any any echo
+ permit icmp any any echo-reply
+
+ permit udp any host 10.63.174.2 eq 53
+ permit tcp any host 10.63.174.2 eq 53
+ permit tcp any host 10.63.174.2 eq 80
+ permit tcp any host 10.63.174.2 eq 443
+ permit tcp any host 10.63.174.3 eq 80
+ permit tcp any host 10.63.174.3 eq 443
+ deny ip any 10.63.174.0 0.0.0.127
+
+ permit udp host 0.0.0.0 eq 68 host 255.255.255.255 eq 67
+ permit udp any host 10.63.168.1 eq 69
+ permit tcp any host 10.63.168.1 eq 2000
+ permit ospf any any
+
+ ! Router Protection
+ deny ip any host 10.63.160.1
+ deny ip any host 10.63.136.1
+ deny ip any host 10.63.168.1
+ deny ip any host 10.63.174.1
+ deny ip any host 10.63.172.3
+
+ permit ip any any
+```
+
+Aplicar:
+```
+interface FastEthernet0/0.784
+ ip access-group ACL-T4-WIFI-IN in
+```
+
+## 7.3 VLAN 785 — VOIP
+
+```
+ip access-list extended ACL-T4-VOIP-IN
+
+ permit ip 10.63.168.0 0.0.1.255 any
+
+ permit icmp any any echo
+ permit icmp any any echo-reply
+
+ permit udp any host 10.63.174.2 eq 53
+ permit tcp any host 10.63.174.2 eq 53
+ permit tcp any host 10.63.174.2 eq 80
+ permit tcp any host 10.63.174.2 eq 443
+ permit tcp any host 10.63.174.3 eq 80
+ permit tcp any host 10.63.174.3 eq 443
+ deny ip any 10.63.174.0 0.0.0.127
+
+ permit udp host 0.0.0.0 eq 68 host 255.255.255.255 eq 67
+ permit udp any host 10.63.168.1 eq 69
+ permit tcp any host 10.63.168.1 eq 2000
+ permit ospf any any
+
+ ! Router Protection
+ deny ip any host 10.63.160.1
+ deny ip any host 10.63.136.1
+ deny ip any host 10.63.168.1
+ deny ip any host 10.63.174.1
+ deny ip any host 10.63.172.3
+
+ permit ip any any
+```
+
+Aplicar:
+```
+interface FastEthernet0/0.785
+ ip access-group ACL-T4-VOIP-IN in
+```
+
+## 7.4 BACKBONE — VLAN 773 (CRÍTICO PARA NAT + OSPF)
+
+```
+ip access-list extended ACL-T4-BACKBONE-IN
+
+ ! 1. Anti-spoofing externo
+ deny ip 10.63.136.0 0.0.7.255 any
+ deny ip 10.63.160.0 0.0.3.255 any
+ deny ip 10.63.168.0 0.0.1.255 any
+ deny ip 10.63.174.0 0.0.0.127 any
+
+ ! 2. ICMP
+ permit icmp any any echo-reply
+ permit icmp any any echo
+
+ ! Permissões para o IP de destino ORIGINAL antes do bloqueio
+ permit tcp any host 10.63.172.3 eq 80
+ permit tcp any host 10.63.172.3 eq 443
+
+ ! 3. NAT / HTTP / HTTPS
+ permit tcp any host 10.63.174.2 eq 80
+ permit tcp any host 10.63.174.2 eq 443
+
+ ! 4. OSPF
+ permit ospf any any
+
+ ! Router Protection
+ deny ip any host 10.63.172.3
+ deny ip any host 10.63.160.1
+ deny ip any host 10.63.136.1
+ deny ip any host 10.63.168.1
+ deny ip any host 10.63.174.1
+
+ ! 5. Trânsito geral
+ permit ip any any
+```
+
+Aplicar:
+```
+interface FastEthernet0/0.773
+ ip access-group ACL-T4-BACKBONE-IN in
+```
+
+## 7.5 DMZ — VLAN 786
+
+A DMZ NÃO é filtrada como firewall principal — só permite saída normal.
+
+```
+ip access-list extended ACL-T4-DMZ-IN
+
+ permit ip 10.63.174.0 0.0.0.127 any
+```
+
+Aplicar:
+```
+interface FastEthernet0/0.786
+ ip access-group ACL-T4-DMZ-IN in
+```
+
+## 7.6 Verificações
+
+### Verificar ACLs aplicadas
+```
+show access-lists
+show running-config | section access-list
+show ip interface
+```
+
+### Testes funcionais
+
+ICMP:
+```
+ping 10.63.174.2
+ping 10.63.174.3
+```
+
+DNS:
+```
+ping server1.terminal-4.rcomp-25-26-2de-g6
+```
+
+HTTP — No browser:
+```
+http://server1.terminal-4.rcomp-25-26-2de-g6
+http://ns.terminal-4.rcomp-25-26-2de-g6
+http://www.terminal-4.rcomp-25-26-2de-g6
+```
+
+NAT — A partir de outro terminal:
+```
+http://10.63.172.3
+```
+
+### Verificar contadores das ACLs
+```
+show access-lists
+```
+Os contadores (matches) devem aumentar durante os testes, comprovando que as ACLs estão a ser utilizadas corretamente.
