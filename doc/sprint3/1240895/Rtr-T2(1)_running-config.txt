@@ -1,0 +1,107 @@
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname Rtr-T2
+!
+!
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+!
+!
+license udi pid CISCO2811/K9 sn FTX10179IC3-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ no ip address
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/0.773
+ encapsulation dot1Q 773
+ ip address 10.63.172.1 255.255.255.0
+!
+interface FastEthernet0/0.775
+ encapsulation dot1Q 775
+ ip address 10.63.152.1 255.255.252.0
+!
+interface FastEthernet0/0.776
+ encapsulation dot1Q 776
+ ip address 10.63.128.1 255.255.248.0
+!
+interface FastEthernet0/0.777
+ encapsulation dot1Q 777
+ ip address 10.63.166.1 255.255.254.0
+!
+interface FastEthernet0/0.778
+ encapsulation dot1Q 778
+ ip address 10.63.174.129 255.255.255.128
+!
+interface FastEthernet0/1
+ ip address 89.73.67.133 255.255.255.252
+ duplex auto
+ speed auto
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router ospf 1
+ router-id 2.2.2.2
+ log-adjacency-changes
+ network 10.63.172.0 0.0.0.255 area 0
+ network 10.63.128.0 0.0.7.255 area 2
+ network 10.63.152.0 0.0.3.255 area 2
+ network 10.63.166.0 0.0.1.255 area 2
+ network 10.63.174.128 0.0.0.127 area 2
+ default-information originate
+!
+ip classless
+ip route 0.0.0.0 0.0.0.0 89.73.67.134
+!
+ip flow-export version 9
+!
+!
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
