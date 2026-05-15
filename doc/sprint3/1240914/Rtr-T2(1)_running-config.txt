@@ -193,6 +193,8 @@ ip access-list extended ACL-T2-BACKBONE-IN
  permit tcp any host 10.63.172.1 eq www
  permit tcp any host 10.63.172.1 eq 443
  permit tcp any host 10.63.174.130 eq www
+ permit tcp any any eq 1720
+ permit udp any any range 16384 32767
  permit tcp any host 10.63.174.130 eq 443
  permit ospf any any
  deny ip any host 10.63.172.1

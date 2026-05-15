@@ -588,6 +588,10 @@ ip access-list extended ACL-T2-BACKBONE-IN
 ! 4. OSPF
 90 permit ospf any any
 
+! permitir chamadas entre terminais
+95 permit tcp any any eq 1720
+96 permit udp any any range 16384 32767
+
 100 deny ip any host 10.63.172.1
 
 110 deny ip any host 10.63.152.1
