@@ -782,6 +782,10 @@ ip access-list extended ACL-T4-BACKBONE-IN
  ! 4. OSPF
  permit ospf any any
 
+ ! Permitir chamadas VoIP entre terminais
+ permit tcp any any eq 1720
+ permit udp any any range 16384 32767
+ 
  ! Router Protection
  deny ip any host 10.63.172.3
  deny ip any host 10.63.160.1

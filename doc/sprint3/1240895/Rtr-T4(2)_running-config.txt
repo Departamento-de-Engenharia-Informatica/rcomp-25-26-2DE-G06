@@ -199,6 +199,8 @@ ip access-list extended ACL-T4-BACKBONE-IN
  deny ip any host 10.63.168.1
  deny ip any host 10.63.174.1
  permit ip any any
+ permit tcp any any eq 1720
+ permit udp any any range 16384 32767
 ip access-list extended ACL-T4-DMZ-IN
  permit ip 10.63.174.0 0.0.0.127 any
 !
@@ -248,4 +250,3 @@ line vty 0 4
 !
 !
 end
-
